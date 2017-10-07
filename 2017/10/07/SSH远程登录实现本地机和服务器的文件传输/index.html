@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://steven1997.github.io/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/6.png">
 <meta property="og:image" content="https://steven1997.github.io/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/2.png">
 <meta property="og:image" content="https://steven1997.github.io/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/3.png">
-<meta property="og:updated_time" content="2017-10-07T08:48:10.989Z">
+<meta property="og:updated_time" content="2017-10-07T08:57:11.077Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH远程登录实现本地机和服务器的文件传输">
 <meta name="twitter:description" content="SSH是一种以安全、加密方式连接远程主机或服务器的方法。SSH服务器接受从有SSH的客户机的连接，允许操作者象在本地一样地登录系统。如果已经搭建了SSH远程登录服务，如何实现本地机和远程服务器的文件交互呢？以下操作基于远程机已经安装了SSH服务器端，如果没有安装，详细步骤见:  在Ubuntu下通过SSH连接远程服务器   (1)用SSH登录远程ubuntu主机假设远程Ubuntu主机安装了SSH">
@@ -377,12 +377,12 @@
       
         <p>SSH是一种以安全、加密方式连接远程主机或服务器的方法。SSH服务器接受从有SSH的客户机的连接，允许操作者象在本地一样地登录系统。如果已经搭建了SSH远程登录服务，如何实现本地机和远程服务器的文件交互呢？以下操作基于远程机已经安装了SSH服务器端，如果没有安装，详细步骤见:  <a href="http://habitdiary.cn/2017/10/07/%E5%9C%A8Ubuntu%E4%B8%8B%E9%80%9A%E8%BF%87SSH%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" target="_blank" rel="external">在Ubuntu下通过SSH连接远程服务器</a>  </p>
 <h3 id="1-用SSH登录远程ubuntu主机"><a href="#1-用SSH登录远程ubuntu主机" class="headerlink" title="(1)用SSH登录远程ubuntu主机"></a>(1)用SSH登录远程ubuntu主机</h3><p>假设远程Ubuntu主机安装了SSH服务器端。远程Ubuntu主机的IP为：118.89.223.117,用户名为ubuntu<br>我们在命令行输入以下命令来连接：<br><code>ssh -l ubuntu 118.89.223.117</code><br>之后提示输入密码，回车，登录成功，注意此时已经切换到了远程机的终端<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/1.png" alt="fail">  </p>
-<h3 id="2-从远程Ubuntu主机下载文件-文件夹到本地-scp"><a href="#2-从远程Ubuntu主机下载文件-文件夹到本地-scp" class="headerlink" title="(2)从远程Ubuntu主机下载文件/文件夹到本地(scp)"></a>(2)从远程Ubuntu主机下载文件/文件夹到本地(scp)</h3><p>语法格式：scp -r 远程主机用户名@远程主机ip:用于保存文件的远程主机目录路径 本地文件路径  </p>
+<h3 id="2-从远程Ubuntu主机下载文件-文件夹到本地-scp"><a href="#2-从远程Ubuntu主机下载文件-文件夹到本地-scp" class="headerlink" title="(2)从远程Ubuntu主机下载文件/文件夹到本地(scp)"></a>(2)从远程Ubuntu主机下载文件/文件夹到本地(scp)</h3><p>语法格式：scp -r 远程主机用户名@远程主机ip:待下载文件的远程主机目录路径 保存下载文件的本地文件路径  </p>
 <p>我们先在远程机的/home/ubuntu目录下新建一个名为hello的文件<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/4.png" alt="fail"><br>要下载文件到本地,我们要结束SSH连接,切换到本地机,输入<code>eixt</code>或<code>quit</code>即可  </p>
-<p>我们将远程机的hello文件下载到本地的/home/xiejunyu/local目录下，输入密码后提示文件上传成功<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/5.png" alt="fail">  </p>
+<p>我们将远程机的hello文件下载到本地的/home/xiejunyu/local目录下，输入密码后提示文件下载成功<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/5.png" alt="fail">  </p>
 <p>我们进入本地目录验证一下<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/6.png" alt="fail">  </p>
 <p>hello文件的确下载到了本地</p>
-<h3 id="3-从本地向远程ubuntu主机上传文件-文件夹-scp"><a href="#3-从本地向远程ubuntu主机上传文件-文件夹-scp" class="headerlink" title="(3)从本地向远程ubuntu主机上传文件/文件夹(scp)"></a>(3)从本地向远程ubuntu主机上传文件/文件夹(scp)</h3><p>语法格式：scp -r 本地文件路径 远程主机用户名@远程主机ip:用于保存文件的远程主机目录路径  </p>
+<h3 id="3-从本地向远程ubuntu主机上传文件-文件夹-scp"><a href="#3-从本地向远程ubuntu主机上传文件-文件夹-scp" class="headerlink" title="(3)从本地向远程ubuntu主机上传文件/文件夹(scp)"></a>(3)从本地向远程ubuntu主机上传文件/文件夹(scp)</h3><p>语法格式：scp -r 待上传的本地文件路径 远程主机用户名@远程主机ip:用于保存文件的远程主机目录路径  </p>
 <p>假设要上传一个在/home/xiejunyu/local目录下的test.txt文件,远程主机用户名为ubuntu,ip为118.89.223.117,保存到远程主机的/home/ubuntu目录下  </p>
 <p>要上传本地文件,我们要结束SSH连接,切换到本地机,输入<code>eixt</code>或<code>quit</code>即可<br>然后输入命令<code>$ scp -r /home/xiejunyu/local/test.txt ubuntu@118.89.223.117:/home/ubuntu/</code>，输入密码后提示文件上传成功<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/2.png" alt="fail">  </p>
 <p>我们通过SSH登录到远程主机验证一下,<code>pwd</code>打印当前所在位置，发现我们处于/home/ubuntu目录下,<code>ls</code>显示当前目录下的文件，我们发现有test.txt文件,说明本地的test.txt已经上传到了远程机的/home/ubuntu目录下<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/3.png" alt="fail">  </p>

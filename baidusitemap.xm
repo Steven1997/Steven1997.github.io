@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>https://Steven1997.github.io/2017/10/07/SSH%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%BA%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/</loc>
+    <lastmod>2017-10-07T08:57:11.077Z</lastmod>
+    <data>
+        <display>
+        <title>SSH远程登录实现本地机和服务器的文件传输</title>
+        <pubTime>2017-10-07T07:55:41.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+        <tag>服务器</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://Steven1997.github.io/2017/10/07/%E5%9C%A8Ubuntu%E4%B8%8B%E9%80%9A%E8%BF%87SSH%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
     <lastmod>2017-10-07T08:51:40.404Z</lastmod>
     <data>
@@ -31,25 +50,6 @@
         <pubTime>2017-10-06T07:02:39.000Z</pubTime>
         
         <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://Steven1997.github.io/2017/10/07/SSH%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%BA%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/</loc>
-    <lastmod>2017-10-07T08:48:10.989Z</lastmod>
-    <data>
-        <display>
-        <title>SSH远程登录实现本地机和服务器的文件传输</title>
-        <pubTime>2017-10-07T07:55:41.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-        <tag>服务器</tag>
          
          
            
