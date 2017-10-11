@@ -131,4 +131,4 @@ backup:
     type: git
     theme: next
     repository:
-       github: git@github.com:Steven1997/Steven1997.github.io,master
+       github: git@github.com:Steven1997/Steven1997.github.io,backup
