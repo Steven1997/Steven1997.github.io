@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://habitdiary.cn/2017/10/11/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B9%8B%E5%8C%BA%E9%97%B4dp/</loc>
+    <lastmod>2017-10-11T09:29:46.599Z</lastmod>
+    <data>
+        <display>
+        <title>动态规划之区间dp</title>
+        <pubTime>2017-10-11T08:11:11.000Z</pubTime>
+        
+        <tag>算法</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://habitdiary.cn/2017/10/07/SSH%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%BA%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/</loc>
     <lastmod>2017-10-07T08:57:11.077Z</lastmod>
     <data>

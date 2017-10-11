@@ -1,3 +1,4 @@
+http://habitdiary.cn/2017/10/11/动态规划之区间dp/
 http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/
 http://habitdiary.cn/2017/10/07/在Ubuntu下通过SSH连接远程服务器/
 http://habitdiary.cn/2017/10/06/强制修改ubuntu密码/
