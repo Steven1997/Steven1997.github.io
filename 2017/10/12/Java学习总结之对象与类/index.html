@@ -92,7 +92,7 @@
 <meta property="og:description" content="面向对象程序设计概述　　面向对象程序设计(简称OOP)是当今主流的程序设计范型，它已经取代了传统的“结构化”过程化程序开发技术。Java是完全面向对象的，必须熟悉OOP才能够编写Java程序。　　传统结构化程序设计主要通过设计一系列的过程(即算法)来解决问题，即算法+数据结构=程序，先要确定如何操作数据，再决定如何组织数据使之便于操作。而面向对象程序设计将数据域(属性)和对数据的操作(方法)绑定在">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20150409153405264">
-<meta property="og:updated_time" content="2017-10-12T15:12:56.237Z">
+<meta property="og:updated_time" content="2017-10-12T15:15:38.040Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之对象与类">
 <meta name="twitter:description" content="面向对象程序设计概述　　面向对象程序设计(简称OOP)是当今主流的程序设计范型，它已经取代了传统的“结构化”过程化程序开发技术。Java是完全面向对象的，必须熟悉OOP才能够编写Java程序。　　传统结构化程序设计主要通过设计一系列的过程(即算法)来解决问题，即算法+数据结构=程序，先要确定如何操作数据，再决定如何组织数据使之便于操作。而面向对象程序设计将数据域(属性)和对数据的操作(方法)绑定在">
@@ -390,7 +390,8 @@
 <p>protected<br>修饰的成员可以在其所在类中、同一包中及子类中（无论子类在不在同一个包）被直接访问，但不能在位于不同包中的非子类中被直接访问</p>
 <p>default<br>缺省访问修饰符的成员只能在其所在类中或包中直接访问，在不同包中即使是不同包的子类也不能直接访问。  </p>
 <p>private<br>private成员只能在所在类中被直接访问，是4种访问等级最高的一个，建议为了实现类的封装，实例数据域应该使用private修饰。如果不想让一个类创建实例，可以用private修饰其构造方法。  </p>
-<p><img src="http://img.blog.csdn.net/20150409153405264" alt="fail" title="四种可见性修饰符比较"><br>　　　　　　　　　　四种可见性修饰符比较<br>注意：private和protected只能修饰类成员，public和default可以修饰类和类成员。public的类成员只有位于public类里才能出包访问，如果类是default的，也不能出包访问。</p>
+<p><img src="http://img.blog.csdn.net/20150409153405264" alt="fail" title="四种可见性修饰符比较">  </p>
+<p>注意：private和protected只能修饰类成员，public和default可以修饰类和类成员。public的类成员只有位于public类里才能出包访问，如果类是default的，也不能出包访问。</p>
 <h3 id="包"><a href="#包" class="headerlink" title="包"></a>包</h3><p>包可以用来更好地组织、管理类，在不同的包中可以定义同名的类而不会发生冲突，建议将因特网域名的逆序作为包名，比如域名habitdiary.cn，可以定义包名为cn.habitdiary,还可以进一步定义子包名，比如cn.habitdiary.core，当然包和子包的这种嵌套关系只是为了逻辑结构更加严谨，在编译器看来这两个包是互相独立的集合。为了把类放入包中，需要在程序中首先出现语句<code>package + 包名</code>，前面不能有注释或空白。如果定义类时没有指定包，就表示把它放在默认包中，建议最好将类放入包中，不要使用默认包。源文件应该放到与完整包名匹配的子目录下，比如cn.habitdiary.core应该放在子目录cn/habitdiary/core下，编译器会把编译得到的.class文件放在同一目录下。</p>
 <h3 id="类的导入"><a href="#类的导入" class="headerlink" title="类的导入"></a>类的导入</h3><p>精确导入：导入某个包的特定类,如<code>import java.util.Scanner</code><br>通配导入：导入某个包的所有类,如<code>import java.util.*</code><br>当使用多个包中的同名类时，要用包名.类名的格式<br>编译器定位类会按照配置的环境变量找到类库，再根据导入路径在相应的包中定位相应的类<br>静态导入：import语句不仅可以导入类，还可以导入静态方法和静态域，只要加入static关键字。比如<code>import static java.lang.System.*</code>导入了System类的静态方法和静态域，就可以不加类名前缀:<code>out.println(&quot;Hello world!&quot;)</code>，out是System类里定义的静态成员，是PrintStream的实例。</p>
 <h3 id="数据域封装"><a href="#数据域封装" class="headerlink" title="数据域封装"></a>数据域封装</h3><p>封装，即隐藏对象的属性和实现细节，仅对外公开接口，控制在程序中属性的读和修改的访问级别，避免了对数据域的直接修改，提高了数据的安全性和易维护性。实现封装的关键是绝不能让类中的方法直接访问其他类的实例域，程序仅通过方法和数据进行交互。<br>实现封装的步骤：<br>1.用private可见性修饰符修饰类成员<br>2.设置访问器(get方法)，方法签名习惯为:public returnType getPropertyName()，如果返回值类型是boolean型,习惯下定义为:public boolean isPropertyName()<br>3.设置修改器(set方法)，方法签名习惯为:public void setPropertyName(dataType propertyValue)  </p>
