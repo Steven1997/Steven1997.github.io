@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -83,14 +83,18 @@
 
 
 
-<meta name="keywords" content="XJY&#39;s Blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="XJY&#39;s Blog">
-<meta property="og:url" content="http://habitdiary.cn/index.html">
+<meta name="description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java学习总结之继承和多态">
+<meta property="og:url" content="http://habitdiary.cn/2017/10/12/Java学习总结之继承和多态/index.html">
 <meta property="og:site_name" content="XJY&#39;s Blog">
+<meta property="og:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-12T16:27:12.451Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="XJY&#39;s Blog">
+<meta name="twitter:title" content="Java学习总结之继承和多态">
+<meta name="twitter:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://habitdiary.cn/"/>
+  <link rel="canonical" href="http://habitdiary.cn/2017/10/12/Java学习总结之继承和多态/"/>
 
 
 
 
 
-  <title> Hexo, NexT - XJY's Blog </title>
+  <title>Java学习总结之继承和多态 | XJY's Blog</title>
   
 
 
@@ -145,8 +149,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <a href="https://github.com/Steven1997"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,9 +286,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -315,9 +318,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/12/Java学习总结之继承和多态/" itemprop="url">Java学习总结之继承和多态</a></h2>
+          <h2 class="post-title" itemprop="name headline">Java学习总结之继承和多态</h2>
         
 
         <div class="post-meta">
@@ -367,18 +368,39 @@
       
 
       
-        
-          
-          父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/12/Java学习总结之继承和多态/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <h3 id="父类与子类"><a href="#父类与子类" class="headerlink" title="父类与子类"></a>父类与子类</h3><p>在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>面向对象的编程允许从已经存在的类中定义新的类，这称为继承。继承可以使得子类别具有父类别的各种属性和方法，而不需要再次编写相同的代码。在令子类别继承父类别的同时，可以重新定义某些属性，并重写某些方法，即覆盖父类别的原有属性和方法，使其获得与父类别不同的功能。另外，为子类别追加新的属性和方法也是常见的做法。继承通过extends关键字实现。  </p>
+<h4 id="继承有如下几个关键点"><a href="#继承有如下几个关键点" class="headerlink" title="继承有如下几个关键点"></a>继承有如下几个关键点</h4><p>1.子类并不是父类的一个子集，实际上，一个子类通常比它的父类包含更多的信息和方法<br>2.父类中的私有数据域在该类之外是不可访问的，故不能在子类中直接使用，如果父类中定义了公共访问器或修改器，可以在子类中调用它们<br>3.不是所有的“是一种”(is-a)关系都该用继承来建模<br>4.继承是用来为“是一种”关系(is-a)建模的，不要仅仅为了重用方法这个原因而盲目使用继承<br>5.Java中类与类的继承是单一继承  </p>
+<h3 id="super关键字"><a href="#super关键字" class="headerlink" title="super关键字"></a>super关键字</h3><p>super关键字有两种作用：<br><strong>1.调用父类的构造方法</strong><br>因为继承时父类的构造方法不会被继承，而子类的构造方法只能初始化子类新增加的数据域，所以要通过super关键字调用父类的构造方法来初始化从父类继承的数据域。<br>形式是<code>super()</code>或<code>super(arguments)</code>，分别调用了父类的无参构造方法和相应的有参构造方法。super语句要写在子类构造方法的第一条，否则编译器会自动在构造方法开头插入一条<code>super()</code><br><strong>2.调用父类的方法</strong><br>在继承时往往会进行重写，即覆盖父类的方法。此时如果要调用父类原有的未被覆盖的方法，就可以使用<code>super.方法名</code>来调用父类的方法。如果父类方法没有被覆盖，可以省略super关键字。  </p>
+<h3 id="构造方法链"><a href="#构造方法链" class="headerlink" title="构造方法链"></a>构造方法链</h3><p>在任何情况下，构造一个类的实例时，将会调用沿着继承链的所有父类的构造方法。当构造一个子类对象时，子类构造方法会在完成自己的任务之前，首先调用它的父类的构造方法。如果父类继承自其他类，那么父类构造方法又会在完成自己的任务之前，调用它自己的父类的构造方法。这个过程一直持续到这个继承体系结构的最后一个构造方法被调用为止。这就是构造方法链。比如下面的代码：  </p>
+<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Faculty</span> <span class="keyword">extends</span> <span class="title">Employee</span></span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>{
+       <span class="keyword">new</span> Faculty();
+    }
+    <span class="function"><span class="keyword">public</span> <span class="title">Faculty</span><span class="params">()</span></span>{
+        System.out.println(<span class="string">"(4) Performs Faculty's tasks"</span>);
+    }
+ }
+<span class="class"><span class="keyword">class</span> <span class="title">Employee</span> <span class="keyword">extends</span> <span class="title">Person</span></span>{
+    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">()</span></span>{
+        <span class="keyword">this</span>(<span class="string">"(2) Invoke Employee's overloaded constructor"</span>);
+        System.out.println(<span class="string">"(3) Perfoms Employee's tasks"</span>);
+    }
+    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String s)</span></span>{
+      System.out.println(s);
+    }
+ }
+ <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>{
+     <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">()</span> </span>{
+        System.out.println(<span class="string">"(1) Performs Person's tasks"</span>);
+     }
+ }
+</code></pre>
+<p>打印结果为:<br>(1) Performs Person’s tasks<br>(2) Invoke Employee’s overloaded constructor<br>(3) Performs Employee’s tasks<br>(4) Performs Faculty’s tasks  </p>
+<p>我们可以知道：子类的构造方法的第一条语句要么是<strong>super语句(包括编译器隐式插入的)</strong>,要么是<strong>this语句</strong>，它通过调用同一个类的另一个重载的构造方法，再调用该方法的super语句初始化父类  </p>
+<p>注意:如果没有显式在子类构造方法中定义super语句，编译器自动插入的super语句匹配的是父类的无参构造方法，如果父类没有无参构造方法，编译器会报错。所以建议为每个类都提供一个无参构造方法，以便于日后对该类进行扩展。  </p>
+<h3 id="方法重载与重写"><a href="#方法重载与重写" class="headerlink" title="方法重载与重写"></a>方法重载与重写</h3><p>重载：方法重载是指在一个类中定义多个同名的方法，但要求每个方法具有不同的参数的类型或参数的个数。重载的方法方法名相同，返回值类型可以不同，参数列表必须不同(包括参数个数、类型和次序，有一个不同就算不同)<br>重写：方法重写是指在继承时子类覆盖父类中已有的方法并提供对其的新的实现(修改方法体)。重写的方法和原方法返回值类型、方法名、参数列表均相同，可见性修饰父范围不可缩小(要么相同要么扩大)</p>
+
       
     </div>
     
@@ -392,274 +414,46 @@
     
    <div>
   
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
 </div> 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/12/Java学习总结之对象与类/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="谢均宇">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/fqtbjudvb4y.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XJY's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/12/Java学习总结之对象与类/" itemprop="url">Java学习总结之对象与类</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-12T08:40:34+08:00">
-                2017-10-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-          面向对象程序设计概述　　面向对象程序设计(简称OOP)是当今主流的程序设计范型，它已经取代了传统的“结构化”过程化程序开发技术。Java是完全面向对象的，必须熟悉OOP才能够编写Java程序。　　传统结构化程序设计主要通过设计一系列的过程(即算法)来解决问题，即算法+数据结构=程序，先要确定如何操作
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/12/Java学习总结之对象与类/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/12/Java学习总结之对象与类/" rel="next" title="Java学习总结之对象与类">
+                <i class="fa fa-chevron-left"></i> Java学习总结之对象与类
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-   <div>
-  
-</div> 
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/11/动态规划之区间dp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="谢均宇">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/fqtbjudvb4y.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XJY's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/11/动态规划之区间dp/" itemprop="url">动态规划之区间dp</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-11T16:11:11+08:00">
-                2017-10-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          简介区间dp，顾名思义就是在一段区间上进行动态规划。对于每段区间，他们的最优值都是由几段更小区间的最优值得到，是分治思想的一种应用，将一个区间问题不断划分为更小的区间直至一个元素组成的区间，枚举他们的组合 ，求合并后的最优值。  
-算法结构设F[i,j]（1&lt;=i&lt;=j&lt;=n）表示
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/11/动态规划之区间dp/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-   <div>
-  
-</div> 
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -669,532 +463,50 @@
   </article>
 
 
-    
+
+    <div class="post-spread">
       
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="谢均宇">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/fqtbjudvb4y.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XJY's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/" itemprop="url">SSH远程登录实现本地机和服务器的文件传输</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T15:55:41+08:00">
-                2017-10-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          SSH是一种以安全、加密方式连接远程主机或服务器的方法。SSH服务器接受从有SSH的客户机的连接，允许操作者象在本地一样地登录系统。如果已经搭建了SSH远程登录服务，如何实现本地机和远程服务器的文件交互呢？以下操作基于远程机已经安装了SSH服务器端，如果没有安装，详细步骤见:  在Ubuntu下通过
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-   <div>
-  
-</div> 
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
 
 
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/07/在Ubuntu下通过SSH连接远程服务器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="谢均宇">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/fqtbjudvb4y.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XJY's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/07/在Ubuntu下通过SSH连接远程服务器/" itemprop="url">在Ubuntu下通过SSH连接远程服务器</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T15:20:37+08:00">
-                2017-10-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          登录远程服务器是搭建、维护网站的常用操作。在Windows环境下我们会选择XSHELL等工具进行登录，而在Linux环境下可以通过终端快捷登录。
-环境准备装有Ubuntu操作系统的本地机和远程腾讯云服务器各一台
-步骤一:打开腾讯云官网，登录云服务器，在服务器上安装SSH服务器端$ sudo apt-
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/07/在Ubuntu下通过SSH连接远程服务器/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
           </div>
-          <!--/noindex-->
-        
-      
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-   <div>
-  
-</div> 
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
   
 
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/06/强制修改ubuntu密码/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="谢均宇">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/fqtbjudvb4y.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XJY's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/06/强制修改ubuntu密码/" itemprop="url">强制修改ubuntu密码</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-06T15:02:39+08:00">
-                2017-10-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-           今天想要修改ubuntu的密码,结果设置了两次密码，一次提示密码长度太短,一次提示强度不够。  查了资料,总结出两种解决方法: 方法一:加上sudo权限  方法二:切换到root用户    mark一下
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/06/强制修改ubuntu密码/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-   <div>
-  
-</div> 
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/05/Markdown学习笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="谢均宇">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/fqtbjudvb4y.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XJY's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/05/Markdown学习笔记/" itemprop="url">Markdown学习笔记</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-05T16:36:06+08:00">
-                2017-10-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言　　花了近两天时间终于搭建好了我的个人博客,因为Hexo是基于Markdown语法写作的博客，之前对Markdown一窍不通，于是赶快找了几篇大牛的博客学习，从中整理出了Hexo博客写作的常用语法。当然Markdown还有很多高级的用法,例如绘制流程图、时序图，插入数学公式等，由于在博客写作中不
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/05/Markdown学习笔记/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-   <div>
-  
-</div> 
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-
-
-          </div>
-          
-
-
-          
 
         </div>
         
@@ -1214,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1311,6 +632,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#父类与子类"><span class="nav-number">1.</span> <span class="nav-text">父类与子类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-number">2.</span> <span class="nav-text">继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#继承有如下几个关键点"><span class="nav-number">2.1.</span> <span class="nav-text">继承有如下几个关键点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#super关键字"><span class="nav-number">3.</span> <span class="nav-text">super关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法链"><span class="nav-number">4.</span> <span class="nav-text">构造方法链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法重载与重写"><span class="nav-number">5.</span> <span class="nav-text">方法重载与重写</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1453,6 +790,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -1478,6 +819,10 @@
   
     
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2145941"></script>
+      <!-- UY END -->
     
   
 
