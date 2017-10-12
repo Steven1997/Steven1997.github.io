@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://habitdiary.cn/2017/10/12/%E3%80%8AJava%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB/</loc>
+    <lastmod>2017-10-12T15:11:04.524Z</lastmod>
+    <data>
+        <display>
+        <title>《Java核心技术》读书笔记之对象与类</title>
+        <pubTime>2017-10-12T00:40:34.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://habitdiary.cn/2017/10/11/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B9%8B%E5%8C%BA%E9%97%B4dp/</loc>
     <lastmod>2017-10-11T15:06:24.214Z</lastmod>
     <data>
