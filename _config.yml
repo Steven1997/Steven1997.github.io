@@ -114,9 +114,9 @@ search:
   format: html
   limit: 10000
 
-#sitemap
+
 baidusitemap:
-    path: baidusitemap.xm
+    path: baidusitemap.xml
 
 baidu_url_submit:
   count: 100 # 提交最新的一个链接
@@ -126,6 +126,7 @@ baidu_url_submit:
 
 sitemap:
   path: sitemap.xml
+
 
 backup:
     type: git
