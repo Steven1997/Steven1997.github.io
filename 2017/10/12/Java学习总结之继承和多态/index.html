@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="XJY&#39;s Blog">
 <meta property="og:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-12T16:50:20.784Z">
+<meta property="og:updated_time" content="2017-10-13T15:54:36.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之继承和多态">
 <meta name="twitter:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
@@ -371,7 +371,8 @@
         <h3 id="父类与子类"><a href="#父类与子类" class="headerlink" title="父类与子类"></a>父类与子类</h3><p>在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。</p>
 <h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>面向对象的编程允许从已经存在的类中定义新的类，这称为继承。继承可以使得子类别具有父类别的各种属性和方法，而不需要再次编写相同的代码。在令子类别继承父类别的同时，可以重新定义某些属性，并重写某些方法，即覆盖父类别的原有属性和方法，使其获得与父类别不同的功能。另外，为子类别追加新的属性和方法也是常见的做法。继承通过extends关键字实现。  </p>
 <h4 id="继承有如下几个关键点"><a href="#继承有如下几个关键点" class="headerlink" title="继承有如下几个关键点"></a>继承有如下几个关键点</h4><p>1.子类并不是父类的一个子集，实际上，一个子类通常比它的父类包含更多的信息和方法<br>2.父类中的私有数据域在该类之外是不可访问的，故不能在子类中直接使用，如果父类中定义了公共访问器或修改器，可以在子类中调用它们<br>3.不是所有的“是一种”(is-a)关系都该用继承来建模<br>4.继承是用来为“是一种”关系(is-a)建模的，不要仅仅为了重用方法这个原因而盲目使用继承<br>5.Java中类与类的继承是单一继承  </p>
-<h3 id="super关键字"><a href="#super关键字" class="headerlink" title="super关键字"></a>super关键字</h3><p>super关键字有两种作用：<br><strong>1.调用父类的构造方法</strong><br>因为继承时父类的构造方法不会被继承，而子类的构造方法只能初始化子类新增加的数据域，所以要通过super关键字调用父类的构造方法来初始化从父类继承的数据域。<br>形式是<code>super()</code>或<code>super(arguments)</code>，分别调用了父类的无参构造方法和相应的有参构造方法。super语句要写在子类构造方法的第一条，否则编译器会自动在构造方法开头插入一条<code>super()</code><br><strong>2.调用父类的方法</strong><br>在继承时往往会进行重写，即覆盖父类的方法。此时如果要调用父类原有的未被覆盖的方法，就可以使用<code>super.方法名</code>来调用父类的方法。如果父类方法没有被覆盖，可以省略super关键字。只能调用一级父类的方法，不可以跨父类，<code>super.super.方法名</code>是不合法的。  </p>
+<h3 id="super关键字"><a href="#super关键字" class="headerlink" title="super关键字"></a>super关键字</h3><p>super关键字有两种作用：<br><strong>1.调用父类的构造方法</strong><br>因为继承时父类的构造方法不会被继承，而子类的构造方法只能初始化子类新增加的数据域，所以要通过super关键字调用父类的构造方法来初始化从父类继承的数据域。<br>形式是<code>super()</code>或<code>super(arguments)</code>，分别调用了父类的无参构造方法和相应的有参构造方法。super语句要写在子类构造方法的第一条，否则编译器会自动在构造方法开头插入一条<code>super()</code><br>有些人认为super与this引用在此处是类似的概念，实际上不太恰当，super不是一个对象的引用，也不能赋给另一个引用变量，他只是一个指示编译器调用超类方法的特殊关键字。  </p>
+<p><strong>2.调用父类的方法</strong><br>在继承时往往会进行重写，即覆盖父类的方法。此时如果要调用父类原有的未被覆盖的方法，就可以使用<code>super.方法名</code>来调用父类的方法。如果父类方法没有被覆盖，可以省略super关键字。只能调用一级父类的方法，不可以跨父类，<code>super.super.方法名</code>是不合法的。  </p>
 <h3 id="构造方法链"><a href="#构造方法链" class="headerlink" title="构造方法链"></a>构造方法链</h3><p>在任何情况下，构造一个类的实例时，将会调用沿着继承链的所有父类的构造方法。当构造一个子类对象时，子类构造方法会在完成自己的任务之前，首先调用它的父类的构造方法。如果父类继承自其他类，那么父类构造方法又会在完成自己的任务之前，调用它自己的父类的构造方法。这个过程一直持续到这个继承体系结构的最后一个构造方法被调用为止。这就是构造方法链。比如下面的代码：  </p>
 <pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Faculty</span> <span class="keyword">extends</span> <span class="title">Employee</span></span>{
     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>{
@@ -403,6 +404,93 @@
 <p><strong>重写</strong><br>方法重写是指在继承时子类覆盖父类中已有的方法并提供对其的新的实现(修改方法体)。重写的方法和原方法返回值类型、方法名、参数列表均相同，可见性修饰符范围不可缩小(要么相同要么扩大)。<br>为了避免错误，可以使用重写标注，在要重写的方法前加上<code>@Override</code>，该标注会强制编译器检查是否重写了某方法，如果没有重写，编译器会报告一个错误。</p>
 <p><strong>关于重写的几点注意</strong><br>1.仅当实例方法时刻访问的，它才能被覆盖<br>2.静态方法可以被继承，但不能被覆盖。如果子类中重新定义了父类的静态方法，父类的静态方法会被隐藏，可以使用父类名.静态方法名调用隐藏的静态方法  </p>
 <p>方法重写发生在通过继承而相关的不同类中，方法重载可以发生在同一类中，也可以发生在由于继承关系而相关的不同类中。</p>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><p>Java允许把子类对象的引用赋给父类引用变量，即父类型变量可以引用子类型的对象。从物理层面理解，继承自父类的子类的内存先存储父类数据域再存储子类的新增数据域，所以子类对象既可以看成子类对象本身(看整段内存)也可以看成父类对象(看内存的前一部分)。<br>注意：子类引用赋给父类变量之后，只能访问父类属性和方法或在子类中重写过的父类方法，不能访问子类的特有属性和方法，除非进行向下转型。</p>
+<h3 id="动态绑定"><a href="#动态绑定" class="headerlink" title="动态绑定"></a>动态绑定</h3><p>多态机制的底层实现技术是<strong>动态绑定</strong>，动态绑定是指JVM在执行期间（非编译期）判断所引用对象的实际类型，根据其实际的类型调用其相应的方法。程序运行过程中，把函数（或过程）调用与响应调用所需要的代码相结合的过程称为动态绑定。</p>
+<p>对java来说，绑定分为静态绑定和动态绑定；或者叫做前期绑定和后期绑定。  </p>
+<p>静态绑定(前期绑定)：<br>在程序执行前方法已经被绑定（也就是说在编译过程中就已经知道这个方法到底是哪个类中的方法），此时由编译器或其它连接程序实现。例如：C 。针对java简单的可以理解为程序编译期的绑定；这里特别说明一点，java当中的方法只有final，static，private和构造方法是前期绑定。</p>
+<p>动态绑定(后期绑定)：在运行时根据具体对象的类型进行绑定。<br>若一种语言实现了后期绑定，同时必须提供一些机制，可在运行期间判断对象的类型，并分别调用适当的方法。也就是说，编译器此时依然不知道对象的类型，但方法调用机制能自己去调查，找到正确的方法主体。不同的语言对后期绑定的实现方法是有所区别的。但我们至少可以这样认为：它们都要在对象中安插某些特殊类型的信息。</p>
+<p>简言之，一个方法可能在沿着继承链的多个类中实现，JVM在运行时动态绑定方法的实现。</p>
+<h3 id="理解方法调用"><a href="#理解方法调用" class="headerlink" title="理解方法调用"></a>理解方法调用</h3><p>假设下面要调用x.f(args)，方法调用的过程为：<br>1） 编译器查看对象的声明类型和方法名，可能存在多个名字为f的方法，比如f(int)和f(String)。编译器会一一列举类中所有名为f的方法和其超类中可访问的名为f的方法，至此编译器已获取所有可能被调用的候选方法。<br>2） 编译器将查看调用方法时提供的参数类型，如果所有f方法中存在一个与提供的参数类型完全匹配的方法，就选择这个方法，这个过程称为重载解析，如果没有完全匹配参数的方法，允许自动向上类型转换进行匹配，仍然没有合适的方法会报告编译错误。至此，编译器已获得需要调用的方法名字和参数类型。<br>3） 如果是private方法、static方法、final方法或者构造器，编译器可以准确知道应该调用那个方法(即静态绑定),因为private方法、构造器不能被继承，更谈不上重写，而static方法和final方法虽然能被继承，但不能被重写。<br>4) 当程序运行，并且采用动态绑定调用方法时，JVM一定调用与x所引用对象的实际类型最合适的类的方法，即在沿着继承链从最特殊的子类开始向更通用的父类查找目标方法，直到找到对该方法的实现就停止，调用该方法。  </p>
+<p>每次调用方法都要进行搜索，时间开销很大。因此，JVM预先为每个类创建了一个方法表，其中列出了所有方法的签名和实际调用的方法。这样调用方法时JVM只要提取对象实际类型的方法表，搜索定义该方法签名的类，再调用该方法就可以了。<br>方法表示例(Manager继承自Employee)：  </p>
+<p>Employee:<br>getName() -&gt; Employee.getName()<br>getSalary() -&gt; Employee.getSalary()<br>getHireDay() -&gt; Employee.getHireDay()<br>raiseSalary(double) -&gt; Employee.raiseSalary(double)  </p>
+<p>Manager:<br>getName() -&gt; Employee.getName()//继承的方法<br>getSalary() -&gt; Manager.getSalary()//重写的方法<br>getHireDay() -&gt; Employee.getHireDay()//继承的方法<br>raiseSalary(double) -&gt; Employee.raiseSalary(double)//继承的方法<br>setBonus(double) -&gt; Manager.setBonus(double)//新增的方法  </p>
+<h3 id="内联优化"><a href="#内联优化" class="headerlink" title="内联优化"></a>内联优化</h3><p>带有final修饰符的类是不可派生的。在Java核心API中，有许多应用final的例子，例如java.lang.String，整个类都是 final的。为类指定final修饰符可以让类不可以被继承，为方法指定final修饰符可以让方法不可以被重写。如果指定了一个类为final，则该类所有的方法都是final的。Java编译器会寻找机会内联优化所有的final方法，内联对于提升Java运行效率作用重大，此举能够使性能平均提高50%。如果确定一个类不会被派生或一个方法不会被重写，建议使用final关键字修饰。  </p>
+<h3 id="对象类型转换"><a href="#对象类型转换" class="headerlink" title="对象类型转换"></a>对象类型转换</h3><p>和基本数据类型一样，对象可以自动进行向上转型(即多态)，比如Apple类继承自Fruit类，把Apple对象的引用赋给Fruit变量一定是合法的。但如果向下转型(目的是访问子类特有数据域和调用子类特有方法)，要进行强制类型转换，格式为：(子类名)对象名。此时要保证该对象的实际类型确实是要强制转换的子类型，比如fruit是一个引用了Apple对象的Fruit类型的变量，如果向下转型成Banana类是非法的，会抛出一个ClassCastException,而转成Apple类是合法的。<br>我们可以通过<code>instanceof</code>运算符来检测一个对象是否是某个类或接口的实例，其返回值是boolean类型的。<br>注意:<br>1.对象成员访问运算符(.)优先于类型转换运算符。使用圆括号保证在点运算符(.)之前进行转换，例如：((Circle)object).getArea();<br>2.转换基本类型值返回一个新的值，但转换一个对象引用不会创建一个新的对象。  </p>
+<h3 id="Object类"><a href="#Object类" class="headerlink" title="Object类"></a>Object类</h3><p>Object类是Java中所有类的祖先(Java的类层次是一个单根结构)，但不用显式写出<code>public class xxx extends Object</code>,在Java中只有基本数据类型不是对象，所有的数组类型，不管是对象数组还是基本类型数组都扩展了Object类。<br>下面介绍Object类中的几个重要方法及重写规范：  </p>
+<h4 id="1-equals方法"><a href="#1-equals方法" class="headerlink" title="1) equals方法"></a>1) equals方法</h4><p>Object类中的equals方法用于检测一个对象是否等于另外一个对象。在Object类中，这个方法将判断两个对象是否具有相同的引用，如果两个对象具有相同引用，它们一定是相等的。  </p>
+<p>equals方法的原型是public boolean equals(Object obj),默认实现是:  </p>
+<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>{
+    <span class="keyword">return</span> (<span class="keyword">this</span> == obj);
+}
+</code></pre>
+<p>调用它的语法是<code>object1.equals(object2)</code>，作用和直接使用==判等相同, 但这在大多数情况下没什么意义，我们一般通过判断对象的某些数据域是否相等来判断对象是否相等，此时我们需要重写equals方法。<br>比如类Employee定义了数据域：private String name,private double salary,private LocalDate hireDay<br>equals方法重写如下：  </p>
+<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>{
+    <span class="keyword">if</span>(<span class="keyword">this</span> == obj) <span class="keyword">return</span> <span class="keyword">true</span>;
+    <span class="comment">//快速检测引用是否相等，相等返回ture</span>
+
+    <span class="keyword">if</span>(obj == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="comment">//检测引用是否为空，为空返回false  </span>
+
+    <span class="keyword">if</span>(getClass() != obj.getClass())  
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+     <span class="comment">//检测是否属于同一个类，不是返回false  </span>
+
+    Empolyee other = (Employee) obj;<span class="comment">//向下转型  </span>
+
+    <span class="keyword">return</span> name.equals(other.name)
+      &amp;&amp; salary == other.salary
+      &amp;&amp; hireDay.equals(other.hireDay);
+      <span class="comment">//逐一比较数据域,有一个不等返回就false，否则返回true</span>
+</code></pre>
+<p><strong>进一步改进：</strong><br><em>改进一</em><br>上述的第4步检测，可以改为  </p>
+<pre><code class="java"><span class="keyword">return</span> Objects.equals(name,other.name)
+   &amp;&amp; salary == other.salary
+   &amp;&amp; Objects.equals(hireDay,other.hireDay);
+</code></pre>
+<p>其中Objects.equals方法可以防备name 或 hireDay 可能为null的情况，如果两个参数都为null，Objects(a,b)返回true;如果其中一个为null，返回false;如果两个参数都不为null,调用a.equals(b)。Objects类在java.util包中。  </p>
+<p>在子类中定义equals方法时，首先调用超类的equals，如果检测失败，对象就不可能相等。如果超类中的域相等，只需要比较子类中新增的数据域就可以。<br>比如Manager类继承自Employee，在父类的基础上增加了private double bonus：  </p>
+<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>{
+    <span class="keyword">if</span>(!<span class="keyword">super</span>.equals(obj)) <span class="keyword">return</span> <span class="keyword">false</span>;
+    Manager other = (Manager) obj;
+    <span class="keyword">return</span> bonus == other.bonus;
+}
+</code></pre>
+<p><em>改进二</em><br>上述代码的第3步使用了getClass检测，这适用于子类拥有自己相等概念的情况，比如雇员和经理，只要对应的姓名、薪水和雇佣日期相等，而奖金不相等，就认为是不同的，可以使用getCalss检测。但是如果超类决定相等的概念，就可以使用instanceof进行检测，比如雇员的ID作为相等的概念，就可以用xxx instanceof Employee进行检测，并将Empolyee.equals声明为final。  </p>
+<p><strong>equals方法要满足下面的特性</strong>  </p>
+<ol>
+<li>自反性: 对于任何非空引用，x.equals(x)应该返回true  </li>
+<li>对称性：对于任何引用x和y, x.equals(y)的结果应该和y.equals(x)的结果相同  </li>
+<li>传递性：对于任何引用x、y和z,如果x.equals(y)返回true，y.equals(z)返回true，那么x.equals(z)也应该返回true  </li>
+<li>一致性: 如果x和y引用的对象没有发生变化，反复调用x.equals(y)应该返回同样的结果  </li>
+<li>对于任何非空引用x,x.equals(null)应该返回false</li>
+</ol>
+<p><strong>下面我们给出编写一个完美的equals方法的建议</strong>：<br>1) 先快速检测引用是否相等，如果相等两个对象一定相等，不用继续检测<br>2) 检测引用是否为空，如果为空，不必再检测，直接返回不等<br>3) 如果equals语义在每个子类中有所改变(子类决定相等的概念)，用getClass检测:<code>if(getClass() != obj.getClass()) return false</code>;如果所有子类都拥有统一的语义(父类决定相等)，就使用instanceof检测：<code>if(!(obj instanceof ClassName) return false)</code><br>4) 将obj向下转型为相应类的类型变量<br>5) 逐一比较数据域，注意基本数据类型用 == 检测，引用类型用equals方法检测<br><strong>数组对象用静态的Arrays.equals方法判等</strong></p>
+<h4 id="2-hashCode方法"><a href="#2-hashCode方法" class="headerlink" title="2) hashCode方法"></a>2) hashCode方法</h4><p>散列码(hash code)是由对象导出的一个整型值。散列码是没有规律的，如果x和y是两个不同的对象,x.hashCode()与y.hashCode()基本上不会相同。<br>String类使用下列算法计算散列码：  </p>
+<pre><code class="java"><span class="keyword">int</span> hash = <span class="number">0</span>;
+<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; length();i++){
+    hash = <span class="number">31</span> * hash + charAt(i);
+}
+</code></pre>
+<p>由于hashCode方法定义在Object类中，方法原型是<code>public int hashCode()</code>,因此每个对象都有一个默认的散列码，其值为对象的存储地址。内容相同的字符串的散列码相同，因为字符串的散列码是由内容导出的，而内容相同的StringBuilder对象的散列码不同，因为StringBuilder类中没有重写hashCode方法，它的散列码是Object类定义的默认hashCode方法导出的对象存储地址。<br><strong>如果重写了equals方法，就必须重写hashCode方法，以便用户可以将对象插入到散列表中。</strong><br>hashCode方法应该返回一个整型数值(可以是负数),<strong>并合理地组合实例域的散列码</strong>，以便能让各个不同的对象产生的散列码更均匀。<br>例如，下面是Employee类的hashCode方法  </p>
+<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>{
+    <span class="keyword">return</span> <span class="number">7</span> * name.hashCode()
+      + <span class="number">11</span> * <span class="keyword">new</span> Double(salary).hashCode()
+      + <span class="number">13</span> * hireDay.hashCode();
+</code></pre>
+<p><strong>进一步改进</strong>  </p>
+<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>{
+    <span class="keyword">return</span> <span class="number">7</span> * Objects.hashCode(name)
+      + <span class="number">11</span> * Double.hashCode(salary)
+      + <span class="number">13</span> * Objects.hashCode(hireDay);
+</code></pre>
+<p><strong>从上面的代码我们可以发现，在重写hashCode方法时，我们要充分组合类的实例域，其中引用类型用Objects.hashCode()，基本类型用相应包装类的hashCode()</strong><br>其中Objects.hashCode()是null安全的，如果参数为null，返回值是0,否则返回调用参数调用hashCode的结果。另外，使用静态方法Double.hashCode来避免创建Double对象    </p>
+<p><strong>还有更简单的做法</strong>  </p>
+<pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>{
+    <span class="keyword">return</span> Objects.hash(name,salary,hireDay);
+ }
+</code></pre>
+<p><strong>Equals和hashCode的定义必须一致,如果X.equals(y)返回true,那么x.hashCode()就应该等于y.hashCode(),用于组合散列的实例域equals中用于比较的实例域，比如equals比较的是雇员的ID，就需要散列ID</strong>  </p>
+<h4 id="3-toString方法"><a href="#3-toString方法" class="headerlink" title="3) toString方法"></a>3) toString方法</h4><p>方法原型是<code>public String toString()</code>,用于返回一个描述当前对象的字符串，Object类提供的默认实现是返回一个形式为：<code>类名@对象十六进制地址</code>的字符串，我们需要重写toString方法来返回更清晰的描述。数组对象则返回一个类似<code>[I@1a46e30</code>的字符串(前缀[I表明是一个整型数组,@后面是数组对象的十六进制地址)，修正方法是调用Arrays.toString方法，如果是多维数组需要调用Arrays.deepToString方法。<br>toString不仅可以显式调用，也会在需要一个描述对象的字符串时隐式调用，比如用System.out.println语句打印一个对象，相当于打印对象的toString方法返回的字符串;又比如通过操作符”+”连接字符串时连接一个对象会调用它的toString方法。<br>当重写toString时，如果返回的字符串涉及到类名,不要硬加入类名，可以通过getClass().getName()获得类名字符串，这样子类如果要调用父类的toString只用super.toString()就可以得到带有父类名的完整字符串描述。</p>
 
       
     </div>
@@ -645,7 +733,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#父类与子类"><span class="nav-number">1.</span> <span class="nav-text">父类与子类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-number">2.</span> <span class="nav-text">继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#继承有如下几个关键点"><span class="nav-number">2.1.</span> <span class="nav-text">继承有如下几个关键点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#super关键字"><span class="nav-number">3.</span> <span class="nav-text">super关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法链"><span class="nav-number">4.</span> <span class="nav-text">构造方法链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法重载与重写"><span class="nav-number">5.</span> <span class="nav-text">方法重载与重写</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#父类与子类"><span class="nav-number">1.</span> <span class="nav-text">父类与子类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-number">2.</span> <span class="nav-text">继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#继承有如下几个关键点"><span class="nav-number">2.1.</span> <span class="nav-text">继承有如下几个关键点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#super关键字"><span class="nav-number">3.</span> <span class="nav-text">super关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造方法链"><span class="nav-number">4.</span> <span class="nav-text">构造方法链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法重载与重写"><span class="nav-number">5.</span> <span class="nav-text">方法重载与重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态"><span class="nav-number">6.</span> <span class="nav-text">多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态绑定"><span class="nav-number">7.</span> <span class="nav-text">动态绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解方法调用"><span class="nav-number">8.</span> <span class="nav-text">理解方法调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内联优化"><span class="nav-number">9.</span> <span class="nav-text">内联优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象类型转换"><span class="nav-number">10.</span> <span class="nav-text">对象类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object类"><span class="nav-number">11.</span> <span class="nav-text">Object类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-equals方法"><span class="nav-number">11.1.</span> <span class="nav-text">1) equals方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-hashCode方法"><span class="nav-number">11.2.</span> <span class="nav-text">2) hashCode方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-toString方法"><span class="nav-number">11.3.</span> <span class="nav-text">3) toString方法</span></a></li></ol></li></ol></div>
             
 
           </div>
