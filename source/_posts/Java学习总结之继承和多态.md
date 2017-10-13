@@ -17,7 +17,9 @@ tags: Java
 super关键字有两种作用：  
 **1.调用父类的构造方法**  
 因为继承时父类的构造方法不会被继承，而子类的构造方法只能初始化子类新增加的数据域，所以要通过super关键字调用父类的构造方法来初始化从父类继承的数据域。  
-形式是`super()`或`super(arguments)`，分别调用了父类的无参构造方法和相应的有参构造方法。super语句要写在子类构造方法的第一条，否则编译器会自动在构造方法开头插入一条`super()`  
+形式是`super()`或`super(arguments)`，分别调用了父类的无参构造方法和相应的有参构造方法。super语句要写在子类构造方法的第一条，否则编译器会自动在构造方法开头插入一条`super()`    
+有些人认为super与this引用在此处是类似的概念，实际上不太恰当，super不是一个对象的引用，也不能赋给另一个引用变量，他只是一个指示编译器调用超类方法的特殊关键字。  
+
 **2.调用父类的方法**  
 在继承时往往会进行重写，即覆盖父类的方法。此时如果要调用父类原有的未被覆盖的方法，就可以使用`super.方法名`来调用父类的方法。如果父类方法没有被覆盖，可以省略super关键字。只能调用一级父类的方法，不可以跨父类，`super.super.方法名`是不合法的。  
 
@@ -69,3 +71,161 @@ class Employee extends Person{
 2.静态方法可以被继承，但不能被覆盖。如果子类中重新定义了父类的静态方法，父类的静态方法会被隐藏，可以使用父类名.静态方法名调用隐藏的静态方法  
 
 方法重写发生在通过继承而相关的不同类中，方法重载可以发生在同一类中，也可以发生在由于继承关系而相关的不同类中。
+
+### 多态  
+Java允许把子类对象的引用赋给父类引用变量，即父类型变量可以引用子类型的对象。从物理层面理解，继承自父类的子类的内存先存储父类数据域再存储子类的新增数据域，所以子类对象既可以看成子类对象本身(看整段内存)也可以看成父类对象(看内存的前一部分)。  
+注意：子类引用赋给父类变量之后，只能访问父类属性和方法或在子类中重写过的父类方法，不能访问子类的特有属性和方法，除非进行向下转型。
+### 动态绑定
+多态机制的底层实现技术是**动态绑定**，动态绑定是指JVM在执行期间（非编译期）判断所引用对象的实际类型，根据其实际的类型调用其相应的方法。程序运行过程中，把函数（或过程）调用与响应调用所需要的代码相结合的过程称为动态绑定。
+
+对java来说，绑定分为静态绑定和动态绑定；或者叫做前期绑定和后期绑定。  
+
+静态绑定(前期绑定)：
+在程序执行前方法已经被绑定（也就是说在编译过程中就已经知道这个方法到底是哪个类中的方法），此时由编译器或其它连接程序实现。例如：C 。针对java简单的可以理解为程序编译期的绑定；这里特别说明一点，java当中的方法只有final，static，private和构造方法是前期绑定。
+
+动态绑定(后期绑定)：在运行时根据具体对象的类型进行绑定。
+若一种语言实现了后期绑定，同时必须提供一些机制，可在运行期间判断对象的类型，并分别调用适当的方法。也就是说，编译器此时依然不知道对象的类型，但方法调用机制能自己去调查，找到正确的方法主体。不同的语言对后期绑定的实现方法是有所区别的。但我们至少可以这样认为：它们都要在对象中安插某些特殊类型的信息。
+
+简言之，一个方法可能在沿着继承链的多个类中实现，JVM在运行时动态绑定方法的实现。
+### 理解方法调用  
+假设下面要调用x.f(args)，方法调用的过程为：  
+1） 编译器查看对象的声明类型和方法名，可能存在多个名字为f的方法，比如f(int)和f(String)。编译器会一一列举类中所有名为f的方法和其超类中可访问的名为f的方法，至此编译器已获取所有可能被调用的候选方法。  
+2） 编译器将查看调用方法时提供的参数类型，如果所有f方法中存在一个与提供的参数类型完全匹配的方法，就选择这个方法，这个过程称为重载解析，如果没有完全匹配参数的方法，允许自动向上类型转换进行匹配，仍然没有合适的方法会报告编译错误。至此，编译器已获得需要调用的方法名字和参数类型。  
+3） 如果是private方法、static方法、final方法或者构造器，编译器可以准确知道应该调用那个方法(即静态绑定),因为private方法、构造器不能被继承，更谈不上重写，而static方法和final方法虽然能被继承，但不能被重写。  
+4) 当程序运行，并且采用动态绑定调用方法时，JVM一定调用与x所引用对象的实际类型最合适的类的方法，即在沿着继承链从最特殊的子类开始向更通用的父类查找目标方法，直到找到对该方法的实现就停止，调用该方法。  
+
+每次调用方法都要进行搜索，时间开销很大。因此，JVM预先为每个类创建了一个方法表，其中列出了所有方法的签名和实际调用的方法。这样调用方法时JVM只要提取对象实际类型的方法表，搜索定义该方法签名的类，再调用该方法就可以了。  
+方法表示例(Manager继承自Employee)：  
+
+Employee:	
+getName() -> Employee.getName()  
+getSalary() -> Employee.getSalary()  
+getHireDay() -> Employee.getHireDay()  
+raiseSalary(double) -> Employee.raiseSalary(double)  
+
+Manager:  
+getName() -> Employee.getName()//继承的方法  
+getSalary() -> Manager.getSalary()//重写的方法  
+getHireDay() -> Employee.getHireDay()//继承的方法  
+raiseSalary(double) -> Employee.raiseSalary(double)//继承的方法  
+setBonus(double) -> Manager.setBonus(double)//新增的方法  
+
+### 内联优化  
+带有final修饰符的类是不可派生的。在Java核心API中，有许多应用final的例子，例如java.lang.String，整个类都是 final的。为类指定final修饰符可以让类不可以被继承，为方法指定final修饰符可以让方法不可以被重写。如果指定了一个类为final，则该类所有的方法都是final的。Java编译器会寻找机会内联优化所有的final方法，内联对于提升Java运行效率作用重大，此举能够使性能平均提高50%。如果确定一个类不会被派生或一个方法不会被重写，建议使用final关键字修饰。  
+
+### 对象类型转换  
+和基本数据类型一样，对象可以自动进行向上转型(即多态)，比如Apple类继承自Fruit类，把Apple对象的引用赋给Fruit变量一定是合法的。但如果向下转型(目的是访问子类特有数据域和调用子类特有方法)，要进行强制类型转换，格式为：(子类名)对象名。此时要保证该对象的实际类型确实是要强制转换的子类型，比如fruit是一个引用了Apple对象的Fruit类型的变量，如果向下转型成Banana类是非法的，会抛出一个ClassCastException,而转成Apple类是合法的。  
+我们可以通过`instanceof`运算符来检测一个对象是否是某个类或接口的实例，其返回值是boolean类型的。  
+注意:  
+1.对象成员访问运算符(.)优先于类型转换运算符。使用圆括号保证在点运算符(.)之前进行转换，例如：((Circle)object).getArea();  
+2.转换基本类型值返回一个新的值，但转换一个对象引用不会创建一个新的对象。  
+### Object类  
+Object类是Java中所有类的祖先(Java的类层次是一个单根结构)，但不用显式写出`public class xxx extends Object`,在Java中只有基本数据类型不是对象，所有的数组类型，不管是对象数组还是基本类型数组都扩展了Object类。  
+下面介绍Object类中的几个重要方法及重写规范：  
+#### 1) equals方法  
+Object类中的equals方法用于检测一个对象是否等于另外一个对象。在Object类中，这个方法将判断两个对象是否具有相同的引用，如果两个对象具有相同引用，它们一定是相等的。  
+
+equals方法的原型是public boolean equals(Object obj),默认实现是:  
+```java
+public boolean equals(Object obj){
+	return (this == obj);
+}
+```    
+调用它的语法是`object1.equals(object2)`，作用和直接使用==判等相同, 但这在大多数情况下没什么意义，我们一般通过判断对象的某些数据域是否相等来判断对象是否相等，此时我们需要重写equals方法。    
+比如类Employee定义了数据域：private String name,private double salary,private LocalDate hireDay  
+equals方法重写如下：  
+```java 
+public boolean equals(Object obj){
+	if(this == obj) return true;
+    //快速检测引用是否相等，相等返回ture
+    
+    if(obj == null) return false;
+    //检测引用是否为空，为空返回false  
+    
+    if(getClass() != obj.getClass())  
+    	return false;
+     //检测是否属于同一个类，不是返回false  
+        
+    Empolyee other = (Employee) obj;//向下转型  
+    
+    return name.equals(other.name)
+      && salary == other.salary
+      && hireDay.equals(other.hireDay);
+      //逐一比较数据域,有一个不等返回就false，否则返回true
+```  
+**进一步改进：**  
+*改进一*  
+上述的第4步检测，可以改为  
+```java
+return Objects.equals(name,other.name)
+   && salary == other.salary
+   && Objects.equals(hireDay,other.hireDay);
+```  
+其中Objects.equals方法可以防备name 或 hireDay 可能为null的情况，如果两个参数都为null，Objects(a,b)返回true;如果其中一个为null，返回false;如果两个参数都不为null,调用a.equals(b)。Objects类在java.util包中。  
+
+在子类中定义equals方法时，首先调用超类的equals，如果检测失败，对象就不可能相等。如果超类中的域相等，只需要比较子类中新增的数据域就可以。  
+比如Manager类继承自Employee，在父类的基础上增加了private double bonus：  
+```java
+	public boolean equals(Object obj){
+    	if(!super.equals(obj)) return false;
+        Manager other = (Manager) obj;
+        return bonus == other.bonus;
+    }
+```  
+*改进二*  
+上述代码的第3步使用了getClass检测，这适用于子类拥有自己相等概念的情况，比如雇员和经理，只要对应的姓名、薪水和雇佣日期相等，而奖金不相等，就认为是不同的，可以使用getCalss检测。但是如果超类决定相等的概念，就可以使用instanceof进行检测，比如雇员的ID作为相等的概念，就可以用xxx instanceof Employee进行检测，并将Empolyee.equals声明为final。  
+
+**equals方法要满足下面的特性**  
+1. 自反性: 对于任何非空引用，x.equals(x)应该返回true  
+2. 对称性：对于任何引用x和y, x.equals(y)的结果应该和y.equals(x)的结果相同  
+3. 传递性：对于任何引用x、y和z,如果x.equals(y)返回true，y.equals(z)返回true，那么x.equals(z)也应该返回true  
+4. 一致性: 如果x和y引用的对象没有发生变化，反复调用x.equals(y)应该返回同样的结果  
+5. 对于任何非空引用x,x.equals(null)应该返回false
+
+**下面我们给出编写一个完美的equals方法的建议**：  
+1) 先快速检测引用是否相等，如果相等两个对象一定相等，不用继续检测  
+2) 检测引用是否为空，如果为空，不必再检测，直接返回不等  
+3) 如果equals语义在每个子类中有所改变(子类决定相等的概念)，用getClass检测:`if(getClass() != obj.getClass()) return false`;如果所有子类都拥有统一的语义(父类决定相等)，就使用instanceof检测：`if(!(obj instanceof ClassName) return false)`  
+4) 将obj向下转型为相应类的类型变量  
+5) 逐一比较数据域，注意基本数据类型用 == 检测，引用类型用equals方法检测    
+**数组对象用静态的Arrays.equals方法判等**
+#### 2) hashCode方法  
+散列码(hash code)是由对象导出的一个整型值。散列码是没有规律的，如果x和y是两个不同的对象,x.hashCode()与y.hashCode()基本上不会相同。  
+String类使用下列算法计算散列码：  
+```java
+int hash = 0;
+for(int i = 0;i < length();i++){
+	hash = 31 * hash + charAt(i);
+}
+```  
+由于hashCode方法定义在Object类中，方法原型是`public int hashCode()`,因此每个对象都有一个默认的散列码，其值为对象的存储地址。内容相同的字符串的散列码相同，因为字符串的散列码是由内容导出的，而内容相同的StringBuilder对象的散列码不同，因为StringBuilder类中没有重写hashCode方法，它的散列码是Object类定义的默认hashCode方法导出的对象存储地址。  
+**如果重写了equals方法，就必须重写hashCode方法，以便用户可以将对象插入到散列表中。**  
+hashCode方法应该返回一个整型数值(可以是负数),**并合理地组合实例域的散列码**，以便能让各个不同的对象产生的散列码更均匀。  
+例如，下面是Employee类的hashCode方法  
+```java
+public int hashCode(){
+	return 7 * name.hashCode()
+      + 11 * new Double(salary).hashCode()
+      + 13 * hireDay.hashCode();
+```  
+**进一步改进**  
+```java
+public int hashCode(){
+	return 7 * Objects.hashCode(name)
+      + 11 * Double.hashCode(salary)
+      + 13 * Objects.hashCode(hireDay);
+```  
+**从上面的代码我们可以发现，在重写hashCode方法时，我们要充分组合类的实例域，其中引用类型用Objects.hashCode()，基本类型用相应包装类的hashCode()**  
+其中Objects.hashCode()是null安全的，如果参数为null，返回值是0,否则返回调用参数调用hashCode的结果。另外，使用静态方法Double.hashCode来避免创建Double对象    
+
+**还有更简单的做法**  
+```java
+public int hashCode(){
+	return Objects.hash(name,salary,hireDay);
+ }
+```  
+**Equals和hashCode的定义必须一致,如果X.equals(y)返回true,那么x.hashCode()就应该等于y.hashCode(),用于组合散列的实例域equals中用于比较的实例域，比如equals比较的是雇员的ID，就需要散列ID**  
+#### 3) toString方法  
+方法原型是`public String toString()`,用于返回一个描述当前对象的字符串，Object类提供的默认实现是返回一个形式为：`类名@对象十六进制地址`的字符串，我们需要重写toString方法来返回更清晰的描述。数组对象则返回一个类似`[I@1a46e30`的字符串(前缀[I表明是一个整型数组,@后面是数组对象的十六进制地址)，修正方法是调用Arrays.toString方法，如果是多维数组需要调用Arrays.deepToString方法。  
+toString不仅可以显式调用，也会在需要一个描述对象的字符串时隐式调用，比如用System.out.println语句打印一个对象，相当于打印对象的toString方法返回的字符串;又比如通过操作符"+"连接字符串时连接一个对象会调用它的toString方法。  
+当重写toString时，如果返回的字符串涉及到类名,不要硬加入类名，可以通过getClass().getName()获得类名字符串，这样子类如果要调用父类的toString只用super.toString()就可以得到带有父类名的完整字符串描述。
