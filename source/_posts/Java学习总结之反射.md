@@ -3,19 +3,19 @@ title: Java学习总结之反射
 date: 2017-10-14 14:32:15
 tags: Java
 ---
-反射库提供了一个非常丰富且精心设计的工具集，以便能够动态编写能够操纵Java代码的程序。这项功能被大量应用于JavaBeans中，它是Java组件的体系结构。  
+　　反射库提供了一个非常丰富且精心设计的工具集，以便能够动态编写能够操纵Java代码的程序。这项功能被大量应用于JavaBeans中，它是Java组件的体系结构。  
 ### 1.什么是反射？  
-**反射是可以让我们在运行时获取类的方法、属性、父类、接口等类的内部信息的机制。**也就是说，反射本质上是一个“反着来”的过程。我们通过new创建一个类的实例时，实际上是由Java虚拟机根据这个类的Class对象在运行时构建出来的，而反射是通过一个类的Class对象来获取它的定义信息，从而我们可以访问到它的属性、方法，知道这个类的父类、实现了哪些接口等信息。  
-要想理解反射的原理，首先要了解什么是类型信息。Java让我们识别对象和类的信息，主要有2种方式：一种是传统的RTTI，它假定我们在编译时已经知道了所有的类型信息；另一种是反射机制，它允许我们在运行时发现和使用类的信息。
+　　**反射是可以让我们在运行时获取类的方法、属性、父类、接口等类的内部信息的机制。**也就是说，反射本质上是一个“反着来”的过程。我们通过new创建一个类的实例时，实际上是由Java虚拟机根据这个类的Class对象在运行时构建出来的，而反射是通过一个类的Class对象来获取它的定义信息，从而我们可以访问到它的属性、方法，知道这个类的父类、实现了哪些接口等信息。  
+　　要想理解反射的原理，首先要了解什么是类型信息。Java让我们识别对象和类的信息，主要有2种方式：一种是传统的RTTI，它假定我们在编译时已经知道了所有的类型信息；另一种是反射机制，它允许我们在运行时发现和使用类的信息。
 ### 2.反射的作用  
-1.在运行时分析类的能力，即查看类的方法、属性、父类、接口等类的内部信息的机制  
-2.在运行时分析对象的数据域  
-3.实现通用的数组操作代码  
-4.利用Method对象，这个对象很像C++中的函数指针  
+　　1.在运行时分析类的能力，即查看类的方法、属性、父类、接口等类的内部信息的机制  
+　　2.在运行时分析对象的数据域  
+　　3.实现通用的数组操作代码  
+　　4.利用Method对象，这个对象很像C++中的函数指针  
 
 ### 3.Class类  
-我们知道使用javac能够将.java文件编译为.class文件，这个.class文件包含了我们对类的原始定义信息（父类、接口、构造器、属性、方法等）。.class文件在运行时会被ClassLoader加载到JVM中，当一个.class文件被加载后，JVM会为之生成一个Class对象，我们在程序中通过new实例化的对象实际上是在运行时根据相应的Class对象构造出来的。确切的说，这个Class对象实际上是`java.lang.Class<T>`泛型类的一个实例，比如`Class<MyClass>`对象即为一个封装了MyClass类的定义信息的`Class<T>`实例，从中我们可以得出结论：万物皆对象，`任何类型(包括基本类型和引用类型).class`都是`java.lang.Class<T>`的实例，简言之，class对象是Class泛型类的实例，它代表了一个类型。由于`java.lang.Class<T>`类不存在公有构造器，因此我们不能直接实例化这个类，我们可以通过以下方法获取一个Class对象。  
-在下面的讲解中，我们将以People类和Student类为例：  
+　　我们知道使用javac能够将.java文件编译为.class文件，这个.class文件包含了我们对类的原始定义信息（父类、接口、构造器、属性、方法等）。.class文件在运行时会被ClassLoader加载到JVM中，当一个.class文件被加载后，JVM会为之生成一个Class对象，我们在程序中通过new实例化的对象实际上是在运行时根据相应的Class对象构造出来的。确切的说，这个Class对象实际上是`java.lang.Class<T>`泛型类的一个实例，比如`Class<MyClass>`对象即为一个封装了MyClass类的定义信息的`Class<T>`实例，从中我们可以得出结论：万物皆对象，`任何类型(包括基本类型和引用类型).class`都是`java.lang.Class<T>`的实例，简言之，class对象是Class泛型类的实例，它代表了一个类型。由于`java.lang.Class<T>`类不存在公有构造器，因此我们不能直接实例化这个类，我们可以通过以下方法获取一个Class对象。  
+　　在下面的讲解中，我们将以People类和Student类为例：  
 ```java
 public class People {
     private String name;
@@ -89,7 +89,7 @@ Class<People> peopleClass = Class.forName("cn.habitdiary.People");
 //假设People类在cn.habitdiary包中
 ```
 
-在使用forName时必须要保证传入的字符串是一个类名或接口名，否则会抛出一个ClassNotFoundException,这是一个必检异常，所以我们在使用该方法时必须提供一个异常处理器,例如:
+　　在使用forName时必须要保证传入的字符串是一个类名或接口名，否则会抛出一个ClassNotFoundException,这是一个必检异常，所以我们在使用该方法时必须提供一个异常处理器,例如:
 
 ```java
 try{
@@ -108,26 +108,26 @@ People people = new People("Steven"， 20);
 Class<People> peopleClass = people.getClass();
 ```
 
-`实例对象.getClass().getName()` 可以获取当前对象的类的全限定名称(包含包名)  
-`实例对象.getClass().getSimpleName()`可以获取当前对象的类的底层类简称(不含包名)  
-`实例对象.getClass().getCanonicalName()`大部分情况和getName()相同，但在表示数组或内部类时有所区别，比如对于String数组，getName返回的是[Ljava.lang.String之类的表现形式，而getCanonicalName返回的就是跟我们声明类似的形式。  
-但在类加载的时候需要的是getName得到的那样的名字，而在根据类名字创建文件的时候最好使用getCanonicalName()  
+　　`实例对象.getClass().getName()` 可以获取当前对象的类的全限定名称(包含包名)  
+　　`实例对象.getClass().getSimpleName()`可以获取当前对象的类的底层类简称(不含包名)  
+　　`实例对象.getClass().getCanonicalName()`大部分情况和getName()相同，但在表示数组或内部类时有所区别，比如对于String数组，getName返回的是[Ljava.lang.String之类的表现形式，而getCanonicalName返回的就是跟我们声明类似的形式。  
+　　但在类加载的时候需要的是getName得到的那样的名字，而在根据类名字创建文件的时候最好使用getCanonicalName()  
 
 **注意：  
-1.一个Class对象实际上表现的是一个类型，而这个类型未必一定是一种类。例如，int不是类，但int.class是一个Class对象  
-2.Class类是一个泛型类，但有时候我们不能提前确定class对象的类型,就可以用`Class<?>`来代替，即上面代码中的`Class<People> peopleClass`可以写成`Class<?> peopleClass`  
-3.虚拟机为每个类型管理一个Class对象，可以用 == 运算符实现两个类对象比较的操作  
-4.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，比如:**
+　　1.一个Class对象实际上表现的是一个类型，而这个类型未必一定是一种类。例如，int不是类，但int.class是一个Class对象  
+　　2.Class类是一个泛型类，但有时候我们不能提前确定class对象的类型,就可以用`Class<?>`来代替，即上面代码中的`Class<People> peopleClass`可以写成`Class<?> peopleClass`  
+　　3.虚拟机为每个类型管理一个Class对象，可以用 == 运算符实现两个类对象比较的操作  
+　　4.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，比如:**
 
 ```java
 String s = "java.util.Random";
 Object m = Class.forName(s).newInstance();
 ```
 
-**如果希望给构造器提供参数，就不能使用这种写法，而必须使用Constructor类中的newInstance方法。**  
+　　**如果希望给构造器提供参数，就不能使用这种写法，而必须使用Constructor类中的newInstance方法。**  
 
 ### 4.在运行时分析类的能力  
-下面简要介绍一下反射机制最重要的内容 —— 检查类的结构。  
+　　下面简要介绍一下反射机制最重要的内容 —— 检查类的结构。  
 Java中为了支持反射机制主要提供了以下的类：  
 java.lang.Class  
 java.lang.reflect.Field   
@@ -281,8 +281,8 @@ public class ReflectionTest {
 }
 ```
 ### 5.在运行时使用反射分析对象  
-反射不仅可以查看类的域、构造器、方法等，还可以进一步查看某个对象指定数据域的值。  
-查看对象域的关键方法是Field类中的get方法。如果f是一个Field类型的对象(例如，通过getDeclaredFields得到的对象)，obj是某个包含f域的类的对象，f.get(obj)将返回一个Object对象，其值为obj域的当前值。比如：
+　　反射不仅可以查看类的域、构造器、方法等，还可以进一步查看某个对象指定数据域的值。  
+　　查看对象域的关键方法是Field类中的get方法。如果f是一个Field类型的对象(例如，通过getDeclaredFields得到的对象)，obj是某个包含f域的类的对象，f.get(obj)将返回一个Object对象，其值为obj域的当前值。比如：
   
 ```java
 Employee harry = new Empolyee("Harry Hacker",35000,10,1,1989);
@@ -293,7 +293,7 @@ Object v = f.get(harry);
 ```
   
   
-上述的String可以作为Object返回，但如果某个域是基本数据类型，比如double，可以使用Field类的getDouble方法返回double类型数值，也可以使用get方法，反射机制会将其自动装箱成Double类型对象。f.set(obj,value) 可以把obj对象的f域设置为value  
+　　上述的String可以作为Object返回，但如果某个域是基本数据类型，比如double，可以使用Field类的getDouble方法返回double类型数值，也可以使用get方法，反射机制会将其自动装箱成Double类型对象。f.set(obj,value) 可以把obj对象的f域设置为value  
 
 **下面是一些相关API**  
 在java.lang.reflect.Field中：  
@@ -319,12 +319,12 @@ Object v = f.get(harry);
  批量设置AccessibleObject(是Field、Constructor、Method的公共超类)数组的所有元素的可访问标志 
  
 ### 6.使用反射编写泛型数组代码  
-java.lang.reflect包中的Array类允许动态地创建数组。例如，在Arrays类中有copyOf方法，可以扩展已经填满的数组。  
+　　java.lang.reflect包中的Array类允许动态地创建数组。例如，在Arrays类中有copyOf方法，可以扩展已经填满的数组。  
 ```java
 Employee[] a = new Employee[100];
 a = Arrays.copyOf(a,2 * a.length);
 ```
-我们想要编写一个适用于所有数组类型的copyOf方法，下面是第一次尝试:  
+　　我们想要编写一个适用于所有数组类型的copyOf方法，下面是第一次尝试:  
 ```java
 public static Object[] badCopyOf(Object[] a,int newLength){
 	Object[] newArray = new Object[newLength];
@@ -332,7 +332,7 @@ public static Object[] badCopyOf(Object[] a,int newLength){
     return newArray;
 }
 ```
-上述代码存在一个错误，即使用了`new Object[newLength]`创建数组，这样会在运行时抛出ClassCastException,将一个Employee[]临时转换成Object[]，再把它转回来是可以的，但从一开始就是Object[]的数组永远不能转换成Employee[]数组。  
+　　上述代码存在一个错误，即使用了`new Object[newLength]`创建数组，这样会在运行时抛出ClassCastException,将一个Employee[]临时转换成Object[]，再把它转回来是可以的，但从一开始就是Object[]的数组永远不能转换成Employee[]数组。  
 **为了解决这个问题，下面提供java.lang.reflect.Array中的API**  
 * static Object get(Object array,int index)  
  返回对象数组某个位置上的元素
@@ -367,5 +367,57 @@ public static Object[] badCopyOf(Object[] a,int newLength){
  int[] a = {1,2,3,4,5};
  a = (int[]) goodCopyOf(a,10);
 ```
- 为了实现上述操作，应该将goodCopyOf的参数声明为Object类型，而不要声明为Object[],因为整数数组类型可以被转换为Object，但不能转换成Object[]类型 
+ 　　为了实现上述操作，应该将goodCopyOf的参数声明为Object类型，而不要声明为Object[],因为整数数组类型可以被转换为Object，但不能转换成Object[]类型 
+### 7.调用任意方法  
+　　通过反射还可以调用任意方法，这是通过Method类的invoke方法实现的，方法签名是:`Object invoke(Object obj,Object... args)`,Object obj表示调用方法的对象，Object...args表示方法的参数列表。  
+如果方法是静态方法，将第一个参数设置为null;如果方法是非静态无参方法，第二个参数列表可以忽略。  
+　　例如：`String n = (String)m1.invoke(harry);`(m1表示Employee类的getName方法)。如果返回值是基本类型，invoke方法会返回其包装器类型,可以利用自动开箱将其还原为基本数据类型。例如:`double s = (Double)m2.invoke(harry);`(m2表示Employee类的getSalary方法)
+getMethods方法和getDeclaredMethods会返回一个Method对象列表，如果要得到特定的Method对象，可以调用Class类的getMethod方法，其签名是Method getMethod(String Methodname,Class...parameterTypes)。  
+例如：  
+```java
+Method m1 = Employee.class.getMethod("getName");  
+Method m2 = Employee.class.getMethod("raiseSalary",double.class);  
+```
+　　下面给出一个调用任意方法打印函数表的程序(以自定义的square和Math.sqrt方法为例)：  
+
+```java
+import java.lang.reflect.*;
+public class MethodTableTest
+{
+   public static void main(String[] args)
+   {
+Method square =         			MethodTableTest.class.getMethod("square",double.class);
+    Method sqrt = Math.class.getMethod("sqrt",double.class);
+    
+    printTable(1,10,10,square);
+    printTable(1,10,10,sqrt);
+    }
+    
+    public static double square(double x)
+    {
+    return x * x;
+    }
+    
+    public static void printTable(double from,double to,int n,Method f)
+    {
+    System.out.println(f);
+    double dx = (to - from) / (n - 1);
+    
+    for(double x = from;x <= to;x += dx)
+    {
+      try
+      {
+         double y = (Double)f.invoke(null,x);
+         System.out.printf("%10.4f | %10/4f\n",x,y);
+      }
+      catch(Exception e)
+      {
+         e.printStackTrace();
+      }
+    }
+ ```
+ **invoke方法如果提供了错误的参数，会抛出一个异常，所以要提供一个异常处理器**  
+ 建议在有必要的时候才使用invoke方法，有如下原因:  
+ 1.invoke方法的参数和返回值必须是Object类型，意味着必须进行多次类型转换，这样会使编译器错过检查代码的机会，等到测试阶段才发现错误，找到并改正会更加困难  
+ 2.通过反射调用方法比直接调用方法要明显慢一些
 
