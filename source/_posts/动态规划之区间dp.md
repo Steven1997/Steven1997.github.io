@@ -70,7 +70,7 @@ end;
         }
         return 0;
     }
- ```   
+ ```
 
 
 
@@ -117,7 +117,7 @@ end;
         }
         return 0;
     }
- ```  
+ ```
 
 
 ### 括号匹配  
@@ -132,7 +132,7 @@ end;
 dp[ i ] [ j ] = max ( dp [ i ] [ j ] , dp [ i ] [ k ] + dp [ k+1 ] [ j ] )   
 
 代码  
-```cpp  
+```cpp
     #include <iostream>
     #include <cstring>
     #include <algorithm>
@@ -167,7 +167,7 @@ dp[ i ] [ j ] = max ( dp [ i ] [ j ] , dp [ i ] [ k ] + dp [ k+1 ] [ j ] )
         }
         return 0;
     }
-```   
+```
 
 
 如果要求打印路径，即输出匹配后的括号  
@@ -302,7 +302,7 @@ dp[ i ] [ j ] = max ( dp [ i ] [ j ] , dp [ i ] [ k ] + dp [ k+1 ] [ j ] )
         }
         return 0;
     }
-```  
+```
 
 ### Halloween Costumes  
 题目链接：<http://lightoj.com/login_main.php?url=volume_showproblem.php?problem=1422>  
@@ -365,7 +365,7 @@ dp[ i ] [ j ] = max ( dp [ i ] [ j ] , dp [ i ] [ k ] + dp [ k+1 ] [ j ] )
         }
         return 0;
     }
-```  
+```
 
 ### Cheapest Palindrome
 题目链接:<http://poj.org/problem?id=3280>  

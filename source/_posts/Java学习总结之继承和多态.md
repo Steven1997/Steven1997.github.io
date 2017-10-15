@@ -226,6 +226,78 @@ public int hashCode(){
 ```  
 **Equals和hashCode的定义必须一致,如果X.equals(y)返回true,那么x.hashCode()就应该等于y.hashCode(),用于组合散列的实例域equals中用于比较的实例域，比如equals比较的是雇员的ID，就需要散列ID**  
 #### 3) toString方法  
-方法原型是`public String toString()`,用于返回一个描述当前对象的字符串，Object类提供的默认实现是返回一个形式为：`类名@对象十六进制地址`的字符串，我们需要重写toString方法来返回更清晰的描述。数组对象则返回一个类似`[I@1a46e30`的字符串(前缀[I表明是一个整型数组,@后面是数组对象的十六进制地址)，修正方法是调用Arrays.toString方法，如果是多维数组需要调用Arrays.deepToString方法。  
+方法原型是`public String toString()`,用于返回一个描述当前对象的字符串，Object类提供的默认实现是返回一个形式为：`类名@对象十六进制内存地址`的字符串，我们需要重写toString方法来返回更清晰的描述。数组对象则返回一个类似`[I@1a46e30`的字符串(前缀[I表明是一个整型数组,@后面是数组对象的十六进制内存地址)，修正方法是调用Arrays.toString方法，如果是多维数组需要调用Arrays.deepToString方法。  
 toString不仅可以显式调用，也会在需要一个描述对象的字符串时隐式调用，比如用System.out.println语句打印一个对象，相当于打印对象的toString方法返回的字符串;又比如通过操作符"+"连接字符串时连接一个对象会调用它的toString方法。  
-当重写toString时，如果返回的字符串涉及到类名,不要硬加入类名，可以通过getClass().getName()获得类名字符串，这样子类如果要调用父类的toString只用super.toString()就可以得到带有父类名的完整字符串描述。
+当重写toString时，如果返回的字符串涉及到类名,不要硬加入类名，可以通过getClass().getName()获得类名字符串，这样子类如果要调用父类的toString只用super.toString()就可以得到带有父类名的完整字符串描述。  
+### 泛型数组列表  
+在许多程序设计语言中，特别是在C++中，必须在编译时就确定整个数组的大小。而在Java中，允许在运行时确定数组大小。比如：  
+```java
+int actualSize = . . .;
+Employee[] staff = new Employee[actualSize];
+```  
+但这还是没有完全解决运行时动态更改数组的问题，于是我们引入了一个ArrayList类(在Java.util包中)，它使用起来有点像数组，但在添加或删除元素时具有自动调节数组容量的功能。  
+ArrayList是一个采用**类型参数**的**泛型类**,声明方式为`ArrayList<E> arrayList = new ArrayList<E>()`,从Java SE 7开始，可以省去右边的类型参数，即`ArrayList<E> arrayList = new ArrayList<>()`  
+在Java SE 5以前的版本没有提供泛型类，只有一个ArrayList类，保存Object类型的元素，等价于`ArrayList<Object>`,可放入任何类型的对象。其提供的get方法只能返回Object对象，需要进行强制类型转换;且add方法和set方法不检查参数类型，具有一定的危险性。  
+ArrayList管理这对象引用的一个内部数组，如果数组满了，ArrayList会自动创建一个更大的数组，并将所有的对象从较小的数组拷贝到较大的数组中。  
+
+#### ArrayList类的常用API  
+* `ArrayList<E>()` 构造一个初始容量为10的空列表  
+* `ArrayList<E>(int initialCapacity)`构造一个具有指定初始容量的空列表  
+* boolean add(E e) 将指定的元素添加到此列表的尾部，永远返回true  
+* void add(int index, E element) 将指定的元素插入此列表中的指定位置。 
+* int size() 返回此列表中的元素数。  
+* void ensureCapacity(int minCapacity) 如果可以预先确定要插入的元素个数，使用此方法一次性扩容到位，否则通过add方法需要多次拷贝扩容，大大降低效率。  
+* E get(int index) 返回此列表中指定位置上的元素。  
+* E remove(int index) 移除此列表中指定位置上的元素并返回该元素。  
+* boolean remove(Object o) 移除此列表中首次出现的指定元素（如果存在）。  
+* void set(int index, E element) 用指定的元素替代此列表中指定位置上的元素。  
+* boolean isEmpty() 如果此列表中没有元素，则返回 true  
+* boolean contains(Object o) 如果此列表中包含指定的元素，则返回 true。  
+* void clear() 移除此列表中的所有元素。  
+* Object clone() 返回此 ArrayList 实例的浅表副本。  
+* trimToSize() 将此 ArrayList 实例的容量调整为列表的当前大小。  
+  
+
+#### 对于数组列表有用的方法  
+**1.数组和ArrayList互相转换**  
+
+数组转ArrayList:  
+```java
+String[] array = {"red","green","blue"};
+ArrayList<String> list = new ArrayList<>(Arrays.asList(array));
+```  
+ArrayList转数组:  
+```java
+String[] array = new String[list.size()];
+list.toArray(array);
+```  
+#### 2.Collections类  
+Collections类中有很多适用于ArrayList的静态方法，比如max和min方法返回列表中的最大和最小元素，sort方法对列表排序，shuffle方法随机打乱列表元素。
+
+**ArrayList的元素只能是非基本数据类型的，所以如果要容纳基本类型的元素，我们需使用相应的包装类，且此时ArrayList的使用支持自动装箱和自动开箱。**  
+
+### final关键字总结  
+final关键字在不同语句中有不同的作用：  
+1) **修饰类变量或成员变量** 如果是基本数据类型，表示该变量的值不可改变;如果是引用类型，表示该变量不能再指向其它对象，即引用值不可变。final还可以修饰方法的局部变量，即常量  
+2) **修饰方法** 表示该方法不能被重写  
+3) **修饰类** 表示该类不能被扩展
+
+### 继承的设计技巧  
+#### 1.将公共操作和域放在超类  
+#### 2.不要使用受保护的域  
+protected机制并不能够带来更好的保护，其原因主要有两点:  
+第一，子类集合是无限制的，任何一个人都能够由某个类派生一个子类，并编写代码以直接访问protected的域，从而破坏了封装性。  
+第二，同一个包中的所有类都可以访问protected的域，而不管它是否为这个类的子类。  
+不过，protected方法对于指示那些不提供一般用途而应在子类中重新定义的方法很有用，比如Object提供的clone方法就是protected的  
+#### 3.使用继承实现 "is-a" 关系  
+#### 4.除非所有继承的方法都有意义，否则不要使用继承   
+比如在使用ArrayList类设计一个Stack类时，不应该使用继承，因为栈只能在栈顶操作元素，而ArrayList中的方法可以在任意位置插入、删除和访问任意位置的元素，这显然不合适。此时应该使用组合代替继承。  
+#### 5.在覆盖方法时，不要改变预期的行为  
+#### 6.使用多态，而非类型信息   
+即尽量面向父类泛化编程，把不同子类的类似行为的方法定义在父类里，并在子类里覆盖该行为
+#### 7.不要过多地使用反射  
+反射机制使得人们可以通过在运行时查看域和方法，让人们编写出更具有通用性的程序。这种功能对于编写系统程序极为实用，但不适于编写应用程序。反射是很脆弱的，即编译器很难帮助人们发现程序中的错误，因此只有在运行时才发现错误并导致异常。
+
+
+
+
