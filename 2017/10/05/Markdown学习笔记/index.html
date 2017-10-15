@@ -93,7 +93,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://pic.sc.chinaz.com/files/pic/pic9/201603/apic19710.jpg">
 <meta property="og:image" content="http://pic.sc.chinaz.com/files/pic/pic9/201603/apic19710.jpg">
-<meta property="og:updated_time" content="2017-10-06T07:07:18.376Z">
+<meta property="og:updated_time" content="2017-10-15T12:02:33.884Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Markdown学习笔记">
 <meta name="twitter:description" content="前言　　花了近两天时间终于搭建好了我的个人博客,因为Hexo是基于Markdown语法写作的博客，之前对Markdown一窍不通，于是赶快找了几篇大牛的博客学习，从中整理出了Hexo博客写作的常用语法。当然Markdown还有很多高级的用法,例如绘制流程图、时序图，插入数学公式等，由于在博客写作中不多用，文中没有提到。1. 标题标题根据字体大小分级产生层次，有两种写法：写法一：1234一级标题==">
@@ -411,7 +411,7 @@
 <h1 id="4-换行与段落缩进"><a href="#4-换行与段落缩进" class="headerlink" title="4. 换行与段落缩进"></a>4. 换行与段落缩进</h1><h2 id="换行-在行末敲两个空格和一个回车"><a href="#换行-在行末敲两个空格和一个回车" class="headerlink" title="换行:  在行末敲两个空格和一个回车"></a>换行:  <strong><em>在行末敲两个空格和一个回车</em></strong></h2><h2 id="段落缩进-将输入法切换为全角后敲击两次空格即可完成两个字符的缩进"><a href="#段落缩进-将输入法切换为全角后敲击两次空格即可完成两个字符的缩进" class="headerlink" title="段落缩进:  将输入法切换为全角后敲击两次空格即可完成两个字符的缩进"></a>段落缩进:  <strong><em>将输入法切换为全角后敲击两次空格即可完成两个字符的缩进</em></strong></h2><h1 id="5-行内标记与代码块"><a href="#5-行内标记与代码块" class="headerlink" title="5. 行内标记与代码块"></a>5. 行内标记与代码块</h1><h2 id="5-1-行内标记-用前后各一个-标记代码块将变成一行"><a href="#5-1-行内标记-用前后各一个-标记代码块将变成一行" class="headerlink" title="5.1 行内标记(用前后各一个`标记代码块将变成一行)"></a>5.1 行内标记(用前后各一个`标记代码块将变成一行)</h2><p>  代码:  </p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">标记之外`hello world`标记之外</div></pre></td></tr></table></figure>
 <p>  效果如下:<br>   标记之外<code>hello world</code>标记之外  </p>
-<h2 id="5-2-代码块-用于插入各类型的代码"><a href="#5-2-代码块-用于插入各类型的代码" class="headerlink" title="5.2 代码块(用于插入各类型的代码)"></a>5.2 代码块(用于插入各类型的代码)</h2><p>   方法一 (使用前后各一个```包裹代码生成块):<br>   效果如下:  </p>
+<h2 id="5-2-代码块-用于插入各类型的代码"><a href="#5-2-代码块-用于插入各类型的代码" class="headerlink" title="5.2 代码块(用于插入各类型的代码)"></a>5.2 代码块(用于插入各类型的代码)</h2><p>   方法一 (使用前后各一个```包裹代码生成块,注意```之后换行不需要敲两个空格!!!):<br>   效果如下:  </p>
    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div&gt;   </div><div class="line"> &lt;div&gt;&lt;/div&gt;</div><div class="line"> &lt;div&gt;&lt;/div&gt;</div><div class="line"> &lt;div&gt;&lt;/div&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
 <p>  方法二 (使用Tab缩进):<br>  代码及效果如下:<br>  我是文字…  </p>
 <pre><code>&lt;div&gt;   
@@ -440,7 +440,7 @@
 <p>我经常去的网站有<a href="http://pic.sc.chinaz.com/files/pic/pic9/201603/apic19710.jpg" title="爱琴海" target="_blank" rel="external">Baidu</a>、<a href="http://note.youdao.com/" title="youdaonote" target="_blank" rel="external">有道云笔记</a>以及<a href="http://www.imooc.com/" title="IMOOC" target="_blank" rel="external">IMOOC</a>,<a href="http://note.youdao.com/" title="youdaonote" target="_blank" rel="external">有道云笔记</a>是不错的<a href="http://note.youdao.com/" title="youdaonote" target="_blank" rel="external">网站</a>。</p>
 <h2 id="6-3-自动链接"><a href="#6-3-自动链接" class="headerlink" title="6.3 自动链接"></a>6.3 自动链接</h2><h2 id="语法说明-2"><a href="#语法说明-2" class="headerlink" title="语法说明:"></a>语法说明:</h2><p>Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用&lt;&gt;包起来， Markdown 就会自动把它转成链接。一般网址的链接文字就和链接地址一样，例如：<br>代码:  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;http://example.com/&gt;</div><div class="line">&lt;address@example.com&gt;</div></pre></td></tr></table></figure>
-<p>效果如下:<br><a href="http://example.com/" target="_blank" rel="external">http://example.com/</a><br><a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#97;&#100;&#100;&#114;&#101;&#x73;&#x73;&#64;&#101;&#x78;&#x61;&#109;&#112;&#108;&#101;&#x2e;&#99;&#111;&#109;">&#97;&#100;&#100;&#114;&#101;&#x73;&#x73;&#64;&#101;&#x78;&#x61;&#109;&#112;&#108;&#101;&#x2e;&#99;&#111;&#109;</a></p>
+<p>效果如下:<br><a href="http://example.com/" target="_blank" rel="external">http://example.com/</a><br><a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x61;&#100;&#100;&#114;&#101;&#115;&#115;&#x40;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#109;">&#x61;&#100;&#100;&#114;&#101;&#115;&#115;&#x40;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#109;</a></p>
 <h1 id="7-列表"><a href="#7-列表" class="headerlink" title="7. 列表"></a>7. 列表</h1><h2 id="7-1-无序列表"><a href="#7-1-无序列表" class="headerlink" title="7.1 无序列表"></a>7.1 无序列表</h2><p>代码:  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">* 吃饭</div><div class="line">* 睡觉</div><div class="line">* 打代码</div></pre></td></tr></table></figure>
 <p>效果如下:  </p>
