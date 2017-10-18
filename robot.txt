@@ -7,5 +7,8 @@ Disallow: /css/
 Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
-Sitemap: habitdiary.cn/sitemap.xml
-Sitemap: habitdiary.cn/baidusitemap.xml
+Sitemap: http://habitdiary.cn/sitemap.xml
+Sitemap: http://habitdiary.cn/baidusitemap.xml
+
+
+

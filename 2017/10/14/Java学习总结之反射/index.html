@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="XJY&#39;s Blog">
 <meta property="og:description" content="反射库提供了一个非常丰富且精心设计的工具集，以便能够动态编写能够操纵Java代码的程序。这项功能被大量应用于JavaBeans中，它是Java组件的体系结构。   1.什么是反射？　　反射是可以让我们在运行时获取类的方法、属性、父类、接口等类的内部信息的机制。也就是说，反射本质上是一个“反着来”的过程。我们通过new创建一个类的实例时，实际上是由Java虚拟机根据这个类的Class对象在运行时">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-15T15:30:24.605Z">
+<meta property="og:updated_time" content="2017-10-16T00:50:21.026Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之反射">
 <meta name="twitter:description" content="反射库提供了一个非常丰富且精心设计的工具集，以便能够动态编写能够操纵Java代码的程序。这项功能被大量应用于JavaBeans中，它是Java组件的体系结构。   1.什么是反射？　　反射是可以让我们在运行时获取类的方法、属性、父类、接口等类的内部信息的机制。也就是说，反射本质上是一个“反着来”的过程。我们通过new创建一个类的实例时，实际上是由Java虚拟机根据这个类的Class对象在运行时">
@@ -468,6 +468,7 @@
 <p>　　下面给出一个调用任意方法打印函数表的程序(以自定义的square和Math.sqrt方法为例)：  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.lang.reflect.*;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MethodTableTest</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></div><div class="line"><span class="function">   </span>&#123;</div><div class="line">Method square =         			MethodTableTest.class.getMethod(<span class="string">"square"</span>,<span class="keyword">double</span>.class);</div><div class="line">    Method sqrt = Math.class.getMethod(<span class="string">"sqrt"</span>,<span class="keyword">double</span>.class);</div><div class="line">    </div><div class="line">    printTable(<span class="number">1</span>,<span class="number">10</span>,<span class="number">10</span>,square);</div><div class="line">    printTable(<span class="number">1</span>,<span class="number">10</span>,<span class="number">10</span>,sqrt);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">square</span><span class="params">(<span class="keyword">double</span> x)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    <span class="keyword">return</span> x * x;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printTable</span><span class="params">(<span class="keyword">double</span> from,<span class="keyword">double</span> to,<span class="keyword">int</span> n,Method f)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    System.out.println(f);</div><div class="line">    <span class="keyword">double</span> dx = (to - from) / (n - <span class="number">1</span>);</div><div class="line">    </div><div class="line">    <span class="keyword">for</span>(<span class="keyword">double</span> x = from;x &lt;= to;x += dx)</div><div class="line">    &#123;</div><div class="line">      <span class="keyword">try</span></div><div class="line">      &#123;</div><div class="line">         <span class="keyword">double</span> y = (Double)f.invoke(<span class="keyword">null</span>,x);</div><div class="line">         System.out.printf(<span class="string">"%10.4f | %10/4f\n"</span>,x,y);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">catch</span>(Exception e)</div><div class="line">      &#123;</div><div class="line">         e.printStackTrace();</div><div class="line">      &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p> <strong>invoke方法如果提供了错误的参数，会抛出一个异常，所以要提供一个异常处理器</strong><br> 建议在有必要的时候才使用invoke方法，有如下原因:<br> 1.invoke方法的参数和返回值必须是Object类型，意味着必须进行多次类型转换，这样会使编译器错过检查代码的机会，等到测试阶段才发现错误，找到并改正会更加困难<br> 2.通过反射调用方法比直接调用方法要明显慢一些</p>
+<p><strong>特别重申：</strong>建议Java开发者不要使用Method对象的回调功能，使用接口进行回调会使代码的执行速度更快，更易于维护。</p>
 
       
     </div>
@@ -516,6 +517,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/16/Java学习总结之抽象类、接口、lambda表达式与内部类/" rel="prev" title="Java学习总结之抽象类、接口、lambda表达式与内部类">
+                Java学习总结之抽象类、接口、lambda表达式与内部类 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -623,7 +628,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="XJY's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="最近重温了一下线段树，发现暑假学得太囫囵吞枣，某些细节没有真正理解，学算法还是要脚踏实地啊(日常鸡汤)！下面来总结一下线段树。   线段树是什么？有什么用？线段树类似区间树，它在各个节点保存一条线段(数组中的一段子数组)，主要用于高效解决连续区间的动态查询问题，由于二叉结构的特性，它基本能保持每个操作的复杂度为O(logn)。你可能会问：查询区间和可以用O(n)的复杂度预处理一个前缀和数组，然后就">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法学习之线段树">
+<meta property="og:url" content="http://habitdiary.cn/2017/10/18/算法学习之线段树/index.html">
+<meta property="og:site_name" content="XJY&#39;s Blog">
+<meta property="og:description" content="最近重温了一下线段树，发现暑假学得太囫囵吞枣，某些细节没有真正理解，学算法还是要脚踏实地啊(日常鸡汤)！下面来总结一下线段树。   线段树是什么？有什么用？线段树类似区间树，它在各个节点保存一条线段(数组中的一段子数组)，主要用于高效解决连续区间的动态查询问题，由于二叉结构的特性，它基本能保持每个操作的复杂度为O(logn)。你可能会问：查询区间和可以用O(n)的复杂度预处理一个前缀和数组，然后就">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://habitdiary.cn/2017/10/18/算法学习之线段树/1.png">
+<meta property="og:image" content="http://habitdiary.cn/2017/10/18/算法学习之线段树/2.png">
+<meta property="og:image" content="http://habitdiary.cn/2017/10/18/算法学习之线段树/3.png">
+<meta property="og:image" content="http://habitdiary.cn/2017/10/18/算法学习之线段树/4.png">
+<meta property="og:image" content="http://habitdiary.cn/2017/10/18/算法学习之线段树/5.png">
+<meta property="og:updated_time" content="2017-10-18T16:18:42.461Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法学习之线段树">
+<meta name="twitter:description" content="最近重温了一下线段树，发现暑假学得太囫囵吞枣，某些细节没有真正理解，学算法还是要脚踏实地啊(日常鸡汤)！下面来总结一下线段树。   线段树是什么？有什么用？线段树类似区间树，它在各个节点保存一条线段(数组中的一段子数组)，主要用于高效解决连续区间的动态查询问题，由于二叉结构的特性，它基本能保持每个操作的复杂度为O(logn)。你可能会问：查询区间和可以用O(n)的复杂度预处理一个前缀和数组，然后就">
+<meta name="twitter:image" content="http://habitdiary.cn/2017/10/18/算法学习之线段树/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://habitdiary.cn/2017/10/18/算法学习之线段树/"/>
+
+
+
+
+
+  <title>算法学习之线段树 | XJY's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/Steven1997"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">XJY's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">你要静候再静候 就算失收始终要守</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-bookmark"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-folder-open"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/18/算法学习之线段树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="谢均宇">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/fqtbjudvb4y.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XJY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">算法学习之线段树</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T23:11:27+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近重温了一下线段树，发现暑假学得太囫囵吞枣，某些细节没有真正理解，学算法还是要脚踏实地啊(日常鸡汤)！下面来总结一下线段树。  </p>
+<h3 id="线段树是什么？有什么用？"><a href="#线段树是什么？有什么用？" class="headerlink" title="线段树是什么？有什么用？"></a>线段树是什么？有什么用？</h3><p>线段树类似区间树，它在各个节点保存一条线段(数组中的一段子数组)，主要用于高效解决连续区间的动态查询问题，由于二叉结构的特性，它基本能保持每个操作的复杂度为O(logn)。<br>你可能会问：查询区间和可以用O(n)的复杂度预处理一个前缀和数组，然后就可以O(1)地查询某段区间和;查询区间最值，也就是RMQ问题，也可以用O(nlogn)的复杂度预处理ST表，然后O(1)地查询区间最值。那么为什么要使用线段树呢？<br>线段树的精髓就在于它能在支持<strong>区间动态修改</strong>的前提下保持每个操作O(logn)的复杂度，这是其他两者做不到的。<br>线段树能进行的操作主要有：1)单点更新，区间查询  2)区间更新，区间查询 3)区间更新，单点查询<br>除了上述操作，线段树还可以解决区间染色和矩形面积交、面积并等问题。  </p>
+<h3 id="线段树基本知识"><a href="#线段树基本知识" class="headerlink" title="线段树基本知识"></a>线段树基本知识</h3><p>线段树的结构：<br><img src="/2017/10/18/算法学习之线段树/1.png" alt="fail">  </p>
+<p>建立一个线段树的示意图(可以维护区间和或最值)：<br><img src="/2017/10/18/算法学习之线段树/2.png" alt="fail">  </p>
+<p>单点修改后重新调整线段树：<br><img src="/2017/10/18/算法学习之线段树/3.png" alt="fail">  </p>
+<p>区间查询区间最值：<br><img src="/2017/10/18/算法学习之线段树/4.png" alt="fail">  </p>
+<p>线段树的结点关系:<br><img src="/2017/10/18/算法学习之线段树/5.png" alt="fail">  </p>
+<h3 id="线段树的代码实现"><a href="#线段树的代码实现" class="headerlink" title="线段树的代码实现"></a>线段树的代码实现</h3><p>下面给出建立线段树和进行各种操作的模板，关键点在代码的注释中有解释：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*node：区间结点号	begin：该node的区间左边界	end：该node的区间右边界		</span></div><div class="line"><span class="comment">  left：查询区间的左边界	right：查询区间的右边界		pos：查询区间的点*/</span> </div><div class="line">  </div><div class="line"><span class="comment">/*线段树:求和或最值 </span></div><div class="line"><span class="comment">单点更新,区间查询</span></div><div class="line"><span class="comment">区间更新,单点查询(lazy标记表示本节点的信息已经根据标记更新过了，但是本节点的子节点仍需要进行更新。lazy初始为0,区间加上k给该区间管理的结点的lazy加k,push_down给子节点加(end-begin+1)*k)</span></div><div class="line"><span class="comment">区间更新,区间查询 </span></div><div class="line"><span class="comment">lson 2*node</span></div><div class="line"><span class="comment">rson 2*node+1</span></div><div class="line"><span class="comment">[begin,end]</span></div><div class="line"><span class="comment">[begin,mid] [mid+1,end] 其中mid为(begin+end)/2 */</span> </div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (node&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((node&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((begin+end)&gt;&gt;1) </span></div><div class="line"><span class="keyword">int</span> segTree[maxn*<span class="number">4</span>];</div><div class="line"><span class="keyword">int</span> lazy[maxn*<span class="number">4</span>];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushUp</span><span class="params">(<span class="keyword">int</span> node)</span></span>&#123;<span class="comment">//pushUp自底向上更新区间和与最值 </span></div><div class="line">	segTree[node]=segTree[lson]+segTree[rson];<span class="comment">//segTree[node]=max(segTree[lson],segTree[rson]) </span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushDown</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end)</span></span>&#123;<span class="comment">//pushDown自顶向下更新lazy数组和给结点加上lazy数组的值 </span></div><div class="line">	<span class="keyword">if</span>(!lazy[node]) <span class="keyword">return</span>;<span class="comment">//lazy[node]为0直接return </span></div><div class="line">	segTree[lson]+=(mid-begin+<span class="number">1</span>)*lazy[node];</div><div class="line">	segTree[rson]+=(end-mid)*lazy[node]; </div><div class="line">	lazy[lson]+=lazy[node]; </div><div class="line">	lazy[rson]+=lazy[node];<span class="comment">//给左右孩子传递lazy,是+=不是=，因为孩子节点可能被多次延迟标记又没有向下传递 </span></div><div class="line">	lazy[node]=<span class="number">0</span>;<span class="comment">//把父节点的lazy置为0 </span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end)</span></span>&#123;<span class="comment">//建树 </span></div><div class="line">	lazy[node]=<span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;<span class="comment">//begin==end表示管理的是结点 </span></div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;segTree[node]);<span class="comment">//按照顺序输入结点，由于建树类似于树的先根遍历，所以建立的线段树的叶子结点从左到右的值就是输入的顺序 </span></div><div class="line">		<span class="comment">//segTree[node]=a[begin] 用于任意顺序输入,先将输入存入a数组,下标从1开始，begin = end = index </span></div><div class="line">		<span class="keyword">return</span>;<span class="comment">//输入完成后要return，否则会继续访问左右孩子，可能越界</span></div><div class="line">	&#125;</div><div class="line">	build(lson,begin,mid);</div><div class="line">	build(rson,mid+<span class="number">1</span>,end);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> pos,<span class="keyword">int</span> k)</span></span>&#123;<span class="comment">//单点更新 </span></div><div class="line">	<span class="keyword">if</span>(pos&lt;begin||pos&gt;end) <span class="keyword">return</span>;<span class="comment">//管理的区间不包含pos,直接return </span></div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		segTree[node]+=k;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125; </div><div class="line">	update(lson,begin,mid,pos,k);</div><div class="line">	update(rson,mid+<span class="number">1</span>,end,pos,k);</div><div class="line">	pushUp(node);</div><div class="line">&#125; </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span>&#123;<span class="comment">//区间查询 </span></div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//查询结点和区间没有公共点 </span></div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end) <span class="keyword">return</span> segTree[node];<span class="comment">//查询区间包含查询结点 </span></div><div class="line">	pushDown(node,begin,end);</div><div class="line">	<span class="keyword">int</span> sum=<span class="number">0</span>;<span class="comment">//int maxx=-1</span></div><div class="line">	sum+=query(lson,begin,mid,left,right);<span class="comment">//maxx=max(maxx,query(lson,begin,mid,left,right))</span></div><div class="line">	sum+=query(rson,mid+<span class="number">1</span>,end,left,right);<span class="comment">//maxx=max(maxx,query(rson,mid+1,end,left,right))</span></div><div class="line">	<span class="keyword">return</span> sum;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right,<span class="keyword">int</span> k)</span></span>&#123;<span class="comment">//区间更新 </span></div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span>;<span class="comment">//结点和更新区间没有公共点 </span></div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end)&#123;<span class="comment">//更新区间包含结点 </span></div><div class="line">		segTree[node]+=(end-begin+<span class="number">1</span>)*k;</div><div class="line">		lazy[node]+=k;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	pushDown(node,begin,end);</div><div class="line">	update(lson,begin,mid,left,right,k);</div><div class="line">	update(rson,mid+<span class="number">1</span>,end,left,right,k);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line">```  </div><div class="line">### 例题  </div><div class="line">#### 一、单点更新，区间查询  </div><div class="line"></div><div class="line">HDU1166 敌兵布阵  </div><div class="line">题目链接:&lt;http:<span class="comment">//acm.split.hdu.edu.cn/showproblem.php?pid=1166&gt;    </span></div><div class="line">代码：  </div><div class="line">```cpp</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 50005</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (node&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((node&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((begin+end)&gt;&gt;1)</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> segTree[maxn*<span class="number">4</span>];</div><div class="line"><span class="keyword">int</span> T,N,a,b;</div><div class="line"><span class="keyword">char</span> command[<span class="number">10</span>];</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushUp</span><span class="params">(<span class="keyword">int</span> node)</span></span>&#123;</div><div class="line">	segTree[node]=segTree[lson]+segTree[rson];</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;segTree[node]);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	build(lson,begin,mid);</div><div class="line">	build(rson,mid+<span class="number">1</span>,end);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> pos,<span class="keyword">int</span> k)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(pos&lt;begin||pos&gt;end) <span class="keyword">return</span>;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		segTree[node]+=k;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	update(lson,begin,mid,pos,k);</div><div class="line">	update(rson,mid+<span class="number">1</span>,end,pos,k);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end) <span class="keyword">return</span> segTree[node];</div><div class="line">        <span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">	sum+=query(lson,begin,mid,left,right);</div><div class="line">	sum+=query(rson,mid+<span class="number">1</span>,end,left,right);</div><div class="line">	<span class="keyword">return</span> sum;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;T);</div><div class="line">	<span class="keyword">int</span> cas=<span class="number">1</span>;</div><div class="line">	<span class="keyword">while</span>(T--)&#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;N);</div><div class="line">		build(<span class="number">1</span>,<span class="number">1</span>,N);</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"Case %d:\n"</span>,cas++);</div><div class="line">		<span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%s"</span>,command)!=EOF)&#123;</div><div class="line">			<span class="keyword">if</span>(command[<span class="number">0</span>]==<span class="string">'E'</span>) <span class="keyword">break</span>;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;a,&amp;b);</div><div class="line">			<span class="keyword">if</span>(command[<span class="number">0</span>]==<span class="string">'Q'</span>)</div><div class="line">			<span class="built_in">cout</span>&lt;&lt;query(<span class="number">1</span>,<span class="number">1</span>,N,a,b)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(command[<span class="number">0</span>]==<span class="string">'A'</span>)</div><div class="line">			update(<span class="number">1</span>,<span class="number">1</span>,N,a,b);</div><div class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(command[<span class="number">0</span>]==<span class="string">'S'</span>)</div><div class="line">			update(<span class="number">1</span>,<span class="number">1</span>,N,a,-b);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">``` </div><div class="line"></div><div class="line">HDU <span class="number">1754</span> I Hate It  </div><div class="line">题目链接：&lt;http:<span class="comment">//acm.split.hdu.edu.cn/showproblem.php?pid=1754&gt;  </span></div><div class="line">代码:  </div><div class="line">```cpp</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 200005</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (node&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((node&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((begin+end)&gt;&gt;1)</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> segTree[<span class="number">4</span>*maxn];</div><div class="line"><span class="keyword">int</span> N,M,A,B;</div><div class="line"><span class="keyword">char</span> C[<span class="number">3</span>];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushUp</span><span class="params">(<span class="keyword">int</span> node)</span></span>&#123;</div><div class="line">	segTree[node]=max(segTree[lson],segTree[rson]);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;segTree[node]);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	build(lson,begin,mid);</div><div class="line">	build(rson,mid+<span class="number">1</span>,end);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> pos,<span class="keyword">int</span> k)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(pos&lt;begin||pos&gt;end) <span class="keyword">return</span>;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		segTree[node]=k;<span class="comment">//直接修改</span></div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	update(lson,begin,mid,pos,k);</div><div class="line">	update(rson,mid+<span class="number">1</span>,end,pos,k);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end) <span class="keyword">return</span> segTree[node];</div><div class="line">	<span class="keyword">int</span> maxx=<span class="number">0</span>;</div><div class="line">	maxx=max(maxx,query(lson,begin,mid,left,right));</div><div class="line">	maxx=max(maxx,query(rson,mid+<span class="number">1</span>,end,left,right));</div><div class="line">	<span class="keyword">return</span> maxx;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;N,&amp;M)!=EOF)&#123;</div><div class="line">		 build(<span class="number">1</span>,<span class="number">1</span>,N);</div><div class="line">		 <span class="keyword">while</span>(M--)&#123;</div><div class="line">	        <span class="built_in">scanf</span>(<span class="string">"%s%d%d"</span>,C,&amp;A,&amp;B);</div><div class="line">			<span class="keyword">if</span>(C[<span class="number">0</span>]==<span class="string">'Q'</span>)&#123;</div><div class="line">				<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,query(<span class="number">1</span>,<span class="number">1</span>,N,A,B));</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">else</span>&#123;</div><div class="line">				update(<span class="number">1</span>,<span class="number">1</span>,N,A,B);</div><div class="line">			&#125;</div><div class="line">		 &#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="二、区间更新，区间查询"><a href="#二、区间更新，区间查询" class="headerlink" title="二、区间更新，区间查询"></a>二、区间更新，区间查询</h3><p>POJ 3468 A Simple Problem with Integers<br>题目链接:<a href="http://poj.org/problem?id=3468" target="_blank" rel="external">http://poj.org/problem?id=3468</a><br>代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 100005</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (node&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((node&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((begin+end)&gt;&gt;1)</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</div><div class="line">ll segTree[<span class="number">4</span>*maxn];</div><div class="line">ll lazy[<span class="number">4</span>*maxn];</div><div class="line">ll N,Q,A,B,C;</div><div class="line"><span class="keyword">char</span> command[<span class="number">3</span>];</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushUp</span><span class="params">(ll node)</span></span>&#123;</div><div class="line">	segTree[node]=segTree[lson]+segTree[rson];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushDown</span><span class="params">(ll node,ll begin,ll end)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(!lazy[node]) <span class="keyword">return</span>;</div><div class="line">	segTree[lson]+=(mid-begin+<span class="number">1</span>)*lazy[node];</div><div class="line">	segTree[rson]+=(end-mid)*lazy[node];</div><div class="line">	lazy[lson]+=lazy[node];</div><div class="line">	lazy[rson]+=lazy[node];</div><div class="line">	lazy[node]=<span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(ll node,ll begin,ll end)</span></span>&#123;</div><div class="line">	lazy[node]=<span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%lld"</span>,&amp;segTree[node]);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	build(lson,begin,mid);</div><div class="line">	build(rson,mid+<span class="number">1</span>,end);</div><div class="line">	pushUp(node);	</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">ll <span class="title">query</span><span class="params">(ll node,ll begin,ll end,ll left,ll right)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end) <span class="keyword">return</span> segTree[node];</div><div class="line">	pushDown(node,begin,end);</div><div class="line">	ll sum=<span class="number">0</span>;</div><div class="line">	sum+=query(lson,begin,mid,left,right);</div><div class="line">	sum+=query(rson,mid+<span class="number">1</span>,end,left,right);</div><div class="line">	<span class="keyword">return</span> sum;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(ll node,ll begin,ll end,ll left,ll right,ll k)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span>;</div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end)&#123;</div><div class="line">		segTree[node]+=(end-begin+<span class="number">1</span>)*k;</div><div class="line">		lazy[node]+=k;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	pushDown(node,begin,end);</div><div class="line">	update(lson,begin,mid,left,right,k);</div><div class="line">	update(rson,mid+<span class="number">1</span>,end,left,right,k);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%lld%lld"</span>,&amp;N,&amp;Q);</div><div class="line">	build(<span class="number">1</span>,<span class="number">1</span>,N);</div><div class="line">	<span class="keyword">while</span>(Q--)&#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%s"</span>,command);</div><div class="line">		<span class="keyword">if</span>(command[<span class="number">0</span>]==<span class="string">'Q'</span>)&#123;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%lld%lld"</span>,&amp;A,&amp;B);</div><div class="line">			<span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,query(<span class="number">1</span>,<span class="number">1</span>,N,A,B));</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span>&#123;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%lld%lld%lld"</span>,&amp;A,&amp;B,&amp;C);</div><div class="line">			update(<span class="number">1</span>,<span class="number">1</span>,N,A,B,C);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>HDU 1698 Just A Hook<br>题目链接：<a href="http://acm.split.hdu.edu.cn/showproblem.php?pid=1698" target="_blank" rel="external">http://acm.split.hdu.edu.cn/showproblem.php?pid=1698</a><br>代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 100005</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (node&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((node&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((begin+end)&gt;&gt;1)</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> segTree[<span class="number">4</span>*maxn];</div><div class="line"><span class="keyword">int</span> lazy[<span class="number">4</span>*maxn];</div><div class="line"><span class="keyword">int</span> T,N,Q,X,Y,Z;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushUp</span><span class="params">(<span class="keyword">int</span> node)</span></span>&#123;</div><div class="line">	segTree[node]=segTree[lson]+segTree[rson];</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end)</span></span>&#123;</div><div class="line">	lazy[node]=<span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		segTree[node]=<span class="number">1</span>;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	build(lson,begin,mid);</div><div class="line">	build(rson,mid+<span class="number">1</span>,end);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushDown</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(!lazy[node]) <span class="keyword">return</span>;</div><div class="line">	segTree[lson]=(mid-begin+<span class="number">1</span>)*lazy[node];<span class="comment">//+=改成=,直接更新到底部</span></div><div class="line">	segTree[rson]=(end-mid)*lazy[node];</div><div class="line">	lazy[lson]=lazy[node];</div><div class="line">	lazy[rson]=lazy[node];</div><div class="line">	lazy[node]=<span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right,<span class="keyword">int</span> k)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span>;</div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end)&#123;</div><div class="line">		segTree[node]=(end-begin+<span class="number">1</span>)*k;<span class="comment">//+=改成=,直接更新到底部</span></div><div class="line">		lazy[node]=k;<span class="comment">//+=改成=,因为此时lazy即使没有下传也不叠加</span></div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	pushDown(node,begin,end);</div><div class="line">	update(lson,begin,mid,left,right,k);</div><div class="line">	update(rson,mid+<span class="number">1</span>,end,left,right,k);</div><div class="line">	pushUp(node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end) <span class="keyword">return</span> segTree[node];</div><div class="line">	pushDown(node,begin,end);</div><div class="line">	<span class="keyword">int</span> sum=<span class="number">0</span>;</div><div class="line">	sum+=query(lson,begin,mid,left,right);</div><div class="line">	sum+=query(rson,mid+<span class="number">1</span>,end,left,right);</div><div class="line">	<span class="keyword">return</span> sum;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;T);</div><div class="line">	<span class="keyword">int</span> cas=<span class="number">1</span>;</div><div class="line">	<span class="keyword">while</span>(T--)&#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;N,&amp;Q);</div><div class="line">		build(<span class="number">1</span>,<span class="number">1</span>,N);</div><div class="line">		<span class="keyword">while</span>(Q--)&#123;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;X,&amp;Y,&amp;Z);</div><div class="line">			update(<span class="number">1</span>,<span class="number">1</span>,N,X,Y,Z);</div><div class="line">		&#125;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"Case %d: The total value of the hook is %d.\n"</span>,cas++,query(<span class="number">1</span>,<span class="number">1</span>,N,<span class="number">1</span>,N));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">```  </div><div class="line"></div><div class="line">### 三、区间染色问题  </div><div class="line">ZOJ <span class="number">1610</span> Count the Colors  </div><div class="line">题目链接:&lt;https:<span class="comment">//vjudge.net/problem/11553/origin&gt;  </span></div><div class="line">代码：</div><div class="line">```cpp</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (node&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((node&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((begin+end)&gt;&gt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 8005</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> col[maxn*<span class="number">4</span>];<span class="comment">//col[node]表示node管辖的区间的颜色 </span></div><div class="line"><span class="keyword">int</span> sum[maxn];<span class="comment">//表示某点的颜色 </span></div><div class="line"><span class="keyword">int</span> res[maxn];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushDown</span><span class="params">(<span class="keyword">int</span> node)</span></span>&#123;</div><div class="line">	col[lson]=col[rson]=col[node];</div><div class="line">	col[node]=<span class="number">-1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right,<span class="keyword">int</span> k)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span>;</div><div class="line">	<span class="keyword">if</span>(left&lt;=begin&amp;&amp;right&gt;=end)&#123;</div><div class="line">		col[node]=k;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span>(col[node]!=<span class="number">-1</span>) pushDown(node);</div><div class="line">	update(lson,begin,mid,left,right,k);</div><div class="line">	update(rson,mid+<span class="number">1</span>,end,left,right,k);</div><div class="line">&#125;</div><div class="line"><span class="comment">//不用建树,直接在query里存储颜色即可，因为染色不用求区间和或者最值 </span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(begin==end)&#123;</div><div class="line">		sum[begin]=col[node];<span class="comment">//存储每个点的颜色 </span></div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (col[node] != <span class="number">-1</span>) pushDown(node);</div><div class="line">    query(lson,begin,mid,left,right);</div><div class="line">    query(rson,mid+<span class="number">1</span>,end,left,right);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> n,x1,x2,c;</div><div class="line">	<span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n)!=EOF)&#123;</div><div class="line">		<span class="built_in">memset</span>(col,<span class="number">-1</span>,<span class="keyword">sizeof</span>(col));</div><div class="line">		<span class="built_in">memset</span>(sum,<span class="number">-1</span>,<span class="keyword">sizeof</span>(sum));</div><div class="line">		<span class="built_in">memset</span>(res,<span class="number">0</span>,<span class="keyword">sizeof</span>(res));</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;x1,&amp;x2,&amp;c);</div><div class="line">			<span class="keyword">if</span>(x1==x2) <span class="keyword">continue</span>;<span class="comment">//为了保证R-1&gt;=L </span></div><div class="line">			update(<span class="number">1</span>,<span class="number">0</span>,maxn<span class="number">-1</span>,x1,x2<span class="number">-1</span>,c);<span class="comment">//为防止重叠,更新区间[L,R-1]</span></div><div class="line">		<span class="comment">/*注意begin=0 end=maxn-1 而不是begin=1 end=n 因为只是涂n次,不一定在1-n范围内涂 */</span>	 </div><div class="line">		&#125;</div><div class="line">		query(<span class="number">1</span>,<span class="number">0</span>,maxn<span class="number">-1</span>,<span class="number">0</span>,maxn<span class="number">-1</span>);</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;maxn; i++) &#123;</div><div class="line">            <span class="keyword">while</span>(i!=<span class="number">0</span>&amp;&amp;sum[i]!=<span class="number">-1</span>&amp;&amp;sum[i]==sum[i<span class="number">-1</span>])<span class="comment">//涂过同一颜色也加1 </span></div><div class="line">            i++;</div><div class="line">            res[sum[i]]++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;maxn; i++)</div><div class="line">		<span class="keyword">if</span>(res[i])</div><div class="line">			<span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>,i,res[i]);</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125; </div><div class="line">```  </div><div class="line"></div><div class="line">POJ <span class="number">2528</span> Mayor's posters  </div><div class="line">题目链接:&lt;http:<span class="comment">//poj.org/problem?id=2528&gt;  </span></div><div class="line">代码:  </div><div class="line">```cpp</div><div class="line"><span class="comment">/*解法：离散化，如下面的例子（题目的样例），因为单位1是一个单位长度，将下面的</span></div><div class="line"><span class="comment">      1   2   3   4  6   7   8   10</span></div><div class="line"><span class="comment">      —   —   —   —  —   —   —   —</span></div><div class="line"><span class="comment">      1   2   3   4  5   6   7   8</span></div><div class="line"><span class="comment">离散化  X[1] = 1; X[2] = 2; X[3] = 3; X[4] = 4; X[5] = 6; X[7] = 8; X[8] = 10</span></div><div class="line"><span class="comment">于是将一个很大的区间映射到一个较小的区间之中了，然后再对每一张海报依次更新在宽度为1~8的墙上(用线段树），最后统计不同颜色的段数。</span></div><div class="line"><span class="comment">但是只是这样简单的离散化是错误的，</span></div><div class="line"><span class="comment">如三张海报为：1~10 1~4 6~10</span></div><div class="line"><span class="comment">离散化时 X[ 1 ] = 1, X[ 2 ] = 4, X[ 3 ] = 6, X[ 4 ] = 10</span></div><div class="line"><span class="comment">第一张海报时：墙的1~4被染为1；</span></div><div class="line"><span class="comment">第二张海报时：墙的1~2被染为2，3~4仍为1；</span></div><div class="line"><span class="comment">第三张海报时：墙的3~4被染为3，1~2仍为2。</span></div><div class="line"><span class="comment">最终，第一张海报就显示被完全覆盖了，于是输出2，但实际上明显不是这样，正确输出为3。</span></div><div class="line"><span class="comment">新的离散方法为：在相差大于1的数间加一个数，例如在上面1 4 6 10中间加5（算法中实际上1，4之间，6，10之间都新增了数的）</span></div><div class="line"><span class="comment">X[ 1 ] = 1, X[ 2 ] = 4, X[ 3 ] = 5, X[ 4 ] = 6， X[ 5 ] = 10</span></div><div class="line"><span class="comment">这样之后，第一次是1~5被染成1；第二次1~2被染成2；第三次4~5被染成3</span></div><div class="line"><span class="comment">最终，1~2为2，3为1，4~5为3，于是输出正确结果3。*/</span> </div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (node&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((node&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((begin+end)&gt;&gt;1)</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 10005</span></div><div class="line"><span class="comment">//不用建树,直接在query里记录hash即可，因为染色不用求区间和或者最值，也不用pushUp </span></div><div class="line"><span class="keyword">int</span> m, li[maxn], ri[maxn];</div><div class="line"><span class="keyword">int</span> poster[maxn&lt;&lt;<span class="number">3</span>], col[maxn&lt;&lt;<span class="number">4</span>], ans; <span class="comment">//col记录当前该位置最上面一层的海报种类,即染色问题的颜色 </span></div><div class="line"><span class="comment">//poster记录海报位置 </span></div><div class="line"><span class="keyword">bool</span> hash[maxn];<span class="comment">//hash用于标记某种种类的海报是否计算过,若已计算过标记为true,不再重复计算 </span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushDown</span><span class="params">(<span class="keyword">int</span> node)</span> </span>&#123;</div><div class="line">     col[lson] = col[rson] = col[node];<span class="comment">//类似lazy标记，向下传递后清空</span></div><div class="line">     col[node] = <span class="number">-1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin, <span class="keyword">int</span> end,<span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span>(left&gt;end||right&lt;begin) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">if</span> (begin &gt;= left &amp;&amp; end &lt;= right) &#123;</div><div class="line">         col[node] = k;</div><div class="line">         <span class="keyword">return</span>;</div><div class="line">     &#125;</div><div class="line">    <span class="keyword">if</span>(col[node] != <span class="number">-1</span>) pushDown(node);</div><div class="line">    update(lson,begin,mid,left,right,k);</div><div class="line">    update(rson,mid+<span class="number">1</span>,end,left,right,k);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> node,<span class="keyword">int</span> begin,<span class="keyword">int</span> end)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (begin == end) &#123;</div><div class="line">        <span class="keyword">if</span> (!hash[col[node]]) &#123;</div><div class="line">        ans++;</div><div class="line">        hash[col[node]] = <span class="literal">true</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (col[node] != <span class="number">-1</span>) pushDown(node);</div><div class="line">    query(lson,begin,mid);</div><div class="line">    query(rson,mid+<span class="number">1</span>,end);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> ll, <span class="keyword">int</span> hh, <span class="keyword">int</span> xx)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> mm;</div><div class="line">    <span class="keyword">while</span> (ll &lt;= hh) &#123;</div><div class="line">        mm = (ll + hh) &gt;&gt; <span class="number">1</span>;</div><div class="line">        <span class="keyword">if</span> (poster[mm] == xx) <span class="keyword">return</span> mm;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (poster[mm] &gt; xx)  hh = mm - <span class="number">1</span>;</div><div class="line">        <span class="keyword">else</span> ll = mm + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> t, n, i;</div><div class="line">    <span class="built_in">scanf</span> (<span class="string">"%d"</span>, &amp;t);</div><div class="line">    <span class="keyword">while</span> (t--) &#123;</div><div class="line">        <span class="built_in">memset</span>(col, <span class="number">-1</span>, <span class="keyword">sizeof</span> (col));<span class="comment">//-1表示没有染色</span></div><div class="line">        <span class="built_in">memset</span> (hash, <span class="literal">false</span>, <span class="keyword">sizeof</span> (hash));<span class="comment">/*因为本题墙的长度为10000000,</span></div><div class="line"><span class="comment">直接做会超时,而实际海报数量只有10000,考虑把每张海报左右两端的两段映射到小范围计算，</span></div><div class="line"><span class="comment">所以考虑离散化,但传统离散化会出错,要如果有两个位置相邻的数字数值不相邻,考虑在中间</span></div><div class="line"><span class="comment">插入一个比大的数小1的数*/</span></div><div class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</div><div class="line">        <span class="built_in">scanf</span> (<span class="string">"%d"</span>, &amp;n);</div><div class="line">        <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">             <span class="built_in">scanf</span> (<span class="string">"%d %d"</span>, &amp;li[i], &amp;ri[i]);</div><div class="line">             poster[++cnt] = li[i];</div><div class="line">             poster[++cnt] = ri[i];</div><div class="line">        &#125;</div><div class="line">        sort(poster+<span class="number">1</span>, poster+cnt+<span class="number">1</span>);</div><div class="line">        m = <span class="number">1</span>;</div><div class="line">        <span class="keyword">for</span> (i = <span class="number">2</span>; i &lt;= cnt; i++) &#123;</div><div class="line">             <span class="keyword">if</span> (poster[i] != poster[i<span class="number">-1</span>]) poster[++m] = poster[i];<span class="comment">//去重 </span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (i = m; i &gt; <span class="number">1</span>; i--) &#123;</div><div class="line">            <span class="keyword">if</span> (poster[i] - poster[i<span class="number">-1</span>] &gt; <span class="number">1</span>) poster[++m] = poster[i] - <span class="number">1</span>;<span class="comment">//在末尾加入要增加的点 </span></div><div class="line">        &#125;</div><div class="line">        sort(poster+<span class="number">1</span>, poster+m+<span class="number">1</span>);<span class="comment">//重新排序 </span></div><div class="line">        <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">            <span class="keyword">int</span> l = binarySearch(<span class="number">1</span>, m, li[i]);<span class="comment">//在离散化后的poster数组里二分查找每一组的左右端点</span></div><div class="line">            <span class="keyword">int</span> r = binarySearch(<span class="number">1</span>, m, ri[i]);</div><div class="line">            update(<span class="number">1</span>,<span class="number">1</span>,m,l,r,i);</div><div class="line">        &#125;</div><div class="line">        ans = <span class="number">0</span>;</div><div class="line">        query(<span class="number">1</span>, <span class="number">1</span>, m);</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, ans);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="四、矩形面积交-面积并"><a href="#四、矩形面积交-面积并" class="headerlink" title="四、矩形面积交/面积并"></a>四、矩形面积交/面积并</h3><p>HDU 1542 Atlantis(矩形面积并)<br>题目链接：<a href="http://acm.split.hdu.edu.cn/showproblem.php?pid=1542" target="_blank" rel="external">http://acm.split.hdu.edu.cn/showproblem.php?pid=1542</a><br>代码:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (rt&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((rt&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((l+r)&gt;&gt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 2005</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n;</div><div class="line"><span class="keyword">double</span> y[maxn];</div><div class="line"><span class="comment">//沿x轴扫描,沿y轴建树,线段树的结点是纵向的线段,最下面一层结点以排序后相邻的y1,y2为边界 </span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LINE</span>     //  存储线段信息；</span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">double</span> x;   <span class="comment">//  该线段的x坐标；</span></div><div class="line">    <span class="keyword">double</span> y_up,y_down;     <span class="comment">//  竖向线段的上下端点；</span></div><div class="line">    <span class="keyword">int</span> flag;<span class="comment">//矩形的左边界为1,右边界为-1 </span></div><div class="line">&#125;line[maxn];</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>//线段树的结点,不再是单个点,是一个区间 </span></div><div class="line"><span class="class">&#123;</span></div><div class="line">    <span class="keyword">double</span> l,r;		<span class="comment">//	区间的左右边界,即某段扫描线的上下端点 </span></div><div class="line">    <span class="keyword">double</span> x;       <span class="comment">//  记录上一个横坐标位置，用于求面积；</span></div><div class="line">    <span class="keyword">int</span> cover;      <span class="comment">//  记录覆盖的线段数;即同一方向的线段数;由flag累加 </span></div><div class="line">    <span class="keyword">bool</span> flag;      <span class="comment">//  标记只有一个区间的节点,即在线段树最底层的结点,我们将一个个连续的区间离散化成一个结点；</span></div><div class="line">&#125;node[maxn&lt;&lt;<span class="number">2</span>];</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(LINE a,LINE b)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> a.x&lt;b.x;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> rt,<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span>      <span class="comment">//  建树；</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    node[rt].l=y[l];    <span class="comment">//  维护区间；</span></div><div class="line">    node[rt].r=y[r];</div><div class="line">    node[rt].x=<span class="number">-1</span>;</div><div class="line">    node[rt].flag=<span class="literal">false</span>;</div><div class="line">    node[rt].cover=<span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span>(l+<span class="number">1</span>==r)&#123;             <span class="comment">//  区间是连续的;</span></div><div class="line">        node[rt].flag=<span class="literal">true</span>; <span class="comment">//  标记为结点; </span></div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    build(lson,l,mid);</div><div class="line">    build(rson,mid,r);   <span class="comment">//  因为将一个个连续区间离散成点，所以此处mid不需要+1；</span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">Insert_query</span><span class="params">(<span class="keyword">int</span> rt,<span class="keyword">double</span> x,<span class="keyword">double</span> l,<span class="keyword">double</span> r,<span class="keyword">int</span> flag)</span> </span></div><div class="line"><span class="function"><span class="comment">/*查询+更新x处（l,r）区间面积，l和r代表的是区间查询区间的边界，node[rt].l和node[rt].r代表的是结点边界*/</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">if</span>(l&gt;=node[rt].r||r&lt;=node[rt].l) <span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">//  该方向结点不包含所要查询的区间；</span></div><div class="line">    <span class="keyword">if</span>(node[rt].flag)&#123;  <span class="comment">//  找到只有一个区间的叶子结点；</span></div><div class="line">        <span class="keyword">if</span>(node[rt].cover&gt;<span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">double</span> pre=node[rt].x;</div><div class="line">            <span class="keyword">double</span> ans=(x-pre)*(node[rt].r-node[rt].l); <span class="comment">//  计算面积；</span></div><div class="line">            node[rt].x=x;       <span class="comment">//  更新定位x位置，便于下次计算面积；</span></div><div class="line">            node[rt].cover+=flag;   <span class="comment">//  更新覆盖的线段数；</span></div><div class="line">            <span class="keyword">return</span> ans;</div><div class="line">        &#125;</div><div class="line">		<span class="keyword">else</span>&#123;</div><div class="line">            node[rt].x=x;</div><div class="line">            node[rt].cover+=flag;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//没有产生面积并也要return 0 </span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">double</span> ans1,ans2;</div><div class="line">    ans1=Insert_query(lson,x,l,r,flag);    </div><div class="line">    ans2=Insert_query(rson,x,l,r,flag); </div><div class="line">    <span class="keyword">return</span> ans1+ans2;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> Case=<span class="number">0</span>;</div><div class="line">    <span class="keyword">double</span> x1,x2,y1,y2;</div><div class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n)&amp;&amp;n)&#123;</div><div class="line">        <span class="keyword">int</span> cnt=<span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf%lf"</span>,&amp;x1,&amp;y1,&amp;x2,&amp;y2);</div><div class="line">            y[cnt]=y1;</div><div class="line">            line[cnt].x=x1;</div><div class="line">            line[cnt].y_down=y1;</div><div class="line">            line[cnt].y_up=y2;</div><div class="line">            line[cnt++].flag=<span class="number">1</span>;   <span class="comment">//  表示左边线段；</span></div><div class="line">            y[cnt]=y2;</div><div class="line">            line[cnt].x=x2;</div><div class="line">            line[cnt].y_down=y1;</div><div class="line">            line[cnt].y_up=y2;</div><div class="line">            line[cnt++].flag=<span class="number">-1</span>;  <span class="comment">//  表示右边线段；</span></div><div class="line">        &#125;</div><div class="line">        sort(y,y+cnt);        <span class="comment">//  将所有高度由小到大排序，将区间建树表示</span></div><div class="line">        sort(line,line+cnt,cmp);      <span class="comment">//  因为扫描线从左到右扫描，所以按照横坐标从小到大排序后逐一插入线段树</span></div><div class="line">        build(<span class="number">1</span>,<span class="number">0</span>,cnt<span class="number">-1</span>);</div><div class="line">        <span class="keyword">double</span> area=<span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;cnt;i++)&#123;</div><div class="line">            area+=Insert_query(<span class="number">1</span>,line[i].x,line[i].y_down,line[i].y_up,line[i].flag);</div><div class="line">        &#125;</div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Test case #%d\nTotal explored area: %.2lf\n\n"</span>,++Case,area);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line">```  </div><div class="line"></div><div class="line">HDU <span class="number">1255</span> 覆盖的面积(矩形面积交)  </div><div class="line">题目链接:&lt;http:<span class="comment">//acm.split.hdu.edu.cn/showproblem.php?pid=1255&gt;  </span></div><div class="line">代码:  </div><div class="line">```cpp</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> lson (rt&lt;&lt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rson ((rt&lt;&lt;1)|1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> mid ((l+r)&gt;&gt;1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> maxn 2005</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> T,N;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">double</span> y[maxn];</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LINE</span>&#123;</span></div><div class="line">	<span class="keyword">double</span> x;</div><div class="line">	<span class="keyword">double</span> y_up,y_down;</div><div class="line">	<span class="keyword">int</span> flag;</div><div class="line">&#125;line[maxn];</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></div><div class="line">	<span class="keyword">double</span> l,r;</div><div class="line">	<span class="keyword">double</span> x;</div><div class="line">	<span class="keyword">int</span> cover;</div><div class="line">	<span class="keyword">bool</span> flag;</div><div class="line">&#125;node[maxn&lt;&lt;<span class="number">2</span>];</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(LINE a,LINE b)</span></span>&#123;</div><div class="line">	<span class="keyword">return</span> a.x&lt;b.x;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> rt,<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span></span>&#123;</div><div class="line">	node[rt].l=y[l];</div><div class="line">	node[rt].r=y[r];</div><div class="line">	node[rt].x=<span class="number">-1</span>;</div><div class="line">	node[rt].flag=<span class="literal">false</span>;</div><div class="line">	node[rt].cover=<span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(l+<span class="number">1</span>==r)&#123;</div><div class="line">		node[rt].flag=<span class="literal">true</span>;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	build(lson,l,mid);</div><div class="line">	build(rson,mid,r);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">Insert_query</span><span class="params">(<span class="keyword">int</span> rt,<span class="keyword">double</span> x,<span class="keyword">double</span> l,<span class="keyword">double</span> r,<span class="keyword">int</span> flag)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span>(l&gt;=node[rt].r||r&lt;=node[rt].l) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(node[rt].flag)&#123;</div><div class="line">		<span class="keyword">if</span>(node[rt].cover&gt;<span class="number">1</span>)&#123;</div><div class="line">			<span class="keyword">double</span> pre=node[rt].x;</div><div class="line">			<span class="keyword">double</span> ans=(x-pre)*(node[rt].r-node[rt].l);</div><div class="line">			node[rt].x=x;</div><div class="line">			node[rt].cover+=flag;</div><div class="line">			<span class="keyword">return</span> ans;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span>&#123;</div><div class="line">			node[rt].x=x;</div><div class="line">			node[rt].cover+=flag;</div><div class="line">			<span class="keyword">return</span> <span class="number">0</span>; </div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">double</span> ans1,ans2;</div><div class="line">	ans1=Insert_query(lson,x,l,r,flag);</div><div class="line">	ans2=Insert_query(rson,x,l,r,flag);</div><div class="line">	<span class="keyword">return</span> ans1+ans2;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;T);</div><div class="line">	<span class="keyword">while</span>(T--)&#123;</div><div class="line">		<span class="keyword">int</span> cnt=<span class="number">0</span>;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;N);</div><div class="line">		<span class="keyword">while</span>(N--)&#123;</div><div class="line">			<span class="keyword">double</span> x1,y1,x2,y2;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%lf%lf%lf%lf"</span>,&amp;x1,&amp;y1,&amp;x2,&amp;y2);</div><div class="line">			y[cnt]=y1;</div><div class="line">			line[cnt].x=x1;</div><div class="line">			line[cnt].y_down=y1;</div><div class="line">			line[cnt].y_up=y2;</div><div class="line">			line[cnt++].flag=<span class="number">1</span>;</div><div class="line">			y[cnt]=y2;</div><div class="line">			line[cnt].x=x2;</div><div class="line">			line[cnt].y_down=y1;</div><div class="line">			line[cnt].y_up=y2;</div><div class="line">			line[cnt++].flag=<span class="number">-1</span>;</div><div class="line">		&#125;</div><div class="line">		sort(y,y+cnt);</div><div class="line">		sort(line,line+cnt,cmp);</div><div class="line">		build(<span class="number">1</span>,<span class="number">0</span>,cnt<span class="number">-1</span>);</div><div class="line">		<span class="keyword">double</span> area=<span class="number">0</span>;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;cnt;i++)&#123;</div><div class="line">			area+=Insert_query(<span class="number">1</span>,line[i].x,line[i].y_down,line[i].y_up,line[i].flag);</div><div class="line">		&#125;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"%.2lf\n"</span>,area);</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+   <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div> 
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/16/Java学习总结之抽象类、接口、lambda表达式与内部类/" rel="next" title="Java学习总结之抽象类、接口、lambda表达式与内部类">
+                <i class="fa fa-chevron-left"></i> Java学习总结之抽象类、接口、lambda表达式与内部类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/fqtbjudvb4y.jpg"
+                alt="谢均宇" />
+            
+              <p class="site-author-name" itemprop="name">谢均宇</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Steven1997" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:573668878@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://m.collegefun.cn/" title="CaptainShen's Station" target="_blank">CaptainShen's Station</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://77sera.cn/" title="Sera's Blog" target="_blank">Sera's Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#线段树是什么？有什么用？"><span class="nav-number">1.</span> <span class="nav-text">线段树是什么？有什么用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线段树基本知识"><span class="nav-number">2.</span> <span class="nav-text">线段树基本知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线段树的代码实现"><span class="nav-number">3.</span> <span class="nav-text">线段树的代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、区间更新，区间查询"><span class="nav-number">4.</span> <span class="nav-text">二、区间更新，区间查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、矩形面积交-面积并"><span class="nav-number">5.</span> <span class="nav-text">四、矩形面积交/面积并</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  <div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5237120&auto=0&height=66"></iframe>
+</div> 
+ </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">谢均宇</span>
+
+  
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2145941"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+</body>
+</html>

@@ -92,7 +92,7 @@
 <meta property="og:description" content="面向对象程序设计概述　　面向对象程序设计(简称OOP)是当今主流的程序设计范型，它已经取代了传统的“结构化”过程化程序开发技术。Java是完全面向对象的，必须熟悉OOP才能够编写Java程序。　　传统结构化程序设计主要通过设计一系列的过程(即算法)来解决问题，即算法+数据结构=程序，先要确定如何操作数据，再决定如何组织数据使之便于操作。而面向对象程序设计将数据域(属性)和对数据的操作(方法)绑定在">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20150409153405264">
-<meta property="og:updated_time" content="2017-10-15T12:00:51.446Z">
+<meta property="og:updated_time" content="2017-10-17T14:02:49.165Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之对象与类">
 <meta name="twitter:description" content="面向对象程序设计概述　　面向对象程序设计(简称OOP)是当今主流的程序设计范型，它已经取代了传统的“结构化”过程化程序开发技术。Java是完全面向对象的，必须熟悉OOP才能够编写Java程序。　　传统结构化程序设计主要通过设计一系列的过程(即算法)来解决问题，即算法+数据结构=程序，先要确定如何操作数据，再决定如何组织数据使之便于操作。而面向对象程序设计将数据域(属性)和对数据的操作(方法)绑定在">
@@ -378,12 +378,12 @@
 <h3 id="对象与对象变量"><a href="#对象与对象变量" class="headerlink" title="对象与对象变量"></a>对象与对象变量</h3><p>　　对象是调用构造方法在堆上分配内存产生的(用new + 构造方法来调用)，而对象变量是在栈上的持有对象引用的变量(声明方式为：类名 + 对象名)。一个对象可被多个对象变量引用。比如语句A a = new A()，new A()在堆上产生了对象，a是对象变量，包含对于该对象的引用。该语句完成了三个操作，前半部分声明了一个A类型的对象变量a，后半部分创建了A类对象的实例，等号把对象引用赋给对象遍历变量(如果不赋值给a，new A()是一个匿名对象)。大多数情况下，我们可以简单地说a是一个A类对象，而不用冗长地说a是一个包含对A对象引用的变量。在Java中，数组被看作对象，一个数组变量实际上是一个包含数组引用的变量。</p>
 <h3 id="存储区域"><a href="#存储区域" class="headerlink" title="存储区域"></a>存储区域</h3><p>1.创建的实例及成员变量（静、非静态）在堆中<br>2.局部变量在栈中<br>3.类的基本信息和方法定义在方法区</p>
 <h3 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h3><p>相关知识见<a href="http://www.uml.org.cn/oobject/201211231.asp" target="_blank" rel="external">http://www.uml.org.cn/oobject/201211231.asp</a></p>
-<h3 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h3><p>　　构造器用于构造对象实例，并对数据域进行相应初始化，物理层面表现为在堆上为对象的非静态成员开辟存储空间。<br>　　构造器名应该与类名相同，无返回值，甚至连void也没有，可以被可见性修饰符(如public)修饰，不能被static修饰。<br>　　构造方法可以重载，没有参数的构造方法称为无参构造方法或默认构造方法，当类中没有定义构造方法时，编译器会自动插入一个方法体为空的默认构造方法，但一旦定义了有参构造方法，该默认构造方法不会被插入。  </p>
+<h3 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h3><p>　　构造器用于构造对象实例，并对数据域进行相应初始化，物理层面表现为在堆上为对象的非静态成员开辟存储空间。<br>　　构造器名应该与类名相同，无返回值，甚至连void也没有，可以被可见性修饰符(如public)修饰，因为它是用来创建实例的，所以它永远是实例方法，不能被static修饰。<br>　　构造方法可以重载，没有参数的构造方法称为无参构造方法或默认构造方法，当类中没有定义构造方法时，编译器会自动插入一个方法体为空的默认构造方法，但一旦定义了有参构造方法，该默认构造方法不会被插入。  </p>
 <h3 id="访问对象的数据和方法"><a href="#访问对象的数据和方法" class="headerlink" title="访问对象的数据和方法"></a>访问对象的数据和方法</h3><p>　　在面向对象编程中，对象成员可以引用该对象的数据域和方法。在创建一个对象后，它的数据域和方法可以使用点操作符(.)来访问和调用，该操作符也称为对象成员访问操作符。   </p>
 <h3 id="引用数据域和null值"><a href="#引用数据域和null值" class="headerlink" title="引用数据域和null值"></a>引用数据域和null值</h3><p>　　如果一个引用类型的数据域没有引用任何对象，那么它的值为null,是一个引用类型直接量。访问值为null引用变量的数据域或方法会抛出一个NullPointerException。</p>
 <h3 id="默认赋值规则"><a href="#默认赋值规则" class="headerlink" title="默认赋值规则"></a>默认赋值规则</h3><p>　　类中的变量如果没有赋值，会被自动赋予默认值，引用类型默认值为null，byte为(byte)0,short为(short)0,int为0,long为0L,float为0.0f,double为0.0，char为‘\u0000’(空字符,但也占长度),boolean为false。但如果Java没有给方法里的局部变量赋值，会出现编译错误。  </p>
 <h3 id="基本变量和引用变量的区别"><a href="#基本变量和引用变量的区别" class="headerlink" title="基本变量和引用变量的区别"></a>基本变量和引用变量的区别</h3><p>　　基本变量类型有byte,short,int,long,float,double,char,boolean八种，其他类型变量都是引用变量。基本变量对应内存所存储的值是基本类型值，而引用变量存储的值是一个引用，是对象的存储地址。将一个变量赋给另一个变量，另一个变量就被赋予同样的值。对基本类型来说，就是将一个变量的实际值赋给另一个变量;对引用变量来说，就是将一个变量的引用赋给另一个变量，从而两个变量指向同一个对象。<br>　　没有变量引用的对象会成为垃圾，Java运行系统会检测垃圾并自动回收它所占的空间，这个过程称为垃圾回收。如果你认为不再需要某个对象，可以显式地给该对象变量赋null值，让它被JVM自动回收。  </p>
-<h3 id="静态-非静态变量、常量和静态-非静态方法"><a href="#静态-非静态变量、常量和静态-非静态方法" class="headerlink" title="静态/非静态变量、常量和静态/非静态方法"></a>静态/非静态变量、常量和静态/非静态方法</h3><p>静态变量：又称类变量，是由一个类的所有实例共享，变量值存储在一个公共内存地址，描述类的对象的公共属性，不依赖于具体对象的变量。用关键字static表示。<br>非静态变量：又称实例变量，是依赖于具体对象的变量，变量值存储在特定对象的内存地址。<br>常量：类的所有对象共享且不可变的量，用static final修饰，final决定了其不可变性，static决定了它不依赖于具体对象，可以不实例化直接通过类名调用。<br>静态方法：无需创建类实例就可以调用的方法，不依赖于具体对象，用关键字static表示,其中main方法也是静态方法。<br>非静态方法：又称实例方法，是依赖于具体对象的方法。<br>关系：<br>静态数据域或方法既可以通过类访问，也可以通过对象访问;非静态数据域或方法只能通过对象访问(但为了便于程序可读性，建议用类名调用静态成员，用对象名调用非静态成员)。<br>静态方法只能访问静态数据域，非静态方法可以访问非静态数据域和静态数据域。   </p>
+<h3 id="静态-非静态变量、常量和静态-非静态方法"><a href="#静态-非静态变量、常量和静态-非静态方法" class="headerlink" title="静态/非静态变量、常量和静态/非静态方法"></a>静态/非静态变量、常量和静态/非静态方法</h3><p>静态变量：又称类变量，是由一个类的所有实例共享，变量值存储在一个公共内存地址，描述类的对象的公共属性，不依赖于具体对象的变量。用关键字static表示。不要从构造器中传入参数来初始化静态域，最好使用set方法改变静态数据域。<br>非静态变量：又称实例变量，是依赖于具体对象的变量，变量值存储在特定对象的内存地址。<br>常量：类的所有对象共享且不可变的量，用static final修饰，final决定了其不可变性，static决定了它不依赖于具体对象，可以不实例化直接通过类名调用。<br>静态方法：无需创建类实例就可以调用的方法，不依赖于具体对象，用关键字static表示,其中main方法也是静态方法。<br>非静态方法：又称实例方法，是依赖于具体对象的方法。<br>关系：<br>静态数据域或方法既可以通过类访问，也可以通过对象访问;非静态数据域或方法只能通过对象访问(但为了便于程序可读性，建议用类名调用静态成员，用对象名调用非静态成员)。<br>静态方法只能访问静态数据域，非静态方法可以访问非静态数据域和静态数据域。   </p>
 <h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>静态方法还有另外一种常见的用途。类似LocalDate和NumberFormat的类使用静态工厂方法来构造对象。比如NumberFormat使用如下工厂方法生成不同风格的格式化对象：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NumberFormat currencyFormatter = NumberFormat.gerCurrencyInstance();  </div><div class="line">NumberFormat percentFormatter = NumberFormat.gerPercentInstance();  </div><div class="line"><span class="keyword">double</span> x = <span class="number">0.1</span>;  </div><div class="line">System.out.println(currencyFormatter.format(x));<span class="comment">// prints $0.10</span></div><div class="line">System.out.println(percentFormatter.format(x));<span class="comment">//prints 10%</span></div></pre></td></tr></table></figure></p>
 <p>使用静态工厂方法的原因主要有两个：<br>1.无法命名构造器。构造器名和类名必须相同，但NumberFormat希望得到的不同实例拥有不同名字<br>2.当使用构造器时，无法改变所构造的对象类型。而Factory方法将返回一个DecimalFromat类对象，这是NumberFormat的子类</p>
 <h3 id="可见性修饰符"><a href="#可见性修饰符" class="headerlink" title="可见性修饰符"></a>可见性修饰符</h3><p>public<br>修饰的成员可以在任何范围内直接访问，只是一种最宽松的访问控制等级。需要注意的，所谓的直接访问仍需要先创建或获得一个相应类的对象然后才可以使用”对象名.成员“的方式访问其属性或调用其方法，但是出于信息封装和隐藏的需要一般不提倡把成员声明为public的，而构造方法和需要外界直接调用的普通方法则适合声明为public</p>
@@ -453,8 +453,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/11/动态规划之区间dp/" rel="next" title="动态规划之区间dp">
-                <i class="fa fa-chevron-left"></i> 动态规划之区间dp
+              <a href="/2017/10/11/算法学习之区间dp/" rel="next" title="算法学习之区间dp">
+                <i class="fa fa-chevron-left"></i> 算法学习之区间dp
               </a>
             
           </div>
@@ -573,7 +573,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
