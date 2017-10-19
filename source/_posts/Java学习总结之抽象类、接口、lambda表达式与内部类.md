@@ -1,0 +1,449 @@
+---
+title: Java学习总结之抽象类、接口、lambda表达式与内部类
+date: 2017-10-16 08:52:06
+tags: Java
+---
+### 抽象类  
+在继承的层次结构中，每个新子类都使类变得越来越明确具体。如果从一个子类追溯到父类，类就会变得更通用和抽象。类的设计应该确保父类包含它子类的共同特征。**如果一个父类设计得非常抽象，以至于它没有任何具体的实例，这样的类称为抽象类，使用abstract关键字修饰。抽象类定义了相公子类的共同行为。**  
+### 抽象方法  
+如果一个方法非常抽象，只定义了方法，没有提供方法的具体实现，那么我们把它定义为一个抽象方法，它的具体实现由子类提供，即子类覆盖抽象方法提供方法体。  
+抽象方法由abstract关键字修饰，只有方法头，没有花括号和方法体，以分号结尾。比如一个GeometricObject类定义了一个名为getArea的抽象方法，即`public abstract double getArea();` 
+
+### 几点说明  
+1.抽象方法应该定义为public，以便子类进行重写。  
+2.抽象类的构造器应该定义为protected，因为抽象类不能通过new直接创建实例，其构造器只被子类调用。创建一个具体子类的实例时，它的父类的构造器被调用以初始化父类中定义的数据域。  
+3.一个包含抽象方法的类必须定义为抽象类，一个不包含抽象方法的类也可以定义为抽象类(如果不想让某类创建实例，可以把它定义为抽象类)  
+4.如果子类继承抽象类时没有覆盖其所有的抽象方法，即子类中仍有抽象方法，子类也应该定义为抽象的  
+5.抽象方法是非静态的  
+6.子类可以覆盖父类的方法并将它定义为abstract,这种情况很少见，但它在当父类方法实现在子类中变得无效时是很有用的，在这种情况下，子类必须定义为abstract  
+7.即使子类的父类是具体的，这个子类也可以是抽象的。例如，Object是具体的，但它的子类GeometricObject是抽象的。  
+8.不能使用new操作符从一个抽象类创建一个实例，但是抽象类可以用作一种数据类型。下面的语句创建一个GeometricObject类型的数组是正确的：`GeometricObject[] objects = new GeometricObject[10];`然后可以创建一个具体子类的实例并把它的引用赋给数组，如：`Objects[0] = new Circle();`
+
+### 接口  
+接口在很多方面都与抽象类很相似，但它的目的是指明**相关或者不相关类**的多个对象的共同行为，属性成员都是**公共静态常量**，成员方法都是**公共抽象方法**。例如，使用正确的接口，可以指明这些对象是可比较的、可克隆的。为了区分接口和类，Java采用Interface关键字定义接口。在一个java文件内，只能有一个public类或一个public接口，即public类和public接口不能同文件共存。接口没有构造器，没有实例域，也不能使用new操作符创建实例。接口没有构造器的原因有三点：  
+1.构造器用于初始化成员变量，接口没有成员变量，不需要构造器  
+2.类可以实现多个接口，如果多个接口都有构造方法，不好确定构造方法链的调用次序  
+3.作为高度抽象的概念，接口不能实例化对象，也就不需要构造器  
+
+像常规类一样，每个接口都被编译为独立的字节码文件，可以作为引用变量的数据类型和类型转换的结果，可以使用instanceof关键字等。  
+类实现接口用implements关键字，一个类可以实现多个接口，用逗号隔开即可。一个接口可以继承多个接口，用extends关键字。  
+在定义接口中的数据域和方法时可以简写，例如：  
+```java
+public interface T{
+	public static final int K = 1;
+    public abstract void p();
+ }
+```
+可简写成  
+```java
+public interface T{
+	int K = 1;
+    void p();
+}
+```
+要注意接口中所有的数据域都是public static final，所有的方法都是public abstract，在定义接口中允许省略修饰符，但在子类重写方法时不可缺省public修饰符，否则方法的可见性会缩小为包内可见。  
+### 静态方法
+从Java SE 8开始，允许在接口中增加静态方法，理论上讲是可以的，但这有违于接口作为抽象规范的初衷。  
+### 默认方法
+可以为接口方法提供一个默认实现，用default修饰符标记，这样子类无需重写这个方法也能得到一个接口的默认实现。例如：  
+```java
+public interface Collection
+{
+	int size();
+    default boolean isEmpty()
+    {
+    	return size() == 0;
+    }
+}
+
+```
+这样实现Collection的程序员就不用操心实现isEmpty方法了。  
+默认方法的一个重要用法是**“接口演化”**。以Collection接口为例，这个接口作为Java的一部分已经很多年了，假设很久以前定义了一个实现Collection接口的类Bag。后来在Collection接口中增加了一个stream方法，假设stream方法不是一个默认方法，那么Bag类将不能编译，因为它没有实现这个新方法。如果不重新编译这个类，而是使用原先包含这个类的JAR文件，这个类仍能正常加载，正常构造实例，但如果在一个Bag实例上调用stream方法，会出现一个AbstractMethodError。**但如果把stream方法定义为默认方法就可以解决这个问题，既可以重新编译也可以使用JAR文件加载类并调用stream方法。**  
+### 解决默认方法的冲突  
+如果先在一个接口中将一个方法定义为默认方法，然后又在超类或另一个接口中定义了同样的方法，会发生冲突。解决冲突规则如下：  
+1) 超类优先。如果超类提供了一个具体方法，同名而且有相同参数类型的默认方法会被忽略。  
+2) 接口冲突。如果一个超接口提供了一个默认方法，另一个接口提供了一个同名而且参数类型(不论是否是默认参数)相同的方法，必须覆盖这个方法来解决冲突，即从中选择一个方法重写。
+### Comparable接口  
+Comparable接口定义了compareTo方法，用于比较对象。当想使用Arrays类的sort方法对对象数组进行排序时，对象所属的类必须实现了Comparable接口。  
+Comparable接口是一个带泛型的接口，定义为：  
+```java
+public interface Comparable<E>{
+	public int compareTo(E o);
+ }
+ ```
+ compareTo应该与equals保持一致，即当且仅当o1.equals(o2)为true时，o1.compareTo(o2) == 0成立。以下是compareTo方法的实现：  
+ ```java
+ class Employee implements Comparable<Employee>{
+ public int compareTo(Employee other){
+ 	return Double.compare(salary,other.salary);
+    }
+ }
+ ```
+ **在比较浮点数时可以使用Double的静态方法compare,这样就不必担心溢出或精度损失，类似的还有Integer.compare方法等**  
+ **继承过程中的compareTo，如果由子类决定相等的概念，每个compare方法都应该在开始时检测：`if(getClass() != other.getClass()) throw new ClassCastException()`**：**如果父类决定相等的概念，应该在超类中提供一个compareTo方法，并将这个方法声明为final。**  
+ 
+ ### Comparator接口  
+ Comparator接口意为"比较器"接口，是一个泛型接口，可用于自定义排序规则和大小比较等。要进行自定义排序，Arrays.sort方法有一个重载版本，需要提供一个数组和一个比较器作为参数，比较器是实现了Comparator接口的类的实例。接口定义为：  
+ ```java
+ public interface Comparator<T>
+ {
+ 	int compare(T first,T second);
+ }
+ ```
+ 如果要按长度比较字符串，由于String是按字典序比较字符串，肯定不能让String类用两种方法实现compareTo方法 —— 况且String类也不由我们修改。此时可以定义如下实现Comparator<String>的类：  
+ ```java
+ class lengthComparator implements Comparator<String>
+ {
+ 	public int compare(String first,String second){
+    	return first.length() - second.length();
+    }
+ }
+ ```  
+ 因为要调用compare方法，所以具体比较大小和排序时都要创建一个lengthComparator的实例：  
+ **大小比较**
+ ```java
+ Comparator<String> comp = new LengthComparator();
+ if(comp.compare(words[i],words[j]) > 0) ...
+ ```
+ **自定义排序**  
+ ```java
+ String[] friends = {"Peter","Paul","Mary"};
+ Arrays.sort(friends,new LengthComparator());
+ ```
+ ### Cloneable接口  
+ 首先，我们考虑为一个包含对象引用的变量建立副本会发生什么，例如：  
+ ```java
+ Employee original = new Employee("John Public",50000);
+ Employee copy = original;
+ copy.ratseSalary(10); //original的salary也被改变
+ ```
+ 原变量和副本都会指向同一个对象，这说明，任何一个变量的改变都会影响到另一个变量。如果有一个对象original，希望创建一个对象copy使得其初始状态与original相同，但是之后它们各自回有自己不同的状态，这种情况下就可以使用克隆，例如：  
+```java
+Employee copy = original.clone();
+copy.raiseSalary(10); //original的salary不会被改变
+```  
+Object类中的clone方法将原始对象的每个数据域复制给目标对象，如果一个数据域是基本数据类型，复制的就是它的值，如果是引用类型，复制的就是它的引用，这种克隆称为**浅复制**,即original != copy,但original.hireDay == copy.hireDay。这有时是不符合我们要求的，我们不希望在改变某个对象的引用类型的数据域时影响到另一个对象，这时我们需要**深复制**,即如果数据域是引用类型，复制的是对象的内容而不是引用。  
+无论是**浅复制**还是**深复制**，我们都需要先实现Cloneable接口，否则会产生一个必检异常。Cloneable接口的定义是：  
+```java
+public interface Cloneable{
+
+}
+```
+我们发现这个接口是空的，一个带空体的接口称为标记接口。一个标记接口既不包括常量也不包括方法，它用来表示一个类拥有的某些特定的属性，其惟一的作用是允许在类型查询中使用instanceof关键字。但如果一个请求克隆的对象不实现这个接口，会产生CloneNotSupportedException，即使clone的默认(浅拷贝)实现能够满足要求，还是要实现这一接口。在这里，Cloneable接口的出现与接口的正常使用并没有关系。具体来说，它没有指定clone方法，这个方法是从Object类继承的，这个接口只是作为一个标记。  
+
+Object类中提供的原始clone方法的方法头是`protected native Object clone() throws CloneNotSupportedException`,关键字native表明这个方法不是用Java写的，但它是JVM针对自身平台实现的。关键字protected限定方法只能在同一个包内或在其子类中访问。由于这个原因：**必须在要实现克隆的子类中覆盖这个方法并把可见性修饰父改为public**。  
+下面给出一个浅复制的例子：  
+```java
+class Employee implements Cloneable
+{
+	public Employee clone() throws CloneNotSupportedException
+    {
+    return (Employee) super.clone();
+    }
+    . . .
+}
+```
+下面给出一个深复制的例子：
+ ```java
+class Employee implements Cloneable
+{
+	public Employee clone() throws CloneNotSupportedException
+    {
+     . . .
+     Employee cloned = (Employee) super.clone;
+     cloned.hireDay = (Date)hireDay.clone();
+     return cloned;
+    }
+}
+```
+我们注意到Object类的clone方法的返回值类型是Object，而Employee类的clone方法返回值类型是Employee，这叫做协变返回类型，即**子类在重写父类方法时可以返回父类返回值类型的子类型**。clone方法声明异常也可以改成捕获异常，如：  
+```java
+public Employee clone()
+{
+	try
+	{
+		Employee cloned = (Employee) super.clone();
+        . . .
+    }
+    catch(CloneNotSupportedException e){ return null;}
+ }
+```
+### 复制数组的三种方法  
+1.申请一个新数组，遍历原数组逐一复制元素  
+2.使用System类的静态方法arraycopy  
+3.使用`数组对象.clone`返回一个数组克隆的引用  
+
+### 接口和抽象类  
+区别：  
+1.接口所有的变量必须是public static final;抽象类的变量无限制  
+2.接口没有构造方法，不能用new操作符实例化;抽象类有构造方法，由子类通过构造方法链调用，不能用new操作符实例化  
+3.接口所有方法必须是公共抽象实例方法(Java SE 8开始允许定义静态方法)，抽象类无限制  
+4.一个类只可以继承一个父类，但可以实现多个接口
+5.所有的类有一个共同的根Object类，接口没有共同的根  
+6.抽象类和子类的关系应该是强的“是一种”关系(strong is-a relationship),而接口和子类的关系是弱的"是一种"关系(weak is-a relationship)。接口比抽象类更灵活，因为实现接口的子类只需要具有统一的行为即可，不需要都属于同一个类型的类。
+
+ ### 接口与回调  
+ 回调是一种常见的程序设计模式。在这种模式中，可以指出某个特定事件发生时应该采取的动作。例如，可以指出在按下按钮或选择某个菜单项时应该采取什么行动。
+ ### 内部类  
+ 内部类，或者称为嵌套类，是一个定义在另一个类范围中的类。一个内部类可以如常规类一样使用。通常，在一个类只被它的外部类所使用的时候，才将它定义为内部类，内部类机制主要用于设计具有互相协作关系的类集合。比如：  
+ 
+ ```java
+ //OuterClass.java: inner class demo
+ public class OuterClass {
+    private int data;
+    /** A method in the outer class */
+    public void m(){
+    //Do something
+    }
+    // An inner class
+    class InnerClass {
+    /** A method in the inner class */
+    public void mi(){
+    	data++;
+        m();
+      }
+    }
+  }
+ ```
+ 
+ 为什么要使用内部类，主要原因有三：  
+ 1.内部类可以访问包含它的外部类的所有数据域(包括私有数据域)和方法，没有必要将外部类对象的引用传递给内部类的构造方法,内部类有一个指向外部类对象的隐式引用，如果显式写出，外部类的引用是OuterClass.this  
+ 2.内部类可以对同一个包中的其他类隐藏起来  
+ 3.当想要定义一个回调函数且不想编写大量代码时，使用匿名内部类比较便捷  
+ 
+ 内部类具有一下特征：  
+ 1) 一个内部类被编译成一个名为`OuterClassName$InnerClassName`的类。例如，一个定义在Test类中的内部类A被编译成`Test$A.class`  
+ 2) 一个内部类可以使用可见性修饰符(public、private、protected、default)所定义，和应用于一个类中成员的可见性规则一样  
+ 3) 一个内部类可以被定义为static，一个static的内部类可以使用外部类的名字访问,一个static内部类不能访问外部类中的非静态成员  
+ 4) 内部类对象通常在外部类中创建，但是你也可以从另外一个类中来创建一个内部类的对象。如果内部类是非静态的，你必须先创建一个外部类的实例，然后使用下面的语法创建一个内部类对象：`OuterClass.InnerClass innerObject = outerObject.new InnerClass();` 如果内部类是静态的，使用下面语法来创建一个内部类对象:`OuterClass.InnerClass innerObject = new OuterClass.InnerClass();`  
+ 5) 内部类所有的静态域必须是final修饰的**静态常量**,不能有静态变量，也不能有静态方法
+ 
+ 一个简单的内部类的用途是将相互依赖的类结合到一个主类中，这样做减少了源文件的数量(因为非内部类如果用public修饰必须放在不同的源文件中，而内部类可放在同一源文件中)，这样也使得类文件容易组织，因为它们都将主类名作为前缀。另外一个内部类的实际用途是避免类名冲突。  
+ 
+ 内部类对于定义处理器类非常有用，一个处理器类被设计为针对一个GUI组件创建一个处理器对象(比如，一个按钮)。处理器类不会被其他应用所共享，所以将它定义在主类里面作为一个内部类使用是恰如其分的。  
+ 
+ 下面给出一个使用内部类进行简单事件处理的例子：  
+ ```java
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+public class HandleEvent extends Application {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		HBox pane = new HBox(10);
+		pane.setAlignment(Pos.CENTER);
+		Button btOK = new Button("OK");
+		OKHandlerClass handler1 = new OKHandlerClass();
+		btOK.setOnAction(handler1);
+		Button btCancel = new Button("Cancel");
+		CancelHandlerClass handler2 = new CancelHandlerClass();
+		btCancel.setOnAction(handler2);
+		pane.getChildren().addAll(btOK,btCancel);
+		
+		Scene scene = new Scene(pane,100,50);
+		primaryStage.setTitle("HandleEvent");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+
+	
+	class OKHandlerClass implements EventHandler<ActionEvent>{
+		@Override
+		public void handle(ActionEvent e) {
+			System.out.println("OK button clicked");
+		}
+	}
+	
+	class CancelHandlerClass implements EventHandler<ActionEvent>{
+		@Override
+		public void handle(ActionEvent e) {
+			System.out.println("Cancel button clicked");
+		}
+	}
+	public static void main(String[] args) {
+		Application.launch(args);
+
+	}
+
+}
+ ```  
+ 
+广泛意义上的内部类一般来说包括四种：**成员内部类**、**局部内部类**、**匿名内部类**和**静态内部类**。下面就先来了解一下这四种内部类的用法。  
+ ### 成员内部类  
+ 　成员内部类是最普通的内部类，它的定义为位于另一个类的内部，形如下面的形式：  
+  ```java
+  class Circle {
+    private double radius = 0;
+    public static int count =1;
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+     
+    class Draw {     //内部类
+        public void drawSahpe() {
+            System.out.println(radius);  //外部类的private成员
+            System.out.println(count);   //外部类的静态成员
+        }
+    }
+}
+  ```  
+  这样看起来，类Draw像是类Circle的一个成员，Circle称为外部类。成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。  
+  　不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：`外部类.this.成员变量 外部类.this.成员方法`
+ ### 局部内部类  
+ 可以把内部类定义在一个方法中，称为局部内部类。**局部内部类就像是方法里面的一个局部变量一样，不能有public、protected、private以及static修饰符。它的作用域被限定在声明这个局部类的块中。**局部类有一个优势，即对外部世界完全隐藏起来。即使外部类中的其他代码也不能访问它。除了其所在的方法之外，没有任何方法知道该局部类的存在。**局部内部类只能访问被final修饰的局部变量。**  
+ ```java
+ class People{
+    public People() {
+         
+    }
+}
+ 
+class Man{
+    public Man(){
+         
+    }
+     
+    public People getWoman(){
+        class Woman extends People{   //局部内部类
+            int age =0;
+        }
+        return new Woman();
+    }
+}
+ ```
+ ### 匿名内部类  
+ 一个匿名内部类是一个没有名字的内部类，其语法如下：  
+ ```java
+ new SuperClassName/InterfaceName(){
+ 	//implement or override methods in superclass or interface
+    
+     //Other methods if necessary
+  }
+ ```  
+ 其含义是**创建一个继承自SuperClass或实现Interface的类的实例，并在类块内重写父类或接口的抽象方法**，应该将匿名内部类理解成**一个匿名子类的匿名对象**,而不是理解成一个类。  
+ 
+ 匿名内部类有如下特征：  
+ 1.没有可见性修饰符  
+ 2.没有构造方法(因为没有名字,无法命名构造方法),但可以调用父类的构造方法，即`new SuperClassName()`调用父类无参构造方法，`new SuperClassName(args1,...)`调用父类有参构造方法。如果实现的是接口，则不能有任何参数，但是小括号仍然不可缺省  
+ 3.必须总是从一个父类继承或者实现一个接口，但是它不能有显式的extends或者implements子句  
+ 4.必须实现父类或接口中的所有抽象方法  
+ 5.一个匿名内部类被编译成一个名为OuterClassName$n.class的类，例如：如果外部类Test有两个匿名内部类，分别被编译成Test$1.class和Test$2.class  
+ 
+ **应用一**  
+ 下面的技巧称为**"双括号初始化"**，这里利用了内部类语法。假设你想构造一个数组列表，并将它传递到一个方法。  
+ ```java
+ ArrayList<String> friends = new ArrayList<String>();
+ friends.add("Harry");
+ friends.add("Tony");
+ invite(friends);
+ ```  
+ 如果不再需要这个数组列表，最好让它作为一个匿名列表。语法如下：  
+ ```java
+ invite(new ArrayList<String> 
+ {
+ 	{
+    	add("Harry");
+        add("Tony");
+     }
+});
+ ```
+ 注意这里的双括号，外括号建立了一个ArrayList的匿名子表，内括号则是一个对象构造块。  
+   
+ **应用二**  
+ 生成日志或调试消息时，通常希望包含当前类的类名，如：  
+ `System.err.println("Something awful happened in " + getClass());`   
+ 不过这对于静态方法并不凑效，因为调用getClass()调用的是this.getClass(),但静态方法里没有this，所以应该使用下面的表达式：`new Object(){}.getClass().getEnclosingClass()`,在这里，new Object(){} 会建立Object的一个匿名子类的匿名对象，getEnclosingClass则得到其外围类，也就是包含这个静态方法的类 
+ 
+ ### 静态内部类  
+ 有时候，使用内部类只是为了把一个类隐藏在另外一个类的内部，并不需要内部类引用外围类的对象。为此，可以为内部类加上static关键字声明为静态内部类，以便取消产生的引用。与常规内部类不同，静态内部类可以有**静态变量**和**静态方法**。  
+ 下面是一个使用静态内部类的典型例子。考虑一下计算一个数组中最大值和最小值的问题，当然，可以编写两个方法，一个计算最大值，一个计算最小值，在调用这两个方法的时候，数组被遍历两次，而如果数组只被遍历一次就可以计算出最大值和最小值，那么效率就大大提高了。通过一个方法就计算出最大值和最小值：这个方法需要返回两个数（max 和 min），为此可以定义一个Pair类来封装这种数据结构，但是Pair是个非常大众的名字，可能在其他地方定义过，会发生名字冲突，此时可以将Pair定义为ArrayAlg类的内部类ArrayAlg.Pair。又因为Pair没有必要访问外围类ArrayAlg的数据域或方法，应该定义为静态内部类。  
+ 下面给出代码：  
+ ```java
+ 
+public class ArrayAlg{
+    //Pair类，起数据封装的作用
+    public static class Pair{
+        private double first;
+        private double second;
+
+        public Pair(double f, double s){
+            first = f;
+            second = s;
+        }
+
+        public double getFirst(){
+            return first;
+        }
+
+        public double getSecond(){
+            return second;
+        }
+    }
+
+    public static Pair maxmin(double[] values){
+        double min = Double.POSITIVE_INFNITY;
+        double max = Double.NEGATIVE_INFNITY;
+
+        for(double x : values){
+            if(x<min) min = x;
+            if(x>max) max = x;
+        }
+        return new Pair(max,min);
+    }
+
+    public static void main(String[] args){
+        Test te = new Test();
+        double[] teArgs = new double[]{2.13,100.0,11.2,34.5,67.1,88.9};
+        Pair res = te.maxmin(teArgs);
+        System.out.println("max = "+res.getFirst());
+        System.out.println("min = "+res.getSecond());
+    }
+}
+ ```  
+ 特别注意：代码中的Pair类如果没有声明为static，就不能在静态方法minmax中构造Pair的实例，编译器会给出错误报告：没有可用的隐式ArrayAlg类型对象初始化内部类对象  
+ 
+ ### lambda表达式 
+ lambda表达式可以被看作使用精简语法的匿名内部类，编译器对待一个lambda表达式如同它是从一个匿名内部类创建的对象，其类型是匿名内部类所实现接口的类型。它是一种表示可以在将来某个时间点执行的代码块的简洁方法。使用lambda表达式，可以用一种精简的方式表示使用回调或变量行为的代码。如果要编译器理解lambda表达式，其代替的匿名内部类实现的接口必须只包含一个抽象方法，这样的接口被称为函数式接口(功能接口、单抽象方法接口）。  
+ 一个lambda表达式的基础语法是(expression只有一条语句，不用花括号，也不用分号结尾)  
+ ```java
+ (type1 param1, type2 param2, ...) -> expression
+ ```
+ 或者(statements是多条语句，要花括号，每条语句之后要分号结尾)  
+ ```java
+  (type1 param1, type2 param2, ...) -> {statements;}
+ ```
+ 一个参数的数据类型既可以显式声明，也可以由编译器隐式推断。如果只有一个参数，并且没有显式的数据类型，圆括号可以被省略。如：  
+ ```java
+ e -> {
+ // Code for processing event e
+ }
+ ```  
+ 即使lambda表达式没有参数，也要提供空括号，就像无参数方法一样：  
+ ```java
+ () -> {for(int i = 100;i >=0 ;i--) System.out.println(i);}
+ ```  
+  无需指定lambda表达式的返回类型，编译器会由上下文推断，例如：  
+ ```java
+ (String first,String second) -> first.length() - second.length()
+ ```
+ 可以在需要int类型结果的上下文中使用  
+ 如果一个lambda表达式只在某些分支上返回一个值，而在另外一些分支不返回值，是不合法的。例如：  
+ ```java
+ (int x) -> {if(x >= 0) return 1;}
+ ```
+ 
+ ### 从常规内部类——匿名内部类——lambda表达式看演化
+ ### 代理  
+ 见大牛博客  
+ * [Java的三种代理模式](http://www.cnblogs.com/cenyu/p/6289209.html)  
+ * [java中Proxy(代理与动态代理)](http://blog.csdn.net/pangqiandou/article/details/52964066)  
+ * [java静态代理和动态代理](http://layznet.iteye.com/blog/1182924)  
+ * [深入理解Java反射](http://www.cnblogs.com/luoxn28/p/5686794.html)
+

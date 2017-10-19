@@ -116,8 +116,9 @@ Class<People> peopleClass = people.getClass();
 **注意：  
 　　1.一个Class对象实际上表现的是一个类型，而这个类型未必一定是一种类。例如，int不是类，但int.class是一个Class对象  
 　　2.Class类是一个泛型类，但有时候我们不能提前确定class对象的类型,就可以用`Class<?>`来代替，即上面代码中的`Class<People> peopleClass`可以写成`Class<?> peopleClass`  
-　　3.虚拟机为每个类型管理一个Class对象，可以用 == 运算符实现两个类对象比较的操作  
-　　4.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，比如:**
+　　3.虚拟机为每个类型管理一个Class对象，可以用 == 运算符实现两个类对象比较的操作   
+　　4.getClass()方法返回的是对象实际类型的class对象，而不是声明类型的class对象  
+　　5.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，比如:**
 
 ```java
 String s = "java.util.Random";
@@ -421,3 +422,11 @@ Method square =         			MethodTableTest.class.getMethod("square",double.class
  1.invoke方法的参数和返回值必须是Object类型，意味着必须进行多次类型转换，这样会使编译器错过检查代码的机会，等到测试阶段才发现错误，找到并改正会更加困难  
  2.通过反射调用方法比直接调用方法要明显慢一些
 
+**特别重申：**建议Java开发者不要使用Method对象的回调功能，使用接口进行回调会使代码的执行速度更快，更易于维护。    
+  
+ 推荐博客：  
+* [Java核心技术点之反射](http://www.cnblogs.com/absfree/p/5277665.html)  
+* [深入理解Java反射](http://www.cnblogs.com/luoxn28/p/5686794.html)
+* [Java中的反射机制](http://blog.csdn.net/liujiahan629629/article/details/18013523)
+* [Java反射教程](http://www.importnew.com/9078.html)
+* [Java反射详解](http://www.cnblogs.com/rollenholt/archive/2011/09/02/2163758.html)
