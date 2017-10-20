@@ -98,7 +98,7 @@ public interface Comparable<E>{
     	return first.length() - second.length();
     }
  }
- ```  
+ ```
  因为要调用compare方法，所以具体比较大小和排序时都要创建一个lengthComparator的实例：  
  **大小比较**
  ```java
@@ -121,7 +121,7 @@ public interface Comparable<E>{
 ```java
 Employee copy = original.clone();
 copy.raiseSalary(10); //original的salary不会被改变
-```  
+```
 Object类中的clone方法将原始对象的每个数据域复制给目标对象，如果一个数据域是基本数据类型，复制的就是它的值，如果是引用类型，复制的就是它的引用，这种克隆称为**浅复制**,即original != copy,但original.hireDay == copy.hireDay。这有时是不符合我们要求的，我们不希望在改变某个对象的引用类型的数据域时影响到另一个对象，这时我们需要**深复制**,即如果数据域是引用类型，复制的是对象的内容而不是引用。  
 无论是**浅复制**还是**深复制**，我们都需要先实现Cloneable接口，否则会产生一个必检异常。Cloneable接口的定义是：  
 ```java
@@ -221,60 +221,7 @@ public Employee clone()
  一个简单的内部类的用途是将相互依赖的类结合到一个主类中，这样做减少了源文件的数量(因为非内部类如果用public修饰必须放在不同的源文件中，而内部类可放在同一源文件中)，这样也使得类文件容易组织，因为它们都将主类名作为前缀。另外一个内部类的实际用途是避免类名冲突。  
  
  内部类对于定义处理器类非常有用，一个处理器类被设计为针对一个GUI组件创建一个处理器对象(比如，一个按钮)。处理器类不会被其他应用所共享，所以将它定义在主类里面作为一个内部类使用是恰如其分的。  
- 
- 下面给出一个使用内部类进行简单事件处理的例子：  
- ```java
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-
-public class HandleEvent extends Application {
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		HBox pane = new HBox(10);
-		pane.setAlignment(Pos.CENTER);
-		Button btOK = new Button("OK");
-		OKHandlerClass handler1 = new OKHandlerClass();
-		btOK.setOnAction(handler1);
-		Button btCancel = new Button("Cancel");
-		CancelHandlerClass handler2 = new CancelHandlerClass();
-		btCancel.setOnAction(handler2);
-		pane.getChildren().addAll(btOK,btCancel);
-		
-		Scene scene = new Scene(pane,100,50);
-		primaryStage.setTitle("HandleEvent");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
-
-	
-	class OKHandlerClass implements EventHandler<ActionEvent>{
-		@Override
-		public void handle(ActionEvent e) {
-			System.out.println("OK button clicked");
-		}
-	}
-	
-	class CancelHandlerClass implements EventHandler<ActionEvent>{
-		@Override
-		public void handle(ActionEvent e) {
-			System.out.println("Cancel button clicked");
-		}
-	}
-	public static void main(String[] args) {
-		Application.launch(args);
-
-	}
-
-}
- ```  
- 
+  
 广泛意义上的内部类一般来说包括四种：**成员内部类**、**局部内部类**、**匿名内部类**和**静态内部类**。下面就先来了解一下这四种内部类的用法。  
  ### 成员内部类  
  　成员内部类是最普通的内部类，它的定义为位于另一个类的内部，形如下面的形式：  
@@ -293,7 +240,7 @@ public class HandleEvent extends Application {
         }
     }
 }
-  ```  
+  ```
   这样看起来，类Draw像是类Circle的一个成员，Circle称为外部类。成员内部类可以无条件访问外部类的所有成员属性和成员方法（包括private成员和静态成员）。  
   　不过要注意的是，当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象，即默认情况下访问的是成员内部类的成员。如果要访问外部类的同名成员，需要以下面的形式进行访问：`外部类.this.成员变量 外部类.this.成员方法`
  ### 局部内部类  
@@ -326,7 +273,7 @@ class Man{
     
      //Other methods if necessary
   }
- ```  
+ ```
  其含义是**创建一个继承自SuperClass或实现Interface的类的实例，并在类块内重写父类或接口的抽象方法**，应该将匿名内部类理解成**一个匿名子类的匿名对象**,而不是理解成一个类。  
  
  匿名内部类有如下特征：  
@@ -343,7 +290,7 @@ class Man{
  friends.add("Harry");
  friends.add("Tony");
  invite(friends);
- ```  
+ ```
  如果不再需要这个数组列表，最好让它作为一个匿名列表。语法如下：  
  ```java
  invite(new ArrayList<String> 
@@ -406,12 +353,12 @@ public class ArrayAlg{
         System.out.println("min = "+res.getSecond());
     }
 }
- ```  
+ ```
  特别注意：代码中的Pair类如果没有声明为static，就不能在静态方法minmax中构造Pair的实例，编译器会给出错误报告：没有可用的隐式ArrayAlg类型对象初始化内部类对象  
  
  ### lambda表达式 
- lambda表达式可以被看作使用精简语法的匿名内部类，编译器对待一个lambda表达式如同它是从一个匿名内部类创建的对象，其类型是匿名内部类所实现接口的类型。它是一种表示可以在将来某个时间点执行的代码块的简洁方法。使用lambda表达式，可以用一种精简的方式表示使用回调或变量行为的代码。如果要编译器理解lambda表达式，其代替的匿名内部类实现的接口必须只包含一个抽象方法，这样的接口被称为函数式接口(功能接口、单抽象方法接口）。  
- 一个lambda表达式的基础语法是(expression只有一条语句，不用花括号，也不用分号结尾)  
+ lambda表达式可以被看作使用精简语法的匿名内部类，编译器对待一个lambda表达式如同它是从一个匿名内部类创建的对象。它是一种表示可以在将来某个时间点执行的代码块的简洁方法。使用lambda表达式，可以用一种精简的方式表示使用回调或变量行为的代码。如果要编译器理解lambda表达式，其代替的匿名内部类实现的接口必须只包含一个抽象方法，这样的接口被称为函数式接口(功能接口、单抽象方法接口）。在底层，接受lambda表达式的方法会接受实现某函数式接口的类的对象，并在这个对象上调用接口的方法，所以可以把lambda表达式赋给函数式接口(lambda表达式实际是一个实现了该函数式接口的类的类型，这里用到了多态)，不能把lambda表达式赋给Object变量，因为Object不是一个函数式接口。  
+ 一个lambda表达式就是一个代码块，以及必须传入代码的变量规范。其基础语法是(expression只有一条语句，不用花括号，也不用分号结尾)  
  ```java
  (type1 param1, type2 param2, ...) -> expression
  ```
@@ -424,22 +371,260 @@ public class ArrayAlg{
  e -> {
  // Code for processing event e
  }
- ```  
+ ```
  即使lambda表达式没有参数，也要提供空括号，就像无参数方法一样：  
  ```java
  () -> {for(int i = 100;i >=0 ;i--) System.out.println(i);}
- ```  
+ ```
   无需指定lambda表达式的返回类型，编译器会由上下文推断，例如：  
  ```java
  (String first,String second) -> first.length() - second.length()
  ```
  可以在需要int类型结果的上下文中使用  
+ 
  如果一个lambda表达式只在某些分支上返回一个值，而在另外一些分支不返回值，是不合法的。例如：  
  ```java
  (int x) -> {if(x >= 0) return 1;}
  ```
+   
+ Comparator接口是一个函数式接口，可以用lambda表达式实现自定义排序的简化：  
+ ```java
+ Arrays.sort(words,(first,second) 
+ -> first.length() - second.length());
+ ```
  
- ### 从常规内部类——匿名内部类——lambda表达式看演化
+ ### 函数式接口  
+ 对于只有一个抽象方法的接口，需要这种接口的对象时，就可以提供一个lambda表达式，这种接口称为函数式接口。  
+ 如果自己设计了一个函数式接口，可以用@FunctionalInterface注解来标记这个接口，这样做有两个好处：  
+ 1.可以在你无意中增加一个非抽象方法时产生编译错误  
+ 2.javadoc页里会指出你的接口是一个函数式接口
+ 
+ ### 方法引用  
+ 有时，可能已经有现成的方法可以完成你想要传递到其他代码的某个动作。例如，假设你希望只要出现一个定时器事件就打印这个事件对象，可以调用：  
+ ```java
+ Timer t = new Timer(1000,event -> System.out.println(event));
+ ```
+ 可以直接把println方法传递到Timer的构造器：  
+ ```java
+ Timer t = new Timer(1000,System.out::println);
+ ```
+ 表达式System.out::println是一个方法引用，它等价于lambda表达式`x -> System.out.println(x)`  
+ 我们再看一个例子，假设要对字符串排序，而不考虑字母的大小写，可以调用`Arrays.sort(strings,String::compareToIgnoreCase);`
+ 
+ 方法引用主要有三种情况：  
+ * object::instanceMethod
+ * Class::staticMethod  
+ * Class::instanceMethod    
+ 
+对于前两种情况，方法引用等价于提供方法参数的lambda表达式。比如：System.out::println等价于x -> System.out.println(x)，Math::pow等价于(x,y) -> Math.pow(x,y)。第三种情况的第一个参数会称成为调用方法的目标对象，其余参数成为方法参数，比如：String::compareToIgnoreCase等价于(x,y) -> x.compareToIgnoreCase(y)  
+可以在方法里使用this和super,this::equals等同于x -> this.equals(x),super::greet等同于() -> super.greet()  
+
+类似于lambda表达式，方法引用不能独立存在，总是会转换为函数式接口的实例。  
+
+### 构造器引用  
+构造器引用与方法引用类似，只不过方法名为new。例如`Employee::new`是Employee构造器的一个引用。至于是哪一个构造器取决于上下文，比如`  Function<Integer,Employee> func1 = Employee :: new;`就相当于` Function<Integer,Employee> func = x -> new Employee(x);`   
+数组类型也有构造器引用，如`int[]::new`等价于lambda表达式`x -> new int[x]`  
+
+### 处理lambda表达式  
+我们之前提到，lambda表达式的重点是**延迟执行**，之所以希望以后再执行代码，有很多原因，如：  
+* 在一个单独的线程中运行代码  
+* 多次运行代码  
+* 在算法的恰当位置运行代码(例如，排序中的比较操作)  
+* 发生某种情况时执行代码(如，点击了一个按钮、数据到达等) 
+* 只在必要时才运行代码  
+
+![fail](Java学习总结之抽象类、接口、lambda表达式与内部类/1.jpg "常用函数式接口")  
+
+![fail](Java学习总结之抽象类、接口、lambda表达式与内部类/2.jpg "基本类型的函数式接口")
+
+下面来看一个简单的例子。假设你想要重复一个动作n次。将这个动作和重复次数传递给一个repeat方法：  
+```java
+repeat(10,() -> System.out.println("Hello world"));
+```
+要接受这个lambda表达式，需要选择一个函数式接口。在这里，我们可以使用Runnable接口：  
+```java
+public static void repeat(int n,Runnable action)
+{
+	for(int i = 0;i < n;i++) 
+    action.run();
+}
+```
+现在让这个例子更复杂一点，我们希望告诉这个动作它出现在那一次迭代中。为此需要选择一个合适的函数式接口，其中要包含一个方法。这个方法有一个int参数而且返回类型为void。处理int值的标准接口如下：  
+```java
+public interface IntConsumer
+{
+	void accept(int value);
+}
+```
+下面给出repeat方法的改进版本:  
+```java
+public static void repeat(int n,IntConsumer action)
+{
+	for(int i = 0;i < n;i++)  action.accept(i);
+}
+```
+可以如下调用它：  
+```java
+repeat(10,i -> System.out.println("Countdown: " + (9 - i)));
+```
+
+ 
+ 
+ ### 通过三种方式实现事件处理器  
+ 
+ #### 1.内部类  
+ ```java
+ public class HandleEvent extends Application {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		HBox pane = new HBox(10);
+		pane.setAlignment(Pos.CENTER);
+		Button btOK = new Button("OK");
+		OKHandlerClass handler1 = new OKHandlerClass();
+		btOK.setOnAction(handler1);
+		Button btCancel = new Button("Cancel");
+		CancelHandlerClass handler2 = new CancelHandlerClass();
+		btCancel.setOnAction(handler2);
+		pane.getChildren().addAll(btOK,btCancel);
+		
+		Scene scene = new Scene(pane,100,50);
+		primaryStage.setTitle("HandleEvent");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+
+	
+	class OKHandlerClass implements EventHandler<ActionEvent>{
+		@Override
+		public void handle(ActionEvent e) {
+			System.out.println("OK button clicked");
+		}
+	}
+	
+	class CancelHandlerClass implements EventHandler<ActionEvent>{
+		@Override
+		public void handle(ActionEvent e) {
+			System.out.println("Cancel button clicked");
+		}
+	}
+	public static void main(String[] args) {
+		Application.launch(args);
+
+	}
+
+}
+ ```
+ #### 2.匿名内部类  
+ ```java
+ import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+public class AnonymousHandlerDemo extends Application {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+	    HBox hBox = new HBox();
+	    hBox.setSpacing(10);
+	    hBox.setAlignment(Pos.CENTER);
+	    Button btNew = new Button("New");
+	    Button btOpen = new Button("Open");
+	    Button btSave= new Button("Save");
+	    Button btPrint = new Button("Print");
+	    hBox.getChildren().addAll(btNew,btOpen,btSave,btPrint);
+	    
+	    btNew.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent e) {
+	    		System.out.println("Process New");
+	    	}
+	    });
+	    
+	    btOpen.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent e) {
+	    		System.out.println("Process Open");
+	    	}
+	    });
+	    
+	    btSave.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent e) {
+	    		System.out.println("Process Save");
+	    	}
+	    });
+	    
+	    btPrint.setOnAction(new EventHandler<ActionEvent>() {
+	    	@Override
+	    	public void handle(ActionEvent e) {
+	    		System.out.println("Process Print");
+	    	}
+	    });
+	    
+	    Scene scene = new Scene(hBox,300,50);
+	    primaryStage.setTitle("AnonymousHandlerDemo");
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+	}
+
+	public static void main(String[] args) {
+		Application.launch(args);
+
+	}
+
+}
+ ```
+ #### 3.lambda表达式  
+ ```java
+ import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+public class LambdaHandlerDemo extends Application {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+	    HBox hBox = new HBox();
+	    hBox.setSpacing(10);
+	    hBox.setAlignment(Pos.CENTER);
+	    Button btNew = new Button("New");
+	    Button btOpen = new Button("Open");
+	    Button btSave= new Button("Save");
+	    Button btPrint = new Button("Print");
+	    hBox.getChildren().addAll(btNew,btOpen,btSave,btPrint);
+	    
+	    btNew.setOnAction((ActionEvent e)->{System.out.println("Process New");});
+	    
+	    btOpen.setOnAction((e)->{System.out.println("Process Open");});
+	    
+	    btSave.setOnAction(e->{System.out.println("Process Save");});
+	    
+	    btPrint.setOnAction(e->System.out.println("Process Print"));
+	    
+	    Scene scene = new Scene(hBox,300,50);
+	    primaryStage.setTitle("LambdaHandlerDemo");
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+	}
+
+	public static void main(String[] args) {
+		Application.launch(args);
+
+	}
+
+}
+ ```
  ### 代理  
  见大牛博客  
  * [Java的三种代理模式](http://www.cnblogs.com/cenyu/p/6289209.html)  
