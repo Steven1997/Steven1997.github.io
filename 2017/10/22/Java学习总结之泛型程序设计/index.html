@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Linux,服务器," />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -83,25 +83,18 @@
 
 
 
-<meta name="description" content="SSH是一种以安全、加密方式连接远程主机或服务器的方法。SSH服务器接受从有SSH的客户机的连接，允许操作者象在本地一样地登录系统。如果已经搭建了SSH远程登录服务，如何实现本地机和远程服务器的文件交互呢？以下操作基于远程机已经安装了SSH服务器端，如果没有安装，详细步骤见:  在Ubuntu下通过SSH连接远程服务器   (1)用SSH登录远程ubuntu主机假设远程Ubuntu主机安装了SSH">
-<meta name="keywords" content="Linux,服务器">
+<meta name="description" content="泛型程序设计泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。   类型参数的好处在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：1234567pu">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SSH远程登录实现本地机和服务器的文件传输">
-<meta property="og:url" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/index.html">
+<meta property="og:title" content="Java学习总结之泛型程序设计">
+<meta property="og:url" content="http://habitdiary.cn/2017/10/22/Java学习总结之泛型程序设计/index.html">
 <meta property="og:site_name" content="XJY&#39;s Blog">
-<meta property="og:description" content="SSH是一种以安全、加密方式连接远程主机或服务器的方法。SSH服务器接受从有SSH的客户机的连接，允许操作者象在本地一样地登录系统。如果已经搭建了SSH远程登录服务，如何实现本地机和远程服务器的文件交互呢？以下操作基于远程机已经安装了SSH服务器端，如果没有安装，详细步骤见:  在Ubuntu下通过SSH连接远程服务器   (1)用SSH登录远程ubuntu主机假设远程Ubuntu主机安装了SSH">
+<meta property="og:description" content="泛型程序设计泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。   类型参数的好处在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：1234567pu">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/1.png">
-<meta property="og:image" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/4.png">
-<meta property="og:image" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/5.png">
-<meta property="og:image" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/6.png">
-<meta property="og:image" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/2.png">
-<meta property="og:image" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/3.png">
-<meta property="og:updated_time" content="2017-10-07T08:57:11.077Z">
+<meta property="og:updated_time" content="2017-10-22T11:41:20.594Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SSH远程登录实现本地机和服务器的文件传输">
-<meta name="twitter:description" content="SSH是一种以安全、加密方式连接远程主机或服务器的方法。SSH服务器接受从有SSH的客户机的连接，允许操作者象在本地一样地登录系统。如果已经搭建了SSH远程登录服务，如何实现本地机和远程服务器的文件交互呢？以下操作基于远程机已经安装了SSH服务器端，如果没有安装，详细步骤见:  在Ubuntu下通过SSH连接远程服务器   (1)用SSH登录远程ubuntu主机假设远程Ubuntu主机安装了SSH">
-<meta name="twitter:image" content="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/1.png">
+<meta name="twitter:title" content="Java学习总结之泛型程序设计">
+<meta name="twitter:description" content="泛型程序设计泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。   类型参数的好处在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：1234567pu">
 
 
 
@@ -131,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/"/>
+  <link rel="canonical" href="http://habitdiary.cn/2017/10/22/Java学习总结之泛型程序设计/"/>
 
 
 
 
 
-  <title>SSH远程登录实现本地机和服务器的文件传输 | XJY's Blog</title>
+  <title>Java学习总结之泛型程序设计 | XJY's Blog</title>
   
 
 
@@ -308,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/">
+    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/22/Java学习总结之泛型程序设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="谢均宇">
@@ -325,7 +318,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">SSH远程登录实现本地机和服务器的文件传输</h2>
+          <h2 class="post-title" itemprop="name headline">Java学习总结之泛型程序设计</h2>
         
 
         <div class="post-meta">
@@ -337,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T15:55:41+08:00">
-                2017-10-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T09:09:10+08:00">
+                2017-10-22
               </time>
             
 
@@ -375,17 +368,41 @@
       
 
       
-        <p>SSH是一种以安全、加密方式连接远程主机或服务器的方法。SSH服务器接受从有SSH的客户机的连接，允许操作者象在本地一样地登录系统。如果已经搭建了SSH远程登录服务，如何实现本地机和远程服务器的文件交互呢？以下操作基于远程机已经安装了SSH服务器端，如果没有安装，详细步骤见:  <a href="http://habitdiary.cn/2017/10/07/%E5%9C%A8Ubuntu%E4%B8%8B%E9%80%9A%E8%BF%87SSH%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8/#more">在Ubuntu下通过SSH连接远程服务器</a>  </p>
-<h3 id="1-用SSH登录远程ubuntu主机"><a href="#1-用SSH登录远程ubuntu主机" class="headerlink" title="(1)用SSH登录远程ubuntu主机"></a>(1)用SSH登录远程ubuntu主机</h3><p>假设远程Ubuntu主机安装了SSH服务器端。远程Ubuntu主机的IP为：118.89.223.117,用户名为ubuntu<br>我们在命令行输入以下命令来连接：<br><code>ssh -l ubuntu 118.89.223.117</code><br>之后提示输入密码，回车，登录成功，注意此时已经切换到了远程机的终端<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/1.png" alt="fail">  </p>
-<h3 id="2-从远程Ubuntu主机下载文件-文件夹到本地-scp"><a href="#2-从远程Ubuntu主机下载文件-文件夹到本地-scp" class="headerlink" title="(2)从远程Ubuntu主机下载文件/文件夹到本地(scp)"></a>(2)从远程Ubuntu主机下载文件/文件夹到本地(scp)</h3><p>语法格式：scp -r 远程主机用户名@远程主机ip:待下载文件的远程主机目录路径 保存下载文件的本地文件路径  </p>
-<p>我们先在远程机的/home/ubuntu目录下新建一个名为hello的文件<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/4.png" alt="fail"><br>要下载文件到本地,我们要结束SSH连接,切换到本地机,输入<code>eixt</code>或<code>quit</code>即可  </p>
-<p>我们将远程机的hello文件下载到本地的/home/xiejunyu/local目录下，输入密码后提示文件下载成功<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/5.png" alt="fail">  </p>
-<p>我们进入本地目录验证一下<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/6.png" alt="fail">  </p>
-<p>hello文件的确下载到了本地</p>
-<h3 id="3-从本地向远程ubuntu主机上传文件-文件夹-scp"><a href="#3-从本地向远程ubuntu主机上传文件-文件夹-scp" class="headerlink" title="(3)从本地向远程ubuntu主机上传文件/文件夹(scp)"></a>(3)从本地向远程ubuntu主机上传文件/文件夹(scp)</h3><p>语法格式：scp -r 待上传的本地文件路径 远程主机用户名@远程主机ip:用于保存文件的远程主机目录路径  </p>
-<p>假设要上传一个在/home/xiejunyu/local目录下的test.txt文件,远程主机用户名为ubuntu,ip为118.89.223.117,保存到远程主机的/home/ubuntu目录下  </p>
-<p>要上传本地文件,我们要结束SSH连接,切换到本地机,输入<code>eixt</code>或<code>quit</code>即可<br>然后输入命令<code>$ scp -r /home/xiejunyu/local/test.txt ubuntu@118.89.223.117:/home/ubuntu/</code>，输入密码后提示文件上传成功<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/2.png" alt="fail">  </p>
-<p>我们通过SSH登录到远程主机验证一下,<code>pwd</code>打印当前所在位置，发现我们处于/home/ubuntu目录下,<code>ls</code>显示当前目录下的文件，我们发现有test.txt文件,说明本地的test.txt已经上传到了远程机的/home/ubuntu目录下<br><img src="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/3.png" alt="fail">  </p>
+        <h3 id="泛型程序设计"><a href="#泛型程序设计" class="headerlink" title="泛型程序设计"></a>泛型程序设计</h3><p>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。  </p>
+<h3 id="类型参数的好处"><a href="#类型参数的好处" class="headerlink" title="类型参数的好处"></a>类型参数的好处</h3><p>在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">private</span> Object[] elementData;</div><div class="line">    . . .</div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; . . . &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object o)</span> </span>&#123; . . . &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这种方法有两个问题，我们以一个保存文件名的files数组列表为例：<br>1) 当获取一个值时必须进行强制类型转换：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ArrayList files = <span class="keyword">new</span> ArrayList();</div><div class="line">. . .</div><div class="line">String filename = (String)files.get(<span class="number">0</span>);</div></pre></td></tr></table></figure></p>
+<p>2) 当添加一个值时不进行类型检查，可以添加任何类的对象：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">files.add(<span class="keyword">new</span> File(<span class="string">". . ."</span>));</div></pre></td></tr></table></figure></p>
+<p>此调用在编译和运行时都不会出错，但如果将get的结果强制转换为String会产生一个错误  </p>
+<p>为了解决上述问题，引入了类型参数。ArrayList有一个类型参数用来指示元素类型：<code>ArrayList&lt;T&gt; files = new ArrayList&lt;T&gt;();</code>在Java SE 7及以后的版本，构造函数可以省略类型参数，即<code>ArrayList&lt;T&gt; files = new ArrayList&lt;&gt;();</code><br>这种方法有三个好处：<br>1)get得到的值不必进行强制类型转换<br>2)向数组列表中添加对象时会进行类型检查，如果不符合类型，无法通过编译，出现编译错误比类在运行时出现类的强制转换异常要好得多<br>3)程序具有更好的可读性，比如<code>ArrayList&lt;String&gt; files</code>一看就是聚集了String对象的数组列表  </p>
+<h3 id="定义简单的泛型类"><a href="#定义简单的泛型类" class="headerlink" title="定义简单的泛型类"></a>定义简单的泛型类</h3><p>一个泛型类就是具有一个或多个类型变量的类，下面使用一个简单的Pair类作为例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt;</span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">private</span> T first;</div><div class="line">    <span class="keyword">private</span> T second;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">()</span> </span>&#123;first = <span class="keyword">null</span>; second = <span class="keyword">null</span>&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first,T second)</span> </span>&#123;<span class="keyword">this</span>.first = first; <span class="keyword">this</span>.second = second&#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(T newValue)</span> </span>&#123;first = newValue;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSecond</span><span class="params">(T newValue)</span> </span>&#123;second = newValue;&#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>Pair类引入了一个类型变量T，用尖括号括起来，并放在类名的后面。<strong>注意这里的T只是指定了一种类型，不代表类只有一个属性成员，而表示接下来类中出现的T都和尖括号里的类型保持一致,即类定义的类型变量指定方法返回类型以及域和局部变量的类型。</strong><br>泛型类可以有多个类型变量，如可以定义两个域类型不同的Pair类<code>public class Pair&lt;T,U&gt; {. . .}</code><br><strong>类型变量命名规则：</strong>E表示集合的元素类型，K和V分别表示表的关键字和值的类型，T(需要时还可以用临近的字母U和S)表示“任意类型”。<br>实际使用中将类定义尖括号里的T替换为具体类型，类中的T也会进行相应的替换，所以，<strong>泛型类可以看作普通类的工厂</strong>  </p>
+<h3 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h3><p>前面介绍了如何定义一个泛型类，下面我们来定义一个带有类型参数的简单泛型方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayAlg</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">getMiddle</span><span class="params">(T...a)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    	<span class="keyword">return</span> a[a.length / <span class="number">2</span>];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>注意：</strong><br>1)类型变量放在修饰符(这里是public static)的后面，返回类型的前面<br>2)泛型方法可以定义在普通类中，也可以定义在泛型类中<br>3)当调用一个泛型方法时，在方法名前的尖括号中放入具体的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String middle = ArrayAlg.&lt;String&gt;getMiddle(<span class="string">"John"</span>,<span class="string">"Q."</span>,<span class="string">"Public"</span>);</div></pre></td></tr></table></figure></p>
+<h3 id="类型变量的限定"><a href="#类型变量的限定" class="headerlink" title="类型变量的限定"></a>类型变量的限定</h3><p>有时，类或方法需要对类型变量加以约束。下面是一个典型的例子，我们要计算数组中的最小元素：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayAlg</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">min</span><span class="params">(T[] a)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    	<span class="keyword">if</span>(a == <span class="keyword">null</span> || a.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        T smallest = a[<span class="number">0</span>];</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; a.length;i++)</div><div class="line">        	<span class="keyword">if</span>(smallest.compareTo(a[i]) &gt; <span class="number">0</span>)</div><div class="line">            	smallest = a[i];</div><div class="line">        <span class="keyword">return</span> smallset;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们会发现一个问题，smallest的类型为T，既可以是任何一个类的对象，如何保证T类型有compareTo方法呢？<strong>解决方法是限制T为实现了Comparable接口的类</strong>，即将泛型方法定义改为<code>public static &lt;T extends Comparable&gt; T min(T[] a)</code><br><strong>注意：</strong><br>1)限定类时如果实现的是接口也用extends关键字，如上面的<code>T extends Comparable</code><br>2)只需要在尖括号里限定，之后的T不用再加限定  </p>
+<p>一个类型变量或通配符可以有多个限定，用’&amp;’分隔限定类型，用逗号分隔类型变量，例如：<code>T extends Comparable &amp; Serializable</code> <strong>可以有多个接口限定和至多一个类限定，将标记接口(空接口)放在限定列表的末尾，如果用一个类作为限定，它必须是限定列表中的第一个</strong>  </p>
+<h3 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h3><p><strong>对于虚拟机来说没有泛型类型，只有普通类和方法。无论何时定义一个泛型类型，都自动提供了一个相应的原始类型。在编译时泛型类型会被转化为原始类型。</strong>原始类型就是删去类型参数后的泛型类型名。擦除类型变量，并替换为限定类型(无限定类型的变量替换为Object)。<br>例如，<code>Pair&lt;T&gt;</code>的原始类型如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">private</span> Object first;</div><div class="line">    <span class="keyword">private</span> Object second;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">()</span> </span>&#123;first = <span class="keyword">null</span>; second = <span class="keyword">null</span>&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(Object first,Object second)</span> </span>&#123;<span class="keyword">this</span>.first = first; <span class="keyword">this</span>.second = second&#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(Object newValue)</span> </span>&#123;first = newValue;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSecond</span><span class="params">(Object newValue)</span> </span>&#123;second = newValue;&#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>因为T是一个无限定的参数变量，所以直接用Object替换<br>如果是T是一个限定类型的参数变量，用限定列表中的第一个类型替换，比如<code>T extends Comparable &amp; Serializable</code>被替换为<code>Comparable</code>  </p>
+<h3 id="翻译泛型表达式"><a href="#翻译泛型表达式" class="headerlink" title="翻译泛型表达式"></a>翻译泛型表达式</h3><p>当泛型表达式编译时，编译器会将其编译为原始类型并加入强制类型转换。比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Pair&lt;Employee&gt; buddies = . . . ;</div><div class="line">Employee buddy = buddies.getFirst();</div></pre></td></tr></table></figure></p>
+<p>编译器会把这个方法调用翻译为两条虚拟机指令：  </p>
+<ul>
+<li>对原始方法Pair.getFirst的调用  </li>
+<li>将返回的Object类型强制转换为Employee类型  </li>
+</ul>
+<p>当存入一个泛型域时编译器也会自动在字节码中插入强制类型转换。  </p>
+<h3 id="翻译泛型方法"><a href="#翻译泛型方法" class="headerlink" title="翻译泛型方法"></a>翻译泛型方法</h3><p>类型擦除会发生一些问题，比如一个类subPair继承自类<code>Pair&lt;String&gt;</code>：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubPair</span> <span class="keyword">extends</span> <span class="title">Pair</span>&lt;<span class="title">String</span>&gt; //继承一个泛型类</span></div><div class="line"><span class="class"> </span>&#123;</div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(String newValue)</span></span>&#123;....&#125;<span class="comment">//重写了父类的方法</span></div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>Pair在编译的时候被类型擦除，Pair的setFirst方法变为了setFirst(Object newValue)，这样SubPair的setFirst(Stirng newValue)方法就无法覆盖父类中的setFirst(Object newValue)方法，因为参数不同，不是同一个方法。<br>SubPair中会出现两个方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(String newValue)</span></span>&#123;....&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(Object newValue)</span></span>&#123;....&#125;</div></pre></td></tr></table></figure></p>
+<p>此时如果有如下测试代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SubPair p = <span class="keyword">new</span> SubPair(. . .);</div><div class="line">Pair&lt;String&gt; pair = p;</div><div class="line">p.setFirst(<span class="string">"Hello world"</span>);</div></pre></td></tr></table></figure></p>
+<p>按理来说，这段测试代码应该不能通过编译，因为要实现多态的话，所调用的方法必须在子类中重写，但是在这里SubPair类并没有重写Pair类中的setFirst方法，只是单纯的继承而已，并且新加了一个参数不同的同名方法。<br>但结果可以运行，因为为了解决这种<strong>类型擦除和多态的冲突</strong>，编译器会在SubPair类中生成一个桥方法，上述两个方法被编译器变成了这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(String newValue)</span></span>&#123;....&#125; <span class="comment">//子类定义的方法不变</span></div><div class="line"></div><div class="line"><span class="comment">//编译器生成的桥方法 </span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(Object newValue)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">   setFirst((String) newValue);</div><div class="line">   <span class="comment">//桥内部调用的是子类中定义的setFirst(String newValue)方法</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看出，这个桥方法实际上就是对超类中setFirst(Object newValue)的重写。这样做的原因是，当程序员在子类中写下setFirst(String newValue)方法时，本意是对超类中的同名方法进行重写，但因为超类发生了类型擦除，所以实际上并没有重写成功，因此加入了桥方法的机制来避免<strong>类型擦除与多态发生冲突。</strong><br>详见博客：<a href="http://www.cnblogs.com/xz816111/p/7643323.html" target="_blank" rel="external">Java中的类型擦除与桥方法</a>  </p>
+<h3 id="约束与局限性"><a href="#约束与局限性" class="headerlink" title="约束与局限性"></a>约束与局限性</h3><p>在使用Java泛型时需要考虑一些限制。大多数限制都是由类型擦除引起的。  </p>
+<h4 id="1-不能用基本类型实例化类型参数"><a href="#1-不能用基本类型实例化类型参数" class="headerlink" title="1.不能用基本类型实例化类型参数"></a>1.不能用基本类型实例化类型参数</h4><p>类型参数不能为基本类型。比如，没有<code>Pair&lt;double&gt;</code>只有<code>Pair&lt;Double&gt;</code>,其原因是类型擦除，因为擦除之后，Pair类含有Object类型的域，Object不能存储double值。  </p>
+<h4 id="2-运行时类型查询只适用于原始类型"><a href="#2-运行时类型查询只适用于原始类型" class="headerlink" title="2.运行时类型查询只适用于原始类型"></a>2.运行时类型查询只适用于原始类型</h4><p>使用instanceof查询一个对象是否属于某个泛型类会产生编译错误，比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(a <span class="keyword">instanceof</span> Pair&lt;String&gt;)<span class="comment">//Error</span></div></pre></td></tr></table></figure></p>
+<p>同样的道理，getClass方法总是返回原始类型。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Pair&lt;String&gt; stringPair = . . .;</div><div class="line">Pair&lt;Employee&gt; employeePair = . . .;</div><div class="line"><span class="keyword">if</span>(stringPair.getClass() == employeePair.getClass()) <span class="comment">//equal</span></div></pre></td></tr></table></figure></p>
+<p>其比较结果是true，因为两次调用getClass结果都返回Pair.class  </p>
+<h4 id="3-不能创建参数化类型的数组"><a href="#3-不能创建参数化类型的数组" class="headerlink" title="3.不能创建参数化类型的数组"></a>3.不能创建参数化类型的数组</h4><p>不能实例化参数化类型的数组，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Pair&lt;String&gt;[] table = <span class="keyword">new</span> Pair&lt;String&gt; [<span class="number">10</span>];<span class="comment">//Error</span></div></pre></td></tr></table></figure></p>
+<p>最安全而有效的方法是使用ArrayList，即<code>ArrayList&lt;Pair&lt;String&gt;&gt;</code>  </p>
+<h4 id="4-Varargs警告"><a href="#4-Varargs警告" class="headerlink" title="4.Varargs警告"></a>4.Varargs警告</h4><p>Java不支持泛型类型的数组，但如果向参数个数可变的方法传递一个泛型类型的实例(即传递一个泛型类型对象的数组)这种规则有所放松，你只会得到一个警告，而不是错误。<br>可以用<code>@SuppressWarnings(&quot;unchecked&quot;)</code>或用<code>@SafeVarags</code>标注addAll方法来抑制警告。  </p>
 
       
     </div>
@@ -412,9 +429,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
-          
-            <a href="/tags/服务器/" rel="tag"><i class="fa fa-tag"></i> 服务器</a>
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
           
         </div>
       
@@ -427,8 +442,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/07/在Ubuntu下通过SSH连接远程服务器/" rel="next" title="在Ubuntu下通过SSH连接远程服务器">
-                <i class="fa fa-chevron-left"></i> 在Ubuntu下通过SSH连接远程服务器
+              <a href="/2017/10/18/算法学习之线段树/" rel="next" title="算法学习之线段树">
+                <i class="fa fa-chevron-left"></i> 算法学习之线段树
               </a>
             
           </div>
@@ -437,8 +452,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/11/算法学习之区间dp/" rel="prev" title="算法学习之区间dp">
-                算法学习之区间dp <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/23/Java学习总结之集合/" rel="prev" title="Java学习总结之集合">
+                Java学习总结之集合 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -634,7 +649,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-用SSH登录远程ubuntu主机"><span class="nav-number">1.</span> <span class="nav-text">(1)用SSH登录远程ubuntu主机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-从远程Ubuntu主机下载文件-文件夹到本地-scp"><span class="nav-number">2.</span> <span class="nav-text">(2)从远程Ubuntu主机下载文件/文件夹到本地(scp)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-从本地向远程ubuntu主机上传文件-文件夹-scp"><span class="nav-number">3.</span> <span class="nav-text">(3)从本地向远程ubuntu主机上传文件/文件夹(scp)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型程序设计"><span class="nav-number">1.</span> <span class="nav-text">泛型程序设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型参数的好处"><span class="nav-number">2.</span> <span class="nav-text">类型参数的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义简单的泛型类"><span class="nav-number">3.</span> <span class="nav-text">定义简单的泛型类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型方法"><span class="nav-number">4.</span> <span class="nav-text">泛型方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型变量的限定"><span class="nav-number">5.</span> <span class="nav-text">类型变量的限定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型擦除"><span class="nav-number">6.</span> <span class="nav-text">类型擦除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#翻译泛型表达式"><span class="nav-number">7.</span> <span class="nav-text">翻译泛型表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#翻译泛型方法"><span class="nav-number">8.</span> <span class="nav-text">翻译泛型方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约束与局限性"><span class="nav-number">9.</span> <span class="nav-text">约束与局限性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-不能用基本类型实例化类型参数"><span class="nav-number">9.1.</span> <span class="nav-text">1.不能用基本类型实例化类型参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-运行时类型查询只适用于原始类型"><span class="nav-number">9.2.</span> <span class="nav-text">2.运行时类型查询只适用于原始类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-不能创建参数化类型的数组"><span class="nav-number">9.3.</span> <span class="nav-text">3.不能创建参数化类型的数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Varargs警告"><span class="nav-number">9.4.</span> <span class="nav-text">4.Varargs警告</span></a></li></ol></li></ol></div>
             
 
           </div>

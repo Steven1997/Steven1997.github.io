@@ -1,3 +1,5 @@
+http://habitdiary.cn/2017/10/23/Java学习总结之集合/
+http://habitdiary.cn/2017/10/22/Java学习总结之泛型程序设计/
 http://habitdiary.cn/2017/10/18/算法学习之线段树/
 http://habitdiary.cn/2017/10/16/Java学习总结之抽象类、接口、lambda表达式与内部类/
 http://habitdiary.cn/2017/10/14/Java学习总结之反射/
