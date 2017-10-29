@@ -227,6 +227,8 @@ ArrayList是动态数组列表，适用于常常要随机访问元素的情况�
 * void clear() 移除此列表中的所有元素。  
 * Object clone() 返回此 ArrayList 实例的浅表副本。  
 * trimToSize() 将此 ArrayList 实例的容量调整为列表的当前大小。  
+
+**ArrayList和Vector的区别：**Vector类的所有方法都是同步的，可以由两个线程安全地访问一个Vector对象，然而如果由一个线程访问Vector,代码要在同步操作上耗费大量的时间。所以建议在不需要同步的时候使用ArrayList，而不要使用Vector
 #### HashSet  
 链表和数组可以按照人们的意愿排列元素的次序，但如果要查看某个元素，却忘记了它的位置，需要访问所有元素直到找到为止，将会消耗很多时间。  
 HashSet是一种基于**散列表**的集，实现了Set接口，它无法控制元素的次序，但可以快速查找元素。散列表基于散列码，散列码由类的hashCode方法提供，用于将元素插入散列表的特定位置，hashCode和equals方法应该兼容，即使用equals方法返回true的两个对象应该有相同的散列码，一个自定义类如果重写了equals方法就必须要重写hashCode方法，以便于将该类的对象插入散列表中。  
@@ -403,12 +405,22 @@ Set<Map.Entry<K,V>> entrySet()
 ```
 **需要说明的是，keySet不是HashSet或TreeSet，而是实现了Set接口的另外某个类的对象。Set接口扩展了Collection接口，所以可以向使用集合一样使用keySet**  
 
-键值对是Map.Entry`<K,V>`类型的，可以使用entrySet()方法返回映射的键值对集，再通过循环对于每个键值对对象使用，getKey方法获取该键值对的键，getValue方法获取该键值对的值。**当然查看键值对最高效的方法是使用forEach方法**：
+键值对是Map.Entry`<K,V>`类型的，可以使用entrySet()方法返回映射的键值对集，再通过循环对于每个键值对对象使用，**getKey方法获取该键值对的键，getValue方法获取该键值对的值，setValue方法将键值对的值设置为新值并返回原值。  
+当然查看键值对最高效的方法是使用forEach方法**：
 ```java
 counts.forEach((k,v) -> {
 	do something with k,v
 })
 ```
+**注意:**可以在键集视图上调用迭代器的remove方法，结果会在映射中删除这个键和与它关联的值，但不能调用add方法，否则会抛出一个UnsupportedOperationException;可以在值集合视图删除元素，所删除的值和相应的键将从映射中删除，也不能增加元素;可以在键值对集合中删除元素，将从映射中删除相应的键值对，但也不能增加元素。**总之，可删不可增。**  
+
+#### WeakHashMap  
+当一个映射中引用某个值的所有键都消亡，即没有任何途径引用这个值时，这个值成为了无用对象。但是垃圾回收器跟踪**活动的对象**，只要映射对象是活动的，其中的所有桶也是活动的，它们不能被回收。于是，长期存活的映射中可能会存在一些无用的值，此时如果使用的是WeakHashMap，这种数据结果会协助垃圾回收期协同工作一起删除键值对。  
+具体内部实现机制见：[深入理解WeakHashMap](http://mikewang.blog.51cto.com/3826268/880775/)  
+
+#### LinkedHashSet & LinkedHashMap  
+LinkedHashSet和LinkedHashMap会按照元素插入顺序存放元素或键值对。  
+
 
 
 
