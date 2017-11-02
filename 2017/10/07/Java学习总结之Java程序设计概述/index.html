@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -83,18 +83,18 @@
 
 
 
-<meta name="description" content="泛型程序设计泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。   类型参数的好处在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：1234567pu">
-<meta name="keywords" content="Java">
+<meta name="description" content="一、走进JavaJava是一个完整的平台,有一个庞大的库,其中包含了很多可重用的代码和一个提供诸如安全性、跨操作系统的可移植性以及自动垃圾收集等服务的执行环境。它是功能完善的通用程序设计语言，可以用来开发健壮的任务关键的应用程序。现在，它不仅用于Web程序设计，而且用于在服务器、台式计算机和移动设备上开发跨平台的独立应用程序。 二、Java”白皮书”的关键术语1) 简单性Java语法是C++语法的">
+<meta name="keywords" content="XJY&#39;s Blog">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java学习总结之泛型程序设计">
-<meta property="og:url" content="http://habitdiary.cn/2017/10/22/Java学习总结之泛型程序设计/index.html">
+<meta property="og:title" content="Java学习总结之Java程序设计概述">
+<meta property="og:url" content="http://habitdiary.cn/2017/10/07/Java学习总结之Java程序设计概述/index.html">
 <meta property="og:site_name" content="XJY&#39;s Blog">
-<meta property="og:description" content="泛型程序设计泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。   类型参数的好处在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：1234567pu">
+<meta property="og:description" content="一、走进JavaJava是一个完整的平台,有一个庞大的库,其中包含了很多可重用的代码和一个提供诸如安全性、跨操作系统的可移植性以及自动垃圾收集等服务的执行环境。它是功能完善的通用程序设计语言，可以用来开发健壮的任务关键的应用程序。现在，它不仅用于Web程序设计，而且用于在服务器、台式计算机和移动设备上开发跨平台的独立应用程序。 二、Java”白皮书”的关键术语1) 简单性Java语法是C++语法的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-22T11:41:20.594Z">
+<meta property="og:updated_time" content="2017-10-31T15:55:10.271Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java学习总结之泛型程序设计">
-<meta name="twitter:description" content="泛型程序设计泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。   类型参数的好处在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：1234567pu">
+<meta name="twitter:title" content="Java学习总结之Java程序设计概述">
+<meta name="twitter:description" content="一、走进JavaJava是一个完整的平台,有一个庞大的库,其中包含了很多可重用的代码和一个提供诸如安全性、跨操作系统的可移植性以及自动垃圾收集等服务的执行环境。它是功能完善的通用程序设计语言，可以用来开发健壮的任务关键的应用程序。现在，它不仅用于Web程序设计，而且用于在服务器、台式计算机和移动设备上开发跨平台的独立应用程序。 二、Java”白皮书”的关键术语1) 简单性Java语法是C++语法的">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://habitdiary.cn/2017/10/22/Java学习总结之泛型程序设计/"/>
+  <link rel="canonical" href="http://habitdiary.cn/2017/10/07/Java学习总结之Java程序设计概述/"/>
 
 
 
 
 
-  <title>Java学习总结之泛型程序设计 | XJY's Blog</title>
+  <title>Java学习总结之Java程序设计概述 | XJY's Blog</title>
   
 
 
@@ -301,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/22/Java学习总结之泛型程序设计/">
+    <link itemprop="mainEntityOfPage" href="http://habitdiary.cn/2017/10/07/Java学习总结之Java程序设计概述/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="谢均宇">
@@ -318,7 +318,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Java学习总结之泛型程序设计</h2>
+          <h2 class="post-title" itemprop="name headline">Java学习总结之Java程序设计概述</h2>
         
 
         <div class="post-meta">
@@ -330,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T09:09:10+08:00">
-                2017-10-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T21:46:26+08:00">
+                2017-10-07
               </time>
             
 
@@ -368,41 +368,54 @@
       
 
       
-        <h3 id="泛型程序设计"><a href="#泛型程序设计" class="headerlink" title="泛型程序设计"></a>泛型程序设计</h3><p>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。例如ArrayList类可以聚集任何类型的对象，这是一个泛型程序设计的实例。实际上，在Java增加泛型类之前已经有一个ArrayList类，下面来研究泛型程序设计机制是如何演变的。  </p>
-<h3 id="类型参数的好处"><a href="#类型参数的好处" class="headerlink" title="类型参数的好处"></a>类型参数的好处</h3><p>在Java增加泛型类之前，泛型程序设计是用继承实现的。ArrayLists类只维护一个Object引用的数组：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">private</span> Object[] elementData;</div><div class="line">    . . .</div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; . . . &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object o)</span> </span>&#123; . . . &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这种方法有两个问题，我们以一个保存文件名的files数组列表为例：<br>1) 当获取一个值时必须进行强制类型转换：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ArrayList files = <span class="keyword">new</span> ArrayList();</div><div class="line">. . .</div><div class="line">String filename = (String)files.get(<span class="number">0</span>);</div></pre></td></tr></table></figure></p>
-<p>2) 当添加一个值时不进行类型检查，可以添加任何类的对象：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">files.add(<span class="keyword">new</span> File(<span class="string">". . ."</span>));</div></pre></td></tr></table></figure></p>
-<p>此调用在编译和运行时都不会出错，但如果将get的结果强制转换为String会产生一个错误  </p>
-<p>为了解决上述问题，引入了类型参数。ArrayList有一个类型参数用来指示元素类型：<code>ArrayList&lt;T&gt; files = new ArrayList&lt;T&gt;();</code>在Java SE 7及以后的版本，构造函数可以省略类型参数，即<code>ArrayList&lt;T&gt; files = new ArrayList&lt;&gt;();</code><br>这种方法有三个好处：<br>1)get得到的值不必进行强制类型转换<br>2)向数组列表中添加对象时会进行类型检查，如果不符合类型，无法通过编译，出现编译错误比类在运行时出现类的强制转换异常要好得多<br>3)程序具有更好的可读性，比如<code>ArrayList&lt;String&gt; files</code>一看就是聚集了String对象的数组列表  </p>
-<h3 id="定义简单的泛型类"><a href="#定义简单的泛型类" class="headerlink" title="定义简单的泛型类"></a>定义简单的泛型类</h3><p>一个泛型类就是具有一个或多个类型变量的类，下面使用一个简单的Pair类作为例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt;</span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">private</span> T first;</div><div class="line">    <span class="keyword">private</span> T second;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">()</span> </span>&#123;first = <span class="keyword">null</span>; second = <span class="keyword">null</span>&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first,T second)</span> </span>&#123;<span class="keyword">this</span>.first = first; <span class="keyword">this</span>.second = second&#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(T newValue)</span> </span>&#123;first = newValue;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSecond</span><span class="params">(T newValue)</span> </span>&#123;second = newValue;&#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p>Pair类引入了一个类型变量T，用尖括号括起来，并放在类名的后面。<strong>注意这里的T只是指定了一种类型，不代表类只有一个属性成员，而表示接下来类中出现的T都和尖括号里的类型保持一致,即类定义的类型变量指定方法返回类型以及域和局部变量的类型。</strong><br>泛型类可以有多个类型变量，如可以定义两个域类型不同的Pair类<code>public class Pair&lt;T,U&gt; {. . .}</code><br><strong>类型变量命名规则：</strong>E表示集合的元素类型，K和V分别表示表的关键字和值的类型，T(需要时还可以用临近的字母U和S)表示“任意类型”。<br>实际使用中将类定义尖括号里的T替换为具体类型，类中的T也会进行相应的替换，所以，<strong>泛型类可以看作普通类的工厂</strong>  </p>
-<h3 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h3><p>前面介绍了如何定义一个泛型类，下面我们来定义一个带有类型参数的简单泛型方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayAlg</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">getMiddle</span><span class="params">(T...a)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    	<span class="keyword">return</span> a[a.length / <span class="number">2</span>];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><strong>注意：</strong><br>1)类型变量放在修饰符(这里是public static)的后面，返回类型的前面<br>2)泛型方法可以定义在普通类中，也可以定义在泛型类中<br>3)当调用一个泛型方法时，在方法名前的尖括号中放入具体的类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String middle = ArrayAlg.&lt;String&gt;getMiddle(<span class="string">"John"</span>,<span class="string">"Q."</span>,<span class="string">"Public"</span>);</div></pre></td></tr></table></figure></p>
-<h3 id="类型变量的限定"><a href="#类型变量的限定" class="headerlink" title="类型变量的限定"></a>类型变量的限定</h3><p>有时，类或方法需要对类型变量加以约束。下面是一个典型的例子，我们要计算数组中的最小元素：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayAlg</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">min</span><span class="params">(T[] a)</span></span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">    	<span class="keyword">if</span>(a == <span class="keyword">null</span> || a.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        T smallest = a[<span class="number">0</span>];</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; a.length;i++)</div><div class="line">        	<span class="keyword">if</span>(smallest.compareTo(a[i]) &gt; <span class="number">0</span>)</div><div class="line">            	smallest = a[i];</div><div class="line">        <span class="keyword">return</span> smallset;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>我们会发现一个问题，smallest的类型为T，既可以是任何一个类的对象，如何保证T类型有compareTo方法呢？<strong>解决方法是限制T为实现了Comparable接口的类</strong>，即将泛型方法定义改为<code>public static &lt;T extends Comparable&gt; T min(T[] a)</code><br><strong>注意：</strong><br>1)限定类时如果实现的是接口也用extends关键字，如上面的<code>T extends Comparable</code><br>2)只需要在尖括号里限定，之后的T不用再加限定  </p>
-<p>一个类型变量或通配符可以有多个限定，用’&amp;’分隔限定类型，用逗号分隔类型变量，例如：<code>T extends Comparable &amp; Serializable</code> <strong>可以有多个接口限定和至多一个类限定，将标记接口(空接口)放在限定列表的末尾，如果用一个类作为限定，它必须是限定列表中的第一个</strong>  </p>
-<h3 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h3><p><strong>对于虚拟机来说没有泛型类型，只有普通类和方法。无论何时定义一个泛型类型，都自动提供了一个相应的原始类型。在编译时泛型类型会被转化为原始类型。</strong>原始类型就是删去类型参数后的泛型类型名。擦除类型变量，并替换为限定类型(无限定类型的变量替换为Object)。<br>例如，<code>Pair&lt;T&gt;</code>的原始类型如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">	<span class="keyword">private</span> Object first;</div><div class="line">    <span class="keyword">private</span> Object second;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">()</span> </span>&#123;first = <span class="keyword">null</span>; second = <span class="keyword">null</span>&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(Object first,Object second)</span> </span>&#123;<span class="keyword">this</span>.first = first; <span class="keyword">this</span>.second = second&#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(Object newValue)</span> </span>&#123;first = newValue;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSecond</span><span class="params">(Object newValue)</span> </span>&#123;second = newValue;&#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p>因为T是一个无限定的参数变量，所以直接用Object替换<br>如果是T是一个限定类型的参数变量，用限定列表中的第一个类型替换，比如<code>T extends Comparable &amp; Serializable</code>被替换为<code>Comparable</code>  </p>
-<h3 id="翻译泛型表达式"><a href="#翻译泛型表达式" class="headerlink" title="翻译泛型表达式"></a>翻译泛型表达式</h3><p>当泛型表达式编译时，编译器会将其编译为原始类型并加入强制类型转换。比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Pair&lt;Employee&gt; buddies = . . . ;</div><div class="line">Employee buddy = buddies.getFirst();</div></pre></td></tr></table></figure></p>
-<p>编译器会把这个方法调用翻译为两条虚拟机指令：  </p>
+        <h3 id="一、走进Java"><a href="#一、走进Java" class="headerlink" title="一、走进Java"></a>一、走进Java</h3><p>Java是一个完整的平台,有一个庞大的库,其中包含了很多可重用的代码和一个提供诸如安全性、跨操作系统的可移植性以及自动垃圾收集等服务的执行环境。它是功能完善的通用程序设计语言，可以用来开发健壮的任务关键的应用程序。现在，它不仅用于Web程序设计，而且用于在服务器、台式计算机和移动设备上开发跨平台的独立应用程序。</p>
+<h3 id="二、Java”白皮书”的关键术语"><a href="#二、Java”白皮书”的关键术语" class="headerlink" title="二、Java”白皮书”的关键术语"></a>二、Java”白皮书”的关键术语</h3><h4 id="1-简单性"><a href="#1-简单性" class="headerlink" title="1) 简单性"></a>1) 简单性</h4><p>Java语法是C++语法的一个“纯净”版本。这里没有头文件、指针运算(甚至指针语法)、结构、联合、操作符重载、虚基类等。其剔除了C++中许多很少使用、难以理解、易混淆的特性。目前看来，这些特性带来的麻烦远远多于其带来的好处。  </p>
+<h4 id="2-面向对象"><a href="#2-面向对象" class="headerlink" title="2) 面向对象"></a>2) 面向对象</h4><p>简单地讲，面向对象设计是一种程序设计技术。传统结构化程序设计主要通过设计一系列的过程(即算法)来解决问题，即算法+数据结构=程序，先要确定如何操作数据，再决定如何组织数据使之便于操作。而面向对象程序设计将数据域(属性)和对数据的操作(方法)绑定在一个对象中，将数据放在第一位，然后再考虑操作数据的算法。</p>
+<h4 id="3-分布式"><a href="#3-分布式" class="headerlink" title="3) 分布式"></a>3) 分布式</h4><p>Java有一个丰富的例程库，用于处理像HTTP和FTP之类的TCP/IP协议。Java应用程序能通过URL打开和访问网络上的对象，其便捷程度就好像访问本地文件一样。  </p>
+<h4 id="4-健壮性"><a href="#4-健壮性" class="headerlink" title="4) 健壮性"></a>4) 健壮性</h4><p>Java的设计目标之一在于使得Java编写的程序具有多方面的可靠性。Java投入了大量的精力进行早期的问题检测(编译时检测)，后期动态的检测(运行时检测)，并消除了容易出错的情况。  </p>
+<h4 id="5-安全性"><a href="#5-安全性" class="headerlink" title="5) 安全性"></a>5) 安全性</h4><p>Java适用于网络/分布式环境。为了达到这个目标，在安全方面投入了很大精力。使用Java可以构建防病毒、防篡改的系统。  </p>
+<h4 id="6-体系结构中立"><a href="#6-体系结构中立" class="headerlink" title="6) 体系结构中立"></a>6) 体系结构中立</h4><p>Java源文件经过编译生成中间字节码文件(.class)，这是一种体系结构中立的文件格式，精心设计的字节码不仅可以很容易地在任何带Java虚拟机(JVM)的平台上运行，而且还可以动态地翻译成本地机器代码，即Java程序可以”一次编译，处处运行”。当然，解释虚拟机指令肯定会比全速运行机器指令慢很多。虚拟机有一个选项，可以将执行最频繁的字节码序列翻译成机器码，这一过程称为<strong>即时编译</strong>。  </p>
+<h4 id="7-可移植性"><a href="#7-可移植性" class="headerlink" title="7) 可移植性"></a>7) 可移植性</h4><p>与C和C++不同，Java规范中没有”依赖具体实现”的地方。基本数据类型的大小以及有关运算都做了明确的说明。例如，Java中的int永远是32位的整数，而在C/C++中，int可能是16位整数、32位整数，也可能是编译器提供商指定的其他大小。唯一的限制只是int类型的大小不能低于short int，并且不能高于long int。在Java中，数据类型具有固定的大小，这消除了代码移植时令人头痛的主要问题。二进制数据以固定的格式进行存储和传输，消除了字节顺序的困扰。字符串是用标准的Unicode格式存储的。</p>
+<h4 id="8-解释型"><a href="#8-解释型" class="headerlink" title="8) 解释型"></a>8) 解释型</h4><p>Java源程序(.java)在编写完成后，经过编译生成中间字节码文件(.class)，字节码文件被JVM解释执行，不同于C/C++等编译型语言，字节码被解释称机器代码后立即执行，不产生中间机器代码文件。</p>
+<h4 id="9-高性能"><a href="#9-高性能" class="headerlink" title="9) 高性能"></a>9) 高性能</h4><p>尽管对解释后的字节码性能已经比较满意，但有些场合下还需要更加高效的性能。字节码可以(在运行时刻)动态地翻译成对应运行这个应用的特定CPU的机器码。  </p>
+<h4 id="10-多线程"><a href="#10-多线程" class="headerlink" title="10) 多线程"></a>10) 多线程</h4><p>多线程可以带来更好的交互响应和实时行为。我们非常关注并发性，因为我们不再追求更快的处理器，而是着眼于获得更多的处理器，而且要让它们一直保持工作。Java是第一个支持并发程序设计的主流语言。  </p>
+<h4 id="11-动态性"><a href="#11-动态性" class="headerlink" title="11) 动态性"></a>11) 动态性</h4><p>Java能够适应不断发展的环境。库中可以自由地添加新方法和实例变量，而对客户端却没有任何影响。在Java中找出运行时的类型信息十分简单。  </p>
+<h3 id="三、名词释疑"><a href="#三、名词释疑" class="headerlink" title="三、名词释疑"></a>三、名词释疑</h3><h4 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h4><p>即Java开发工具包(Java Development Kit)，是<strong>编写</strong>Java程序的程序员使用的软件，包括<strong>开发和运行</strong>Java程序的软件。 </p>
+<h4 id="OpenJDK"><a href="#OpenJDK" class="headerlink" title="OpenJDK"></a>OpenJDK</h4><p>Java SE的一个免费开源实现，不包含浏览器集成或JavaFX  </p>
+<h4 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h4><p>即Software Development Kit,是一个过时的术语，用于描述1998 ～ 2006年之间的JDK  </p>
+<h4 id="J2"><a href="#J2" class="headerlink" title="J2"></a>J2</h4><p>一个过时的术语，用于描述1998 ～ 2006年之间的Java版本  </p>
+<h4 id="JRE"><a href="#JRE" class="headerlink" title="JRE"></a>JRE</h4><p>即Java运行时环境(Java Runtime Environment)，是<strong>运行</strong>Java程序的用户使用的软件，它包含Java虚拟机但不包含编译器，为<strong>不需要开发只需要运行</strong>Java程序的用户提供。</p>
+<h4 id="Sever-JRE"><a href="#Sever-JRE" class="headerlink" title="Sever JRE"></a>Sever JRE</h4><p>在服务器上运行Java程序的软件。</p>
+<h4 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h4><p>即Java虚拟机(Java Virtual Machine)，用于解释执行中间字节码文件。  </p>
+<h4 id="API"><a href="#API" class="headerlink" title="API"></a>API</h4><p>即应用程序接口(Application Program Interface),也称为库，包括为开发Java程序而预定义的类和接口。  </p>
+<h4 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h4><p>即集成开发环境(Integrated Development Environment),是为了快速开发程序而提供的开发工具，编辑、编译、链接、调试和在线帮助都集成在一个图形用户界面中。</p>
+<h4 id="applet"><a href="#applet" class="headerlink" title="applet"></a>applet</h4><p>能在Web浏览器中运行的Java程序称为Java小程序(applet)</p>
+<h4 id="Java-SE"><a href="#Java-SE" class="headerlink" title="Java SE"></a>Java SE</h4><p>即Java标准版(Java Standard Edition),可以用来开发客户端的应用程序。应用程序可以独立运行或作为applet在Web浏览器中运行。  </p>
+<h4 id="Java-EE"><a href="#Java-EE" class="headerlink" title="Java EE"></a>Java EE</h4><p>即Java企业版(Java Enterprise Edition),可以用来开发服务器端的应用程序，例如，Java servlet和JavaServer Pages(JSP)，以及JavaServer Faces(JSF)。 </p>
+<h4 id="Java-ME"><a href="#Java-ME" class="headerlink" title="Java ME"></a>Java ME</h4><p>即Java微型版(Java Micro Edition)，可以用来开发移动设备的应用程序，例如手机。  </p>
+<h4 id="JavaFX"><a href="#JavaFX" class="headerlink" title="JavaFX"></a>JavaFX</h4><p>开发Java GUI程序的框架，在Oracle的Java SE发布版本中提供。  </p>
+<h3 id="四、JDK、JRE和JVM三者的关系"><a href="#四、JDK、JRE和JVM三者的关系" class="headerlink" title="四、JDK、JRE和JVM三者的关系"></a>四、JDK、JRE和JVM三者的关系</h3><p>见大牛博客：<a href="http://playkid.blog.163.com/blog/static/56287260201372113842153/" target="_blank" rel="external">JDK、JRE、JVM三者间的关系</a></p>
+<h3 id="五、创建、编译和执行Java程序的过程"><a href="#五、创建、编译和执行Java程序的过程" class="headerlink" title="五、创建、编译和执行Java程序的过程"></a>五、创建、编译和执行Java程序的过程</h3><p>Java源程序编写后被保存为.java文件，通过Java编译器编译生成字节码.class文件，字节码文件和所需的库代码被送去JVM解释执行。在执行一个Java程序时，JVM首先会用一个称为<strong>类加载器(class loader)</strong>的程序将类的字节码加载到内存中。如果你的程序中使用其他类，类加载程序会在需要它们之前动态地加载它们。当加载该类后，JVM使用一个字节码验证器(bytecode verifier)的程序来检验字节码的合法性，确保字节码不会违反Java的安全规范，以确保来自网络的Java程序不会篡改和危害你的计算机。  </p>
+<h3 id="六、通过命令行编译、运行Java程序"><a href="#六、通过命令行编译、运行Java程序" class="headerlink" title="六、通过命令行编译、运行Java程序"></a>六、通过命令行编译、运行Java程序</h3><p>在命令行里输入以下命令编译Java程序：<br>java classname.java<br>编译成功后，使用以下语句运行程序：<br>java classname //注意此处不要加.class后缀  </p>
+<h3 id="七、注释"><a href="#七、注释" class="headerlink" title="七、注释"></a>七、注释</h3><h4 id="1-行注释"><a href="#1-行注释" class="headerlink" title="1) 行注释"></a>1) 行注释</h4><p>行注释以<code>//</code>开始，不能跨行  </p>
+<h4 id="2-块注释"><a href="#2-块注释" class="headerlink" title="2) 块注释"></a>2) 块注释</h4><p>块注释以<code>/*</code>开始，以<code>*/</code>结尾，可以跨行  </p>
+<h4 id="3-文档注释"><a href="#3-文档注释" class="headerlink" title="3) 文档注释"></a>3) 文档注释</h4><p>文档注释以<code>/**</code>开始，以<code>*/</code>结尾，它能使用JDK的javadoc命令提取一个HTML文件。使用javadoc注释来注释整个类或整个方法，为了将这些注释提取出来放在一个javadoc HTML文件中，这些注释必须放在类或者方法头前面。要注释方法中的某一步骤，使用行注释<code>//</code></p>
+<h3 id="八、程序设计错误"><a href="#八、程序设计错误" class="headerlink" title="八、程序设计错误"></a>八、程序设计错误</h3><h4 id="1-语法错误"><a href="#1-语法错误" class="headerlink" title="1) 语法错误"></a>1) 语法错误</h4><p>在编译过程中出现的错误称为<strong>语法错误</strong>或<strong>编译错误</strong>。  </p>
+<h4 id="2-运行时错误"><a href="#2-运行时错误" class="headerlink" title="2) 运行时错误"></a>2) 运行时错误</h4><p>运行时错误是引起程序非正常中断的错误，即程序能通过编译，但在运行时环境检测到一个不可能执行的操作，就会出现运行错误。  </p>
+<h4 id="3-逻辑错误"><a href="#3-逻辑错误" class="headerlink" title="3) 逻辑错误"></a>3) 逻辑错误</h4><p>当程序没有按预期的方式执行就会发生逻辑错误。  </p>
+<h3 id="九、Java标识符"><a href="#九、Java标识符" class="headerlink" title="九、Java标识符"></a>九、Java标识符</h3><p>Java标识符用于命名类、接口、变量、常量、方法等，有如下规则：  </p>
 <ul>
-<li>对原始方法Pair.getFirst的调用  </li>
-<li>将返回的Object类型强制转换为Employee类型  </li>
+<li>标识符是由<strong>字母、数字、下划线(<code>_</code>)和美元符号(<code>$</code>)</strong>组成的字符序列  </li>
+<li>必须以<strong>字母、下划线(<code>_</code>)或美元符号(<code>$</code>)</strong>开头，不能以数字开头  </li>
+<li>标识符不能是保留字  </li>
+<li>标识符不能是<strong>true、false或null</strong>等字面常量  </li>
+<li>标识符可以为任意长度  </li>
+<li>不要用字符<code>$</code>命名标识符，习惯上<code>$</code>只用于机器自动产生的源代码中 </li>
 </ul>
-<p>当存入一个泛型域时编译器也会自动在字节码中插入强制类型转换。  </p>
-<h3 id="翻译泛型方法"><a href="#翻译泛型方法" class="headerlink" title="翻译泛型方法"></a>翻译泛型方法</h3><p>类型擦除会发生一些问题，比如一个类subPair继承自类<code>Pair&lt;String&gt;</code>：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubPair</span> <span class="keyword">extends</span> <span class="title">Pair</span>&lt;<span class="title">String</span>&gt; //继承一个泛型类</span></div><div class="line"><span class="class"> </span>&#123;</div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(String newValue)</span></span>&#123;....&#125;<span class="comment">//重写了父类的方法</span></div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
-<p>Pair在编译的时候被类型擦除，Pair的setFirst方法变为了setFirst(Object newValue)，这样SubPair的setFirst(Stirng newValue)方法就无法覆盖父类中的setFirst(Object newValue)方法，因为参数不同，不是同一个方法。<br>SubPair中会出现两个方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(String newValue)</span></span>&#123;....&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(Object newValue)</span></span>&#123;....&#125;</div></pre></td></tr></table></figure></p>
-<p>此时如果有如下测试代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SubPair p = <span class="keyword">new</span> SubPair(. . .);</div><div class="line">Pair&lt;String&gt; pair = p;</div><div class="line">p.setFirst(<span class="string">"Hello world"</span>);</div></pre></td></tr></table></figure></p>
-<p>按理来说，这段测试代码应该不能通过编译，因为要实现多态的话，所调用的方法必须在子类中重写，但是在这里SubPair类并没有重写Pair类中的setFirst方法，只是单纯的继承而已，并且新加了一个参数不同的同名方法。<br>但结果可以运行，因为为了解决这种<strong>类型擦除和多态的冲突</strong>，编译器会在SubPair类中生成一个桥方法，上述两个方法被编译器变成了这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(String newValue)</span></span>&#123;....&#125; <span class="comment">//子类定义的方法不变</span></div><div class="line"></div><div class="line"><span class="comment">//编译器生成的桥方法 </span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(Object newValue)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">   setFirst((String) newValue);</div><div class="line">   <span class="comment">//桥内部调用的是子类中定义的setFirst(String newValue)方法</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>可以看出，这个桥方法实际上就是对超类中setFirst(Object newValue)的重写。这样做的原因是，当程序员在子类中写下setFirst(String newValue)方法时，本意是对超类中的同名方法进行重写，但因为超类发生了类型擦除，所以实际上并没有重写成功，因此加入了桥方法的机制来避免<strong>类型擦除与多态发生冲突。</strong><br>详见博客：<a href="http://www.cnblogs.com/xz816111/p/7643323.html" target="_blank" rel="external">Java中的类型擦除与桥方法</a>  </p>
-<h3 id="约束与局限性"><a href="#约束与局限性" class="headerlink" title="约束与局限性"></a>约束与局限性</h3><p>在使用Java泛型时需要考虑一些限制。大多数限制都是由类型擦除引起的。  </p>
-<h4 id="1-不能用基本类型实例化类型参数"><a href="#1-不能用基本类型实例化类型参数" class="headerlink" title="1.不能用基本类型实例化类型参数"></a>1.不能用基本类型实例化类型参数</h4><p>类型参数不能为基本类型。比如，没有<code>Pair&lt;double&gt;</code>只有<code>Pair&lt;Double&gt;</code>,其原因是类型擦除，因为擦除之后，Pair类含有Object类型的域，Object不能存储double值。  </p>
-<h4 id="2-运行时类型查询只适用于原始类型"><a href="#2-运行时类型查询只适用于原始类型" class="headerlink" title="2.运行时类型查询只适用于原始类型"></a>2.运行时类型查询只适用于原始类型</h4><p>使用instanceof查询一个对象是否属于某个泛型类会产生编译错误，比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(a <span class="keyword">instanceof</span> Pair&lt;String&gt;)<span class="comment">//Error</span></div></pre></td></tr></table></figure></p>
-<p>同样的道理，getClass方法总是返回原始类型。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Pair&lt;String&gt; stringPair = . . .;</div><div class="line">Pair&lt;Employee&gt; employeePair = . . .;</div><div class="line"><span class="keyword">if</span>(stringPair.getClass() == employeePair.getClass()) <span class="comment">//equal</span></div></pre></td></tr></table></figure></p>
-<p>其比较结果是true，因为两次调用getClass结果都返回Pair.class  </p>
-<h4 id="3-不能创建参数化类型的数组"><a href="#3-不能创建参数化类型的数组" class="headerlink" title="3.不能创建参数化类型的数组"></a>3.不能创建参数化类型的数组</h4><p>不能实例化参数化类型的数组，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Pair&lt;String&gt;[] table = <span class="keyword">new</span> Pair&lt;String&gt; [<span class="number">10</span>];<span class="comment">//Error</span></div></pre></td></tr></table></figure></p>
-<p>最安全而有效的方法是使用ArrayList，即<code>ArrayList&lt;Pair&lt;String&gt;&gt;</code>  </p>
-<h4 id="4-Varargs警告"><a href="#4-Varargs警告" class="headerlink" title="4.Varargs警告"></a>4.Varargs警告</h4><p>Java不支持泛型类型的数组，但如果向参数个数可变的方法传递一个泛型类型的实例(即传递一个泛型类型对象的数组)这种规则有所放松，你只会得到一个警告，而不是错误。<br>可以用<code>@SuppressWarnings(&quot;unchecked&quot;)</code>或用<code>@SafeVarags</code>标注addAll方法来抑制警告。  </p>
+<h3 id="十、命名规范"><a href="#十、命名规范" class="headerlink" title="十、命名规范"></a>十、命名规范</h3><p><strong>注意：在命名时尽量避免采用缩写作为标识符，用完整的词汇会更具有描述性，比如numberOfStudents比numStds、numOfStuds或者numOfStudents要好。另外，Java是区分大小写的。</strong></p>
+<h4 id="1-类名和接口"><a href="#1-类名和接口" class="headerlink" title="1) 类名和接口"></a>1) 类名和接口</h4><p>每个单词的首字母大写,例如类名ComputeArea和System  </p>
+<h4 id="2-变量和方法"><a href="#2-变量和方法" class="headerlink" title="2) 变量和方法"></a>2) 变量和方法</h4><p>使用小写字母命名变量和方法，如有多个单词则第一个单词字母小写，后面每个单词的首字母大写，例如变量radius以及方法setRadius  </p>
+<h4 id="3-常量"><a href="#3-常量" class="headerlink" title="3) 常量"></a>3) 常量</h4><p>大写常量的所有字母，如果有多个单词，单词之间用下划线连接，例如，常量PI和常量MAX_VALUE  </p>
 
       
     </div>
@@ -427,12 +440,6 @@
 </div> 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
-          
-        </div>
-      
 
       
       
@@ -442,8 +449,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/18/算法学习之线段树/" rel="next" title="算法学习之线段树">
-                <i class="fa fa-chevron-left"></i> 算法学习之线段树
+              <a href="/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/" rel="next" title="SSH远程登录实现本地机和服务器的文件传输">
+                <i class="fa fa-chevron-left"></i> SSH远程登录实现本地机和服务器的文件传输
               </a>
             
           </div>
@@ -452,8 +459,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/23/Java学习总结之集合/" rel="prev" title="Java学习总结之集合">
-                Java学习总结之集合 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/10/10/Java学习总结之Java基本程序设计结构/" rel="prev" title="Java学习总结之Java基本程序设计结构">
+                Java学习总结之Java基本程序设计结构 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -649,7 +656,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型程序设计"><span class="nav-number">1.</span> <span class="nav-text">泛型程序设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型参数的好处"><span class="nav-number">2.</span> <span class="nav-text">类型参数的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义简单的泛型类"><span class="nav-number">3.</span> <span class="nav-text">定义简单的泛型类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型方法"><span class="nav-number">4.</span> <span class="nav-text">泛型方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型变量的限定"><span class="nav-number">5.</span> <span class="nav-text">类型变量的限定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型擦除"><span class="nav-number">6.</span> <span class="nav-text">类型擦除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#翻译泛型表达式"><span class="nav-number">7.</span> <span class="nav-text">翻译泛型表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#翻译泛型方法"><span class="nav-number">8.</span> <span class="nav-text">翻译泛型方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约束与局限性"><span class="nav-number">9.</span> <span class="nav-text">约束与局限性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-不能用基本类型实例化类型参数"><span class="nav-number">9.1.</span> <span class="nav-text">1.不能用基本类型实例化类型参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-运行时类型查询只适用于原始类型"><span class="nav-number">9.2.</span> <span class="nav-text">2.运行时类型查询只适用于原始类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-不能创建参数化类型的数组"><span class="nav-number">9.3.</span> <span class="nav-text">3.不能创建参数化类型的数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Varargs警告"><span class="nav-number">9.4.</span> <span class="nav-text">4.Varargs警告</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、走进Java"><span class="nav-number">1.</span> <span class="nav-text">一、走进Java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Java”白皮书”的关键术语"><span class="nav-number">2.</span> <span class="nav-text">二、Java”白皮书”的关键术语</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简单性"><span class="nav-number">2.1.</span> <span class="nav-text">1) 简单性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-面向对象"><span class="nav-number">2.2.</span> <span class="nav-text">2) 面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-分布式"><span class="nav-number">2.3.</span> <span class="nav-text">3) 分布式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-健壮性"><span class="nav-number">2.4.</span> <span class="nav-text">4) 健壮性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-安全性"><span class="nav-number">2.5.</span> <span class="nav-text">5) 安全性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-体系结构中立"><span class="nav-number">2.6.</span> <span class="nav-text">6) 体系结构中立</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可移植性"><span class="nav-number">2.7.</span> <span class="nav-text">7) 可移植性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-解释型"><span class="nav-number">2.8.</span> <span class="nav-text">8) 解释型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-高性能"><span class="nav-number">2.9.</span> <span class="nav-text">9) 高性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-多线程"><span class="nav-number">2.10.</span> <span class="nav-text">10) 多线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-动态性"><span class="nav-number">2.11.</span> <span class="nav-text">11) 动态性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、名词释疑"><span class="nav-number">3.</span> <span class="nav-text">三、名词释疑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK"><span class="nav-number">3.1.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenJDK"><span class="nav-number">3.2.</span> <span class="nav-text">OpenJDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SDK"><span class="nav-number">3.3.</span> <span class="nav-text">SDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#J2"><span class="nav-number">3.4.</span> <span class="nav-text">J2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JRE"><span class="nav-number">3.5.</span> <span class="nav-text">JRE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sever-JRE"><span class="nav-number">3.6.</span> <span class="nav-text">Sever JRE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM"><span class="nav-number">3.7.</span> <span class="nav-text">JVM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#API"><span class="nav-number">3.8.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IDE"><span class="nav-number">3.9.</span> <span class="nav-text">IDE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#applet"><span class="nav-number">3.10.</span> <span class="nav-text">applet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-SE"><span class="nav-number">3.11.</span> <span class="nav-text">Java SE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-EE"><span class="nav-number">3.12.</span> <span class="nav-text">Java EE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-ME"><span class="nav-number">3.13.</span> <span class="nav-text">Java ME</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaFX"><span class="nav-number">3.14.</span> <span class="nav-text">JavaFX</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、JDK、JRE和JVM三者的关系"><span class="nav-number">4.</span> <span class="nav-text">四、JDK、JRE和JVM三者的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、创建、编译和执行Java程序的过程"><span class="nav-number">5.</span> <span class="nav-text">五、创建、编译和执行Java程序的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、通过命令行编译、运行Java程序"><span class="nav-number">6.</span> <span class="nav-text">六、通过命令行编译、运行Java程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、注释"><span class="nav-number">7.</span> <span class="nav-text">七、注释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-行注释"><span class="nav-number">7.1.</span> <span class="nav-text">1) 行注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-块注释"><span class="nav-number">7.2.</span> <span class="nav-text">2) 块注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-文档注释"><span class="nav-number">7.3.</span> <span class="nav-text">3) 文档注释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、程序设计错误"><span class="nav-number">8.</span> <span class="nav-text">八、程序设计错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-语法错误"><span class="nav-number">8.1.</span> <span class="nav-text">1) 语法错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-运行时错误"><span class="nav-number">8.2.</span> <span class="nav-text">2) 运行时错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-逻辑错误"><span class="nav-number">8.3.</span> <span class="nav-text">3) 逻辑错误</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、Java标识符"><span class="nav-number">9.</span> <span class="nav-text">九、Java标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#十、命名规范"><span class="nav-number">10.</span> <span class="nav-text">十、命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类名和接口"><span class="nav-number">10.1.</span> <span class="nav-text">1) 类名和接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-变量和方法"><span class="nav-number">10.2.</span> <span class="nav-text">2) 变量和方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-常量"><span class="nav-number">10.3.</span> <span class="nav-text">3) 常量</span></a></li></ol></li></ol></div>
             
 
           </div>

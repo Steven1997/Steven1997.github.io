@@ -6,6 +6,8 @@ http://habitdiary.cn/2017/10/14/Java学习总结之反射/
 http://habitdiary.cn/2017/10/12/Java学习总结之继承和多态/
 http://habitdiary.cn/2017/10/12/Java学习总结之对象与类/
 http://habitdiary.cn/2017/10/11/算法学习之区间dp/
+http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/
+http://habitdiary.cn/2017/10/07/Java学习总结之Java程序设计概述/
 http://habitdiary.cn/2017/10/07/SSH远程登录实现本地机和服务器的文件传输/
 http://habitdiary.cn/2017/10/07/在Ubuntu下通过SSH连接远程服务器/
 http://habitdiary.cn/2017/10/06/强制修改ubuntu密码/
