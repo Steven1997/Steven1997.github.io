@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="XJY&#39;s Blog">
 <meta property="og:description" content="数据类型Java是一种强类型语言，即意味着必须为每一个变量声明一种类型。在Java中一共有8种基本数据类型，其中有4种整型、2种浮点类型、1种用于表示Unicode编码的字符单元的字符类型char和一种用于表示真值的boolean类型。   1) 整型整型用于表示没有小数部分的值，它允许是负数，Java提供了4种整型：类型　　　　存储需求　　　　　　　　取值范围byte　　　　 1字节">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-02T17:18:38.237Z">
+<meta property="og:updated_time" content="2017-11-02T17:22:42.691Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之Java基本程序设计结构">
 <meta name="twitter:description" content="数据类型Java是一种强类型语言，即意味着必须为每一个变量声明一种类型。在Java中一共有8种基本数据类型，其中有4种整型、2种浮点类型、1种用于表示Unicode编码的字符单元的字符类型char和一种用于表示真值的boolean类型。   1) 整型整型用于表示没有小数部分的值，它允许是负数，Java提供了4种整型：类型　　　　存储需求　　　　　　　　取值范围byte　　　　 1字节">
@@ -449,7 +449,7 @@
 <p>其中x,y是实际参数。</p>
 <p>每当调用一个方法时，系统会创建一个<strong>活动记录</strong>(也称为活动框架)，用于保存方法中的参数和变量。活动记录置于一个内存区域中，称为<strong>调用堆栈(call stack)</strong>。调用堆栈也称为执行堆栈、运行时堆栈，或者一个机器堆栈，常简称为”堆栈”。当一个方法调用另一个方法时，调用者的活动记录保持不动，一个新的活动记录被创建用于被调用的新方法,一个新的记录”入栈”。一个方法结束返回到调用者时，相应的活动记录被释放，其中的参数和变量被销毁，栈顶的记录”出栈”。堆栈的最底层活动记录是main方法的记录，当整个程序结束，main方法记录”出栈”,栈为空，程序结束。  </p>
 <p>当调用带参数的方法时，如果参数是基本数据类型，实参的值传递给形参(即拷贝)，这个过程称为<strong>按值传递</strong>，无论形参在方法中是否改变，实参都不受影响;如果参数是引用类型，则传递的是引用值，可以理解为<strong>传共享</strong>，形参和实参指向同一对象，此时实际对象可能会被改变。  </p>
-<p>main方法也有参数，是一个String数组，可以在命令行里给main方法传递字符串参数。例如，下面的命令行用三个字符串arg0、arg1、arg2启动程序TestMain：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java TestMain arg0 arg1 arg2</div></pre></td></tr></table></figure></p>
+<p>main方法也有参数，是一个String数组，可以在命令行里给main方法传递字符串参数(也可以通过eclipse传递参数，在运行——运行配置——自变量里传递)。例如，下面的命令行用三个字符串arg0、arg1、arg2启动程序TestMain：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java TestMain arg0 arg1 arg2</div></pre></td></tr></table></figure></p>
 <p>其中arg0、arg1、arg2都是字符串，但是在命令行中出现时不需要双引号，但如果字符串包含空格，就必须用双引号括住。<br>当调用main方法时，Java解释器会创建一个数组存储命令行参数，然后将该数组的引用传递给args。例如，如果调用有n个命令行参数的程序，Java解释器创建一个如下所示的数组：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">args = <span class="keyword">new</span> String[n];</div></pre></td></tr></table></figure></p>
 <p>然后Java解释器传递参数args去调用main方法<br><strong>注意：如果命令行没有传递参数，那么使用new String[0]创建数组。在这种情况下args引用了一个长度为0的空数组，它的值不是null，但是args.length是0</strong></p>
 <h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><h3 id="零敲碎打"><a href="#零敲碎打" class="headerlink" title="零敲碎打"></a>零敲碎打</h3><ul>
