@@ -1,7 +1,7 @@
 ---
 title: Java学习总结之Java基本程序设计结构
 date: 2017-10-10 23:55:53
-tags:
+tags: Java
 ---
 ### 数据类型  
 Java是一种**强类型**语言，即意味着必须为每一个变量声明一种类型。在Java中一共有8种基本数据类型，其中有4种整型、2种浮点类型、1种用于表示Unicode编码的字符单元的字符类型char和一种用于表示真值的boolean类型。  
@@ -46,14 +46,7 @@ if(Double.isNaN(x)) // check whether x is "not a number"
 char类型原本用于表示单个字符。不过，现在情况已经有所变化。如今，有些Unicode字符可以用一个char值描述，另外一些则需要两个char值。  
 char类型的字面量值要用单引号括起来。例如：'A'是编码值为65所对应的字符常量。它与"A"不同，"A"是包含一个字符A的字符串。char类型可以表示为十六进制值，范围从'\u0000'到'\uFFFF'  
 有一些用于表示特殊字符的**转义序列**,如下：  
-转移序列 　　　　　名称 　　　　　　　Unicode值  
-　\b　　　　　　　 　退格　　　　　　　  \u0008　　  
-　\t　　　　　　　　制表　　　　　　　\u0009  
- 　\n　　　　　　　　换行　　　　　　　\u000a  
- 　 \r　　　　　　　　回车　　　　　　　\u000d  
-   　\"　　　　　　　　双引号   　　　　　　\u0022  
-   　 \'　　　　　　　　单引号　　　　　　\u0027　　　　
-  　　　 　\\\　　　　　　　　反斜杠　　　　　　　\u005c　　  
+![fail](Java学习总结之Java基本程序设计结构/特殊字符的转义序列.png "特殊字符的转义序列")  
        
  **注释中的\u也会起转义作用,如下：**  
  ```java
@@ -329,7 +322,15 @@ while(true){
 	//do something
 }
 ```
-#### 5) break和continue  
+#### 5) for-each循环  
+Java有一种很强的循环结构，可以用来依次处理数组中的每个元素(其他类型的元素集合亦可)而不必为指定的下表值而分心。  
+这种增强的for循环的语句格式为：  
+```java
+for(variable : collection) statement
+```
+定义一个变量用于暂存集合中的每一个元素，并执行相应的语句(组)，collection这一集合表达式必须是一个数组或者是一个实现了Iterable接口的类对象(例如ArrayList)。  
+**for-each循环只能用于按顺序遍历数组或集合的情况，如果要使用其他顺序，应该使用其他循环语句**
+#### 6) break和continue  
 **continue跳出本次迭代进入下一次迭代，break跳出整个循环。**  
 虽然不提倡使用goto语句，但偶尔使用goto语句跳出循环还是有益处的。Java中提供了类似于C++中goto语句的带标签的break语句和continue语句，用于跳出多重嵌套的循环语句。  
 **标签必须放在希望跳出的最外层循环之前，并且必须紧跟一个冒号。另外要注意，只能跳出语句块，而不能跳入语句块。**  
@@ -402,6 +403,70 @@ char[] passwd = cons.readPassword("Password: ");
 
   
 #### 2) 输出  
+可以使用 System.out.print(x) 将数值 x 输出到控制台上。这条命令将以 x 对应的数据类型所允许的最大非 0 数字位数打印输出 x 。
+例如：
+```java
+double x = 10000.0 / 3.0;
+System.out.print(x);
+```
+打印  
+3333.3333333333335  
+如果希望显示美元、美分等符号， 则有可能会出现问题。  
+在早期的 Java 版本中，格式化数值曾引起过一些争议。庆幸的是，Java SE 5.0 沿用了 C语言库函数中的 printf方法。例如，调用  
+```java
+System.out.printf("%8.2f",x);
+```
+可以用 8 个字符的宽度和小数点后两个字符的精度打印 x。也就是说，打印输出一个空格和7 个字符， 如下所示：  
+3333.33  
+在 printf中，可以使用多个参数， 例如：
+```java
+System.out.printf("Hello, %s. Next year, you'll be %d", name, age);
+```
+每一个以 % 字符开始的格式说明符都用相应的参数替换。 格式说明符尾部的转换符将指示被格式化的数值类型：f 表示浮点数，s 表示字符串，d 表示十进制整数。  
+
+下表列出了所有转换符：  
+![fail](Java学习总结之Java基本程序设计结构/用于printf的转换符.png "用于printf的转换符")  
+另外，还可以给出控制格式化输出的各种标志。例如，逗号
+标志增加了分组的分隔符。即
+```java
+System.out.printf("%,.2f", 10000.0 / 3.0);
+```
+打印  
+3,333.33  
+
+下表列出了用于printf的所有标志  
+![fail](Java学习总结之Java基本程序设计结构/用于printf的标志.png "用于printf的标志")  
+
+可以使用静态的 String.format 方法创建一个格式化的字符串，而不打印输出：
+```java
+String message = String.format("Hello, %s. Next year, you'll be %d", name , age);
+```
+基于完整性的考虑， 下面简略地介绍 printf方法中日期与时间的格式化选项(已经过时)。在新代码中， 应当使用 java.time 包的方法。 不过你可能会在遗留代码中看到 Date 类和相关的格式化选项。格式包括两个字母， 以 t 开始， 以下表中的任意字母结束。  
+例如
+```java
+System.out.printf("%tc", new Date());
+```
+这条语句将用下面的格式打印当前的日期和时间：
+Mon Feb 09 18:05:19 PST 2015  
+![fail](Java学习总结之Java基本程序设计结构/日期和时间的转换符1.png)    
+![fail](Java学习总结之Java基本程序设计结构/日期和时间的转换符2.png "日期和时间的转换符")  
+  
+从上表可以看到，某些格式只给出了指定日期的部分信息。例如，只有日期或月份。如果需要多次对日期操作才能实现对每一部分进行格式化的目的就太笨拙了。为此，可以采用一个格式化的字符串指出要被格式化的**参数索引**。索引必须紧跟在%后面， 并以`$`终止。 例如：  
+```java
+System.out.printf("%1$s %2$tB %2$te,%2$tY","Due date:",new Date());
+```
+打印  
+Due date: February 9, 2015
+
+还可以选择使用 < 标志。它指示前面格式说明中的参数将被再次使用。也就是说，下列语句将产生与前面语句同样的输出结果：
+```java
+System.out .printf("%s %tB %<te, %<tY", "Due date:", new Date());
+```
+**注意：**参数索引值从1开始，而不是从0开始，%1`$`...对第一个参数格式化。这就避免了与0标志混淆。  
+
+现在，已经了解了 printf 方法的所有特性。下表给出了格式说明符的语法图： 
+
+![fail](Java学习总结之Java基本程序设计结构/格式说明符语法.png "格式说明符语法")  
 
 #### 3) 重定向语法
 Java使用System.out(系统类的输出流对象)来表示标准输出设备，默认情况下是显示器，而用System.in(系统类的输入流对象)来表示标准输入设备，默认情况下是键盘。  
@@ -435,7 +500,7 @@ int z = max(x,y);
 
 当调用带参数的方法时，如果参数是基本数据类型，实参的值传递给形参(即拷贝)，这个过程称为**按值传递**，无论形参在方法中是否改变，实参都不受影响;如果参数是引用类型，则传递的是引用值，可以理解为**传共享**，形参和实参指向同一对象，此时实际对象可能会被改变。  
 
-main方法也有参数，是一个String数组，可以在命令行里给main方法传递字符串参数。例如，下面的命令行用三个字符串arg0、arg1、arg2启动程序TestMain：  
+main方法也有参数，是一个String数组，可以在命令行里给main方法传递字符串参数(也可以通过eclipse传递参数，在运行——运行配置——自变量里传递)。例如，下面的命令行用三个字符串arg0、arg1、arg2启动程序TestMain：  
 ```
 java TestMain arg0 arg1 arg2
 ```
@@ -447,7 +512,141 @@ args = new String[n];
 然后Java解释器传递参数args去调用main方法  
 **注意：如果命令行没有传递参数，那么使用new String[0]创建数组。在这种情况下args引用了一个长度为0的空数组，它的值不是null，但是args.length是0**
 ### 数组
+Java和许多高级语言都提供了一种称作数组的数据结构，可以用它来存储一个元素个数固定且元素类型相同的有序集。  
+数组一旦被创建，它的大小不能改变。使用一个数组引用变量，通过下标来访问数组中的元素。  
+#### 1) 声明和创建数组(以一维数组为例)
+来看下面的语句：  
+```java
+elementType[] arrayRefVar = new elementType[arraySize];
+//(元素类型[] 数组引用变量 = new 元素类型[数组大小])
+```
+该语句完成了三个操作：  
+1.`elementType[] arrayRefVar`声明了一个elementType类型的数组引用变量arrayRefVar  
+2.`new elementType[arraySize]`创建了一个大小为arraySize的elementType的数组  
+3.`=` 把数组引用赋给数组引用变量  
 
+**注意：**  
+1.`elementType[] arrayRefVar`只是声明数组变量，并不在内存中给数组分配任何空间，它只是创建一个对数组应用的存储位置，如果变量不包含对数组的引用，这个变量的值为null  
+2.`new elementType[arraySize]`在内存中给数组元素分配了存储空间  
+3.一个数组变量看起来似乎是存储了一个数组，但实际上它存储的是只是数组的引用。  
+4.当创建数组后，它的元素被赋予默认值，数值型基本数据类型的默认值为0,char型的默认值为'\u0000'(空字符，但长度为1),boolean型的默认值为false，非基本数据类型的默认值均为null    
+5.与C++不同，Java允许动态开数组，即无需在编译期就确定数组大小，可以在程序运行时决定数组大小并创建相应大小的数组。
+#### 2) 初始化数组  
+1.逐一赋值  
+```java
+int[] myList = new int[5];
+myList[0] = 1;
+myList[1] = 2;
+myList[2] = 3;
+myList[3] = 4;
+myList[4] = 5;
+```
+2.数组初始化语法  
+
+下面的语法可以给数组的前k个元素赋值：
+```java
+elementType[] arrayRefVar = {value0, value1, .., valuek};
+```
+**注意：**在使用数组初始化语法时，必须将声明、创建和初始化放在一条语句中，将它们分开会产生语法错误：  
+```java
+int[] myList;
+myList = {1,2,3,4,5}; //Error
+```
+#### 3) 访问数组元素 
+可以用arrayRefVar.length得到数组长度，数组元素的下标为0 ～ arrayRefVar.length - 1。可以直接使用下标随机访问数组元素：  
+```java
+arrayRefVar[index] (数组引用变量[下标])
+```
+如果要打印数组，可以使用一个循环打印逐一数组元素。**如果是字符数组，可以使用一条打印语句打印**:  
+```java
+char[] city = {'B','e','i','j','i','n','g'};
+System.out.println(city);
+```
+#### 4) 复制数组  
+要将一个数组中的内容复制到另一个中，如果使用`=`直接赋值，如：  
+```java
+list2 = list1;
+```
+上述语句只是将list1的引用值复制给了list2，这条语句执行后，list1和list2都指向了同一个数组，如果改变其中一者，另一者也会受到同样的影响。list2原先所引用的数组不能再引用，它就变成了垃圾，会被JVM自动回收。**在Java中，可以使用赋值语句复制基本类型的值，但不能复制数组等引用类型的值。**  
+
+复制数组的四种方法  
+1.申请一个新数组，遍历原数组逐一复制元素  
+2.使用System类的静态方法arraycopy  
+3.使用`数组对象.clone`返回一个数组克隆的引用  
+4.使用Arrays类的copyOf方法  
+
+#### 5) 匿名数组  
+来看下面的语法：  
+```java
+new elementType[] {value0,value1, ... ,valuek};
+```
+该语句创建了一个没有显式引用变量的数组并进行了初始化，这样的数组称为**匿名数组**。注意匿名数组的**方括号里不指定数组长度!**  
+#### 6) 可变长参数列表  
+可以把类型相同但个数可变的参数传递给方法，语法如下：  
+```java
+typeName...parameterName (类型名...参数名)
+```
+**注意：**  
+1.在方法声明中，指定类型后紧跟着省略号(...)  
+2.只能给方法中指定一个可变长参数，且该参数必须是最后一个参数，任何常规参数必须在它之前  
+3.Java将可变长参数当成数组对待，当用数目可变的参数调用方法时，Java会创建一个数组并把参数传给它  
+
+#### 7) Arrays类  
+Arrays类中包含了许多对处理数组的方法  
+
+下面是Arrays类的常用API：  
+
+![fail](Java学习总结之Java基本程序设计结构/Arrays类常用API1.png)
+![fail](Java学习总结之Java基本程序设计结构/Arrays类常用API2.png "Arrays类常用API")  
+
+如果计算机有多个处理器，可以使用parallelSort，比sort更高效。  
+#### 8) 多维数组  
+以二维数组为例，二维数组引用变量有三种表示方法：  
+```java
+elementType arrayRefVar[][]
+elementType[] arrayRefVar[]
+elementType[][] arrayRefVar
+```
+推荐使用`elementType[][] arrayRefVar`声明二维数组引用变量。
+初始化语法也适用于多维数组：  
+```java
+int[][] array = {
+     {1, 2},
+     {3, 4}
+};
+```
+等价于：  
+```java
+int[][] array = new int[2][2];
+array[0][0] = 1;
+array[0][1] = 2;
+array[1][0] = 3;
+array[1][1] = 4;
+```
+**二维数组其实是一个数组，它的每个元素都是一个一维数组，即它是数组的数组。**  
+x.length可以获取二维数组的第一维长度，x[index].length可以获取index行对应的第二维长度。如果没有初始化二维数组二维数组的所有元素默认为null，因为二维数组的元素是数组类型，默认值为null  
+**二维数组中的每一行本身就是一个数组，因此，各行的长度可以不同。这样的数组称为锯齿数组**，例如：  
+```java
+int[][] triangleArray = {
+	{1, 2, 3, 4, 5},
+    {2, 3, 4, 5},
+    {3, 4, 5},
+    {4, 5},
+    {5}
+};
+```
+**其余没有赋值的部分并不会被赋为默认值，就是未分配空间,如果进行访问会抛出ArrayIndexOutOfBoundsException**  
+
+二维数组在创建时可以省略第二维长度(留到后续指定)，但必须指定第一维长度：  
+```java
+int[][] triangleArray = new int[5][];
+triangleArray[0] = new int[5];
+triangleArray[1] = new int[4];
+triangleArray[2] = new int[3];
+triangleArray[3] = new int[4];
+triangleArray[4] = new int[5];
+```
+如果想打印多维数组，可以使用嵌套循环打印，也可以使用Arrays类的**deepToString**方法。
 
 ### 零敲碎打  
 * 一个Java源文件内只能有一个public类,且该类名称必须与文件名相同  

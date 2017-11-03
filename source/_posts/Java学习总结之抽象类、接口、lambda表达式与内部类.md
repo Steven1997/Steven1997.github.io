@@ -168,10 +168,11 @@ public Employee clone()
     catch(CloneNotSupportedException e){ return null;}
  }
 ```
-### 复制数组的三种方法  
+### 复制数组的四种方法  
 1.申请一个新数组，遍历原数组逐一复制元素  
 2.使用System类的静态方法arraycopy  
 3.使用`数组对象.clone`返回一个数组克隆的引用  
+4.使用Arrays类的copyOf方法  
 
 ### 接口和抽象类  
 区别：  
@@ -433,9 +434,11 @@ public class ArrayAlg{
 * 发生某种情况时执行代码(如，点击了一个按钮、数据到达等) 
 * 只在必要时才运行代码  
 
-![fail](Java学习总结之抽象类、接口、lambda表达式与内部类/1.jpg "常用函数式接口")  
+下面是常用的函数式接口和基本类型的函数式接口：  
 
-![fail](Java学习总结之抽象类、接口、lambda表达式与内部类/2.jpg "基本类型的函数式接口")
+![fail](Java学习总结之抽象类、接口、lambda表达式与内部类/1.png "常用函数式接口")  
+
+![fail](Java学习总结之抽象类、接口、lambda表达式与内部类/2.png "基本类型的函数式接口")
 
 下面来看一个简单的例子。假设你想要重复一个动作n次。将这个动作和重复次数传递给一个repeat方法：  
 ```java

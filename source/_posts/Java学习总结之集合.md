@@ -129,7 +129,7 @@ it.remove();//OK
 ```
 所以删除元素必须在刚越过该元素时就进行，否则"过了这个村就没这个店了"  
 ### 集合框架中的接口  
-Java集合框架为不同类型的集合定义了大量接口，如下图所示：  ![fail](Java学习总结之集合/集合框架的接口.jpg "集合框架的接口")  
+Java集合框架为不同类型的集合定义了大量接口，如下图所示：  ![fail](Java学习总结之集合/集合框架的接口.png "集合框架的接口")  
 集合有两个基本接口：**Collection**和**Map**。Collection用于保存一个元素序列，Map用于表示键值对之间的映射关系。在Collection中插入元素使用`boolean add(E element)`,获取元素使用迭代器访问;在Map中插入元素使用`V put(K key,V value)`,通过key获取value使用`V get(K key)`  
 List是一个有序集合。元素会增加到容器中的特定位置。可以采用两种方式访问元素：使用迭代器访问，使用一个整数索引访问。前者称为顺序访问，后者称为随机访问。  
 List的重要API如下：  
@@ -195,8 +195,9 @@ SortedSet和SortedMap接口会提供用于排序的比较器对象，这两个�
 最后，Java SE 6引入了接口NavigableSet和NavigableMap，其中包含一些用于搜索和遍历有序集和映射的方法，TreeSet和TreeMap实现了这些接口。**  
 
 ### 具体的集合  
-![fail](Java学习总结之集合/Java库中的具体集合.jpg "Java库中的具体集合")
-![fail](Java学习总结之集合/集合框架的类.jpg "集合框架的类")
+下面是Java库中的具体集合和集合框架中的类
+![fail](Java学习总结之集合/Java库中的具体集合.png "Java库中的具体集合")
+![fail](Java学习总结之集合/集合框架中的类.png "集合框架中的类")
 #### LinkedList  
 LinkedList是链表类，相较于数组以及动态的ArrayList类，能够更高效地从集合的中间位置插入、删除元素，Java中的LinkedList类是**双向链接**的。  
 除了实现了Collection接口和List接口之外，LinkedList还提供了以下API：  
