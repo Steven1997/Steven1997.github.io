@@ -358,6 +358,88 @@ for(variable : collection) statement
 ```
 上述代码中，i在等于5时也跳出循环到循环首部的标签label2位置，但由于是带标签的continue语句，会重新进入循环。
 ### 枚举类型    
+有时，变量的取值只在一个有限集合内。例如：销售的服装或比萨饼只有小、中、大、超大这四种尺寸。此时可以给每种尺寸编号为1、2、3、4,但是为了程序的可读性，可以定义一个枚举类。    
+可以把枚举类看作普通类，它们都可以定义一些属性和方法，不同之处是：枚举类不能使用 extends 关键字继承其他类，因为 枚举类已经继承了 java.lang.Enum`<T>`(java是单一继承),其中T是定义的枚举类类型，可类比每个普通类的Class对象都是Class`<T>`类的实例。**Enum类是一个抽象类。**  
+下面定义一个简单的枚举类：  
+```java
+public enum Size {SMALL, MEDIUM, LARGE, EXTRA_LARGE};
+```
+其中**enum**是定义枚举类的关键字，可类比普通类的**class**。**Size**是枚举类名，类比普通类名。  
+SMALL、MEDIUM、LARGE、EXTRA_LARGE是枚举值，为枚举类的静态成员，static关键字被省略，类型为Size，可以用`Size.枚举实例名`来访问。Size变量只能存储枚举类中定义的枚举值或null，尽量不要构造新的Size类型对象。  
+可以在枚举类中添加一些构造器、方法和域。当然，构造器只是在构造枚举常量的时候使用，下面是一个示例：  
+```java
+public enum Size
+{
+	SMALL("S"),MEDIUM("M"),LARGE("L"),EXTRA_LARGE("XL");
+    
+    private String abbreviation;
+    
+    private Size(String abbreaviation){
+    this.abbreviation = abbreviation;
+    }
+    public String getAbbreviation() {return abbreviation};
+}
+```
+**注意：**枚举值的声明必须是枚举类定义的第一条语句。枚举类的构造器必须为private，保证了构造器只能用于枚举类中定义的枚举值的构造，而不让客户代码构造新的枚举值。当访问枚举值时，构造方法被调用，枚举值构造方法中的参数被赋值给Abbreviation。如：  
+```java
+public class TestSize{
+	public static void main(String[] args) {
+    	Size size = Size.LARGE;
+        System.out.println(size.getAbbreviation);
+}
+```
+结果打印出"L"  
+
+枚举类型的每一个值都将映射到 protected Enum(String name, int ordinal)构造函数中，在这里，每个枚举值的名称都被转换成一个字符串，且按照在枚举类中出现的先后次序，从0开始进行编号。  
+下面是枚举类的常用API：  
+* int compareTo(E o)   
+按照序号(枚举类中的定义次序)比较此枚举与指定对象的顺序   
+* String toString()  
+ 返回枚举常量的名称  
+* static `<T extends Enum<T>>` T valueOf(Class`<T>` enumType, String name)   
+ 返回带指定名称的指定枚举类型的枚举常量(是toString的逆操作)，例如：  
+ ```java
+ Size s = Enum.valueof(Size.class,"SMALL");
+ ```  
+ s的值为Size.SMALL  
+ 
+* static T[] values()  
+返回一个包含全部枚举值的数组，例如：  
+```java
+Size[] values = Size.values();
+```
+返回一个包含Size.SMALL,Size.MEDIUM,Size.LARGE,  Size.EXTRA_LARGE的数组  
+
+**要比较两个枚举值是否相同，既可以使用equals也可以使用==**  
+
+枚举类型可以在一个类内定义，此时枚举类被作为内部类对待。程序编译后，将创建一个名为`OuterClassName$EnumName`的字节码文件。  
+
+可以在if或switch语句中使用枚举变量，例如：  
+```java
+if(size.equals(Size.SMALL){
+	// process SMALL
+}
+else if(size.equals(Size.MEDIUM){
+	// process MEDIUM
+}
+else
+...
+```
+等价于：  
+```java
+switch(size){
+	case SMALL:
+    // process SMALL
+    break;
+    case MEDIUM:
+    // process MEDIUM
+    break;
+    ...
+}
+```
+**在switch语句中，case标签是一个无限定的枚举值(即SMALL，而不是Size.SMALL)**
+
+更多用法见：[Java枚举(enum)详解7种常见的用法](http://blog.csdn.net/qq_27093465/article/details/52180865)
 ### 输入输出
 #### 1) 输入
 从控制台读取"标准输入流"System.in，需要构造一个**Scanner**对象，并与"标准输入流"System.in关联。  

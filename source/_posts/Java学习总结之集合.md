@@ -317,8 +317,10 @@ Deque(双端队列)接口继承自Queue(队列)接口，与之有所不同的是
 #### PriorityQueue 
 在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先出队。优先队列具有最高级先出(first in, largest out)的行为特征。  
 PriorityQueue的底层是通过堆(小根堆，**将较小的元素设为最高优先级**)实现的，堆是一个可以自我调整的二叉树，对树执行添加和删除操作，可以让最小的元素移动到根，而不必花费时间对元素进行排序。  
-PriorityQueue是一个具体类，没有实现Queue接口，创建一个优先队列的代码为: `PrioriryQueue<E> q = new PriorityQueue<>();`而不应该将对象引用赋给Queue接口。  
+PriorityQueue是一个实现了Queue接口的具体类。  
 **和TreeSet一样，要实现排序，即这些元素必须实现Comparable接口或者构造集时必须提供一个Comparator。**  
+
+**注意：**方法iterator()中提供的迭代器并不保证以有序的方式遍历优先级队列中的元素。原因是PriorityQueue内部是一个堆，堆只能保证根具有最高的优先级，但整个堆并不是有序的。方法iterator()中提供的迭代器可能只是对整个数组的依次遍历，也就是只能保证数组的第一个元素具有最高优先级。但如果将元素依次出队，出队顺序可以保证是有序的，这是因为在每一次出队后堆会进行调整，将下一个优先级最高的元素移动到根。
 
 下面是PriorityQueue的常用API：  
 * PriorityQueue() 构造一个空优先队列  
@@ -327,7 +329,7 @@ PriorityQueue是一个具体类，没有实现Queue接口，创建一个优先�
 * PriorityQueue(int initialCapacity,Comaparator<? super E> c)   
 用指定容量构造一个空优先队列,并指定比较器对元素进行排序  
 
-#### 映射  
+### 映射  
 集是一个集合，它可以快速查找现有元素。但是，有时我们知道某些键的信息，并想要查找与之对应的元素。映射(map)数据结构就是为此设计的，map用来存放键值对，提供键(Key)就能快速查找到值(Value)  
 Java类库为映射提供了两个实现：HashMap和TreeMap，这两个类都实现了Map接口。  
 HashMap(散列映射)对**键**进行散列，键值对是无序的。TreeMap(树映射)用**键**的整体顺序对元素进行排序，并将其组织成搜索树。散列或比较函数只能作用于键，与键关联的值不能进行散列或比较。**与集一样，HashMap比TreeMap快一些，如果不需要按照排列顺序访问键，就最好选择散列。**  
@@ -406,7 +408,16 @@ Set<Map.Entry<K,V>> entrySet()
 ```
 **需要说明的是，keySet不是HashSet或TreeSet，而是实现了Set接口的另外某个类的对象。Set接口扩展了Collection接口，所以可以向使用集合一样使用keySet**  
 
-键值对是Map.Entry`<K,V>`类型的，可以使用entrySet()方法返回映射的键值对集，再通过循环对于每个键值对对象使用，**getKey方法获取该键值对的键，getValue方法获取该键值对的值，setValue方法将键值对的值设置为新值并返回原值。  
+键值对是Map.Entry`<K,V>`类型的，可以使用entrySet()方法返回映射的键值对集，再通过循环对于每个键值对对象使用，例如：  
+```java
+for(Map.Entry<String,Employee> entry: staff.entrySet())
+{
+	String k = entry.getKey();
+    Employee v = entry.getValue();
+    // do something with k,v
+}
+```
+**getKey方法获取该键值对的键，getValue方法获取该键值对的值，setValue方法将键值对的值设置为新值并返回原值。  
 当然查看键值对最高效的方法是使用forEach方法**：
 ```java
 counts.forEach((k,v) -> {
@@ -416,11 +427,151 @@ counts.forEach((k,v) -> {
 **注意:**可以在键集视图上调用迭代器的remove方法，结果会在映射中删除这个键和与它关联的值，但不能调用add方法，否则会抛出一个UnsupportedOperationException;可以在值集合视图删除元素，所删除的值和相应的键将从映射中删除，也不能增加元素;可以在键值对集合中删除元素，将从映射中删除相应的键值对，但也不能增加元素。**总之，可删不可增。**  
 
 #### WeakHashMap  
-当一个映射中引用某个值的所有键都消亡，即没有任何途径引用这个值时，这个值成为了无用对象。但是垃圾回收器跟踪**活动的对象**，只要映射对象是活动的，其中的所有桶也是活动的，它们不能被回收。于是，长期存活的映射中可能会存在一些无用的值，此时如果使用的是WeakHashMap，这种数据结果会协助垃圾回收期协同工作一起删除键值对。  
-具体内部实现机制见：[深入理解WeakHashMap](http://mikewang.blog.51cto.com/3826268/880775/)  
+当一个映射中引用某个值的所有键都消亡，即没有任何途径引用这个值时，这个值成为了无用对象。但是垃圾回收器跟踪**活动的对象**，只要映射对象是活动的，其中的所有桶也是活动的，它们不能被回收。于是，长期存活的映射中可能会存在一些无用的值，此时需要由程序负责从长期存活的映射表中删除那些无用的值，或者使用WeakHashMap。当对键的唯一应用来自散列条目时，这种数据结构会协助垃圾回收期协同工作一起删除键值对。  
+下面是这种机制的内部运行情况。WeakHashMap使用**弱引用**保存键。WeakReference对象将引用保存到另外一个对象中，在这里，就是散列键。对于这种特定类型的对象，垃圾回收器用一种特有的方式进行处理。通常，如果垃圾回收器发现某个特定的对象已经没有他人引用了，就将其回收。然而，如果某个对象只能由WeakReference引用，垃圾回收器仍然回收它，但要将引用这个对象的弱引用放入队列中。WeakHashMap将周期性地检查队列，以便找出新添加的弱引用。一个弱引用进入队列意味着这个键不再被他人使用，并且已经被收集起来。于是，WeakHashMap将删除对应的条目。  
+
+![fail](Java学习总结之集合/WeakHashMap.png)
+
+更多细节见：[深入理解WeakHashMap](http://mikewang.blog.51cto.com/3826268/880775/)  
+
 
 #### LinkedHashSet & LinkedHashMap  
-LinkedHashSet和LinkedHashMap会按照元素插入顺序存放元素或键值对。  
+LinkedHashSet和LinkedHashMap会按照**元素插入顺序**存放元素或键值对。当条目插入到表中时，就会并入到双向链表中。
+![fail](Java学习总结之集合/双向链表.png)
+也可以使用`LinkedHashMap<K, V>(initialCapacity, loadFactor, true)`来构造一个按照**元素访问顺序**迭代键值对的LinkedHashMap。每次调用get或put，受到影响的条目将从当前位置删除，并放到条目链表的尾部(只有条目在链表中位置会受影响，而散列表中的桶不会受影响。一个条目总位于与键散列码对应的桶中)。  
+访问顺序对于实现高速缓存的“最近最少使用”原则十分重要。例如，可能希望将访问频率高的元素放在内存中，而访问频率低的元素则从数据库中读取。当在表中找不到元素项且表又已满时，可以将迭代器加入到表中，并将前几个元素删除掉。这些是近期最少使用的几个元素。  
+甚至可以让这一过程自动化。即构造一个LinkedHashMap的子类，然后覆盖下面的方法：  
+```java
+protected boolean removeEldestEntry(Map.Entry<K, V> eldest)
+```
+每当方法返回true时，就添加一个新条目，从而导致删除eldest条目。例如，下面的高速缓存可以存放100个元素：  
+```java
+Map<K, V> cache = new 
+LinkedHashMap<>(128, 0.75F, true)
+{
+	protected boolean removeEldestEntry(Map.Entry<K, V> eldest)
+    {
+    	return size() > 100; 
+        /*当元素个数 <= 100，直接插入元素，
+        否则进行替换，删除“最近最少使用”的元素，
+        插入新元素*/
+    }
+}();
+```
+另外，还可以对eldest条目进行评估，以此决定是否应该将它删除。例如，可以检查与这个条目一起存在的时间戳。
+![fail](Java学习总结之集合/LinkedHashSet.png)
+
+
+![fail](Java学习总结之集合/LinkedHashMap.png)
+
+
+#### EnumSet & EnumMap  
+EnumSet是一个枚举类型元素集的高效实现。由于枚举类型只有有限个实例，所以EnumSet内部用位序列实现。如果对应的值在集中，则相应的位被置为1.  
+EnumSet没有公共的构造器，可以使用静态工厂方法构造这个集，下面给出得到EnumSet的几个常用方法：  
+![fail](Java学习总结之集合/枚举集.png)
+例如：  
+```java
+enum Weekday { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY};
+EnumSet<Weekday> always = EnumSet.allOf(Weekday.class);
+EnumSet<Weekday> never = EnumSet.noneOf(Weekday.class);
+EnumSet<Weekday> workday = EnumSet.range(Weekday.MONDAY,Weekday.FRIDAY);
+EnumSet<Weekday> mwf = EnumSet.of(Weekday.MONDAY,Weekday.WEDNESDAY,Weekday.FRIDAY);
+```
+可以使用Set接口的常用方法来修改EnumSet  
+EnumMap是一个**键类型**为枚举类型的映射。它可以直接且高效地用一个值数组实现。在使用时，需要在构造器中指定键类型：  
+```java
+EnumMap<Weekday, Employee> personInChange = new EnumMap<>(Weekday.class);
+```
+这样就构造了一个键为Weekday类型的空映射。
+
+#### IdentityHashMap  
+类IdentityHashMap有特殊的作用。在这个类中，键的散列值不是用hashCode函数计算的，而是用System.identityHashCode方法计算的。这是Object.hashCode方法根据对象的内存地址来计算散列码时所使用的方式。而且，在对两个对象进行比较时，IdentityHashMap类使用 == ，而不使用equals  
+也就是说，不同的键对象，即使内容相同，也被视为不同的对象。在实现对象遍历算法(如对象串行化)时，这个类非常有用，可以用来跟踪每个对象的遍历状况。  
+![fail](Java学习总结之集合/IdentityHashMap.png)
+
+### 视图与包装器  
+通过使用**视图**可以获取其他的实现了Collection接口或Map接口的对象，映射类的keySet方法就是这样一个示例。这个方法看似创建了一个新集，并将映射中的所有键都填进去，然后返回这个集。**然而事实并非如此，keySet方法返回一个实现了Set接口的类对象，这个类的方法对原映射进行操作。这样的集合称为视图。**  
+#### 轻量级集合包装器  
+Arrays类的静态方法asList将返回一个**包装了普通Java数组的List包装器**。这个方法可以将数组传递给一个期望得到列表或集合参数的方法。例如：  
+```java
+	Card[] cardDeck = new Card[52];
+    ...
+    List<Card> cardList = Arrays.asList(cardDeck);
+```
+返回的对象不是ArrayList，而是一个视图对象，带有访问底层数组的get和set方法。   
+**改变数组大小的所有方法(例如，与迭代器相关的add和remove方法)都会抛出一个UnsupportedOperationException。**
+asList方法可以接收可变数目的参数，如：  
+```java
+List<String> names = Arrays.asList("Amy","Bob","Carl");
+```
+这个方法调用`Collections.nCopies(n,anObject)`
+将返回一个实现了List接口的**不可修改的对象**，并给人一种包含n个元素，每个元素都像是一个anObject的错觉。
+例如，下面的调用将创建一个包含100个字符串的List，每个串都被设置为"DEFAULT"：  
+```java
+List<String> settings = Collections.nCopies(100,"DEFAULT");
+```
+存储代价很小，可用于不需要修改元素的情况。这是视图技术的一种巧妙的应用。
+**注意：**Collections类包含很多使用的方法，这些方法的参数和返回值都是集合，不要将它和Collection接口混起来。  
+
+如果调用以下方法：  
+```java
+Collections.singleton(anObject);
+```
+将返回一个实现了Set接口的视图对象(与产生List视图的ncopies方法不同)，即一个不可修改的单元素集，而不需要付出建立数据结构的开销。singletonList方法与singletonMap方法类似。  
+类似地，对于集合框架中的每一个接口，还有一些方法可以生成空集、列表、映射等等。特别是，集的类型可以推导得出：  
+```java
+Set<String> deepThoughts = Collections.emptySet();
+```
+
+#### 子范围  
+可以为很多集合建立子范围视图。例如，假设有一个列表staff，想从中取出第10个-第19个元素。可以使用subList方法来获得一个列表的子范围视图：  
+```java
+List group2 = staff.subList(10,20);
+```
+第一个索引包含在内，第二个索引则不包含在内。可以将**任何操作**应用于子范围，该操作会影响整个列表。例如，可以删除整个子范围：  
+```java
+group2.clear();
+```
+现在，staff列表中该范围的元素也被删除，并且group2为空。 
+对于SortedSet和SortedMap，可以使用排序顺序而不是元素位置建立子范围。SortedSet接口声明了3个方法：  
+```java
+SortedSet<E> subSet(E from,E to)
+SortedSet<E> headSet(E to)
+SortedSet<E> tailSet(E from)
+```
+这些方法返回大于等于from且小于to的所有元素构成的子集。
+
+SortedMap也有类似的方法：  
+```java
+SortedMap<K, V> subMap(K from,K to)
+SortedMap<K, V> headMap(K to)
+SortedMap<K, V> tailMap(K from)
+```
+返回映射视图，该映射包含**键**落在指定范围内的所有元素。  
+Java SE 6引入的NavigableSet接口赋予子范围操作更多控制能力。可以指定是否包括边界：  
+```java
+NavigableSet<E> subSet(E from, boolean fromInclusive,E to,boolean toInclusive)
+NavigableSet<E> headSet(E to,boolean toInclusive)
+NavigableSet<E> tailSet(E from,boolean fromInclusive)
+```
+
+#### 不可修改的视图  
+![fail](Java学习总结之集合/不可修改的视图1.png)
+![fail](Java学习总结之集合/不可修改的视图2.png)
+#### 同步视图  
+![fail](Java学习总结之集合/同步视图.png)
+#### 受查视图  
+![fail](Java学习总结之集合/受查视图.png)
+#### 关于可选操作的说明
+![fail](Java学习总结之集合/关于可选操作的说明.png)
+![fail](Java学习总结之集合/关于可选操作的说明2.png)
+![fail](Java学习总结之集合/关于可选操作的说明3.png)
+
+### Collections
+内容较多，见Java核心技术卷一 P388 ~ P396，并查阅相关API
+### 遗留的集合  
+见Java核心技术 P396 ~ P402
+
 
 
 
