@@ -365,7 +365,7 @@ for(variable : collection) statement
 public enum Size {SMALL, MEDIUM, LARGE, EXTRA_LARGE};
 ```
 其中**enum**是定义枚举类的关键字，可类比普通类的**class**。**Size**是枚举类名，类比普通类名。  
-SMALL、MEDIUM、LARGE、EXTRA_LARGE是枚举值，为枚举类的静态成员，static关键字被省略，类型为Size，可以用`Size.枚举实例名`来访问。Size变量只能存储枚举类中定义的枚举值或null，尽量不要构造新的Size类型对象。  
+SMALL、MEDIUM、LARGE、EXTRA_LARGE是枚举值，为枚举类的静态成员，static关键字被省略，类型为Size，可以用`Size.枚举实例名`来访问，命名习惯同常量。Size变量只能存储枚举类中定义的枚举值或null，尽量不要构造新的Size类型对象。  
 可以在枚举类中添加一些构造器、方法和域。当然，构造器只是在构造枚举常量的时候使用，下面是一个示例：  
 ```java
 public enum Size

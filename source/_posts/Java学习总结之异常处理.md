@@ -1,0 +1,335 @@
+---
+title: Java学习总结之异常处理
+date: 2017-11-08 21:42:16
+tags:
+---
+### 引言  
+在程序运行过程中**(注意是运行阶段，程序可以通过编译)**，如果JVM检测出一个不可能执行的操作，就会出现**运行时错误**。例如，使用一个越界的下标访问数组，程序就会产生一个ArrayIndexOutOfBoundsException的运行时错误。如果程序需要输入一个整数的时候用户输入了一个double值，会得到一个InputMismatchException的运行时错误。  
+在Java中，运行时错误会作为**异常**抛出。**异常**就是一种对象，表示阻止正常进行程序执行的错误或者情况。如果异常没有被处理，那么程序就会非正常终止。  
+人们在遇到错误时会感觉不爽。如果一个用户在运行程序期间，由于程序的错误或一些外部环境的影响造成用户数据的丢失，用户就有可能不再使用这个程序了，为了避免这类事
+情的发生，至少应该做到以下几点：  
+* 向用户通告错误
+* 保存所有的工作结果
+* 允许用户以妥善的形式退出程序  
+
+Java使用一种称为**异常处理**的错误捕获机制处理，从而使程序继续运行或优雅终止。  
+### 异常处理概述  
+异常处理使得程序可以处理非预期的情景，并且继续正常的处理。  
+我们来看一个读取两个整数并显示它们商的例子：  
+```java
+public class Quotient{
+	public static void main(String[] args){
+    	Scanner input = new Scanner(System.in);
+        System.out.print("Enter two integers: ");
+        int number1 = input.nextInt();
+        int number2 = input.nextInt();
+        System.out.println(number1 + " / " + number2 
+        + " is " + (number1 / number2));
+     }
+}
+```
+如果number2为0,就会产生一个运行时错误，因为不能用一个整数除以0(注意，一个浮点数除以0不会产生异常)。  
+我们可以添加一个if语句来测试第二个数据：  
+```java
+public class Quotient{
+	public static void main(String[] args){
+    	Scanner input = new Scanner(System.in);
+        System.out.print("Enter two integers: ");
+        int number1 = input.nextInt();
+        int number2 = input.nextInt();
+        if(number2 != 0)
+        	System.out.println(number1 + " / " + number2 
+        + " is " + (number1 / number2));
+        else
+        	System.out.println("Divisor cannot be zero");
+     }
+}
+```
+为了介绍异常处理，我们使用一个**方法**来实现两个整数求商的操作：  
+```java
+public class QuotientWithMethod {
+	public static int quotient(int number1,int number2) {
+    if(number2 == 0) {
+    	System.out.println("Divisor cannot be zero");
+        System.exit(0);
+       }
+       return number1 / number2;
+  }
+  public static void main(String[] args) {
+	Scanner input = new Scanner(System.in);
+    System.out.print("Enter two integers: ");
+    int number1 = input.nextInt();
+    int number2 = input.nextInt();
+    int result = quotient(number1,number2);
+    System.out.println(number1 + " / " + number2 
+    + " is " + result);
+```
+但上述代码有一个问题：当number2为0时，程序在quotient方法内终止。但不应该让一个方法来终止程序 —— **应该由方法的调用者决定是否终止程序，即方法只需要通知其调用者有运行时错误产生，而不应该自己做决定。**  
+下面使用异常处理的方法，让quotient方法抛出一个异常，使其被调用这捕获和处理：  
+```java
+public class QuotientWithException {
+	public static int quotient(int number1,int number2) {
+    	if (number2 == 0) 
+         throw new ArithmeticException("Divisor cannot be zero");
+        return number1 / number2;
+  }
+  
+  public static void main(String[] args) {
+  	Scanner input = new Scanner(System.in);
+    System.out.print("Enter two integers: ");
+    int number1 = input.nextInt();
+    int number2 = input.nextInt();
+    try{
+    	int result = quotient(number1,number2);
+        System.out.println(number1 + " / " + number2 + " is "
+        + result);
+    }
+    catch(ArithmeticException ex) {
+		System.out.println("Exception: an integer " + 
+        "cannot be divided by zero");
+    }
+    
+    System.out.println("Execution continues ...");
+    }
+}
+```
+我们可以看到，上面的代码能使方法抛出一个异常给调用者，并由调用者处理该异常。如果不这么做，被调用的方法本身必须处理异常或者终止程序。但是库方法在设计时通常无法确定在出错时要进行什么操作，最好的做法就是将检测出的错误作为异常抛出给调用者处理，查阅API我们也会发现库方法会对其可能抛出的异常进行说明。异常处理的最根本优势就是**将检测错误(由被调用的方法完成)从处理错误(由调用方法完成)中分离出来。**  
+当然，如果运行时错误发生在main方法中，就不必抛出异常了，可以考虑提供一个异常处理器对异常进行捕获和处理。  
+### 异常类型  
+异常是对象，而对象都采用类来定义。在 Java 程序设计语言中， 异常对象都是派生于 Throwable 类的一个实例。稍后还可以看到，如果 Java 中内置的异常类不能够满足需求，用户可以创建自己的异常类。  
+
+下面是Java中的异常层次结构：  
+
+![fail](Java学习总结之异常处理/Java异常层次结构.jpg "Java异常层次结构")  
+可以看到，Throwable是所有异常类的根类，所有异常类都直接或间接继承自 Throwable。但在下一层立即分解为两个分支：Error 和 Exception。  
+**Error 类层次结构描述了 Java 运行时系统的内部错误和资源耗尽错误。**应用程序不应该抛出这种类型的对象。 如果出现了这样的内部错误， 除了通告给用户，并尽力使程序安全地终止之外， 再也无能为力了。这种情况很少出现。  
+在设计 Java 程序时， 需要关注 Exception 层次结构。 这个层次结构又分解为两个分支：
+一个分支派生于 RuntimeException ; 另一个分支包含其他异常。划分两个分支的规则是：由程序错误导致的异常属于RuntimeException;而程序本身没有问题，但由于像 I/O 错误这类
+问题导致的异常属于其他异常。  
+有一条相当有道理的规则：**如果出现 RuntimeException，那么就一定是你的问题**。  
+也就是说，RuntimeException是可以在编程时避免的。比如，可以通过检测数组下标是否越界来避免IndexOutOfBoundsException，可以通过在使用变量前检测是否为null杜绝NullPointerException。  
+
+**免检异常：**又称非受查异常，RuntimeException、Error以及它们的子类都称为免检异常。意思是编译器不会强制检查程序是否处理或声明了异常。  
+**必检异常：**又称受查异常，除了免检异常的其他异常都是必检异常，意思是编译器会强制程序员检查并通过try-catch语句处理它们，或者在方法头进行声明，否则无法通过编译。  
+### 关于异常处理的更多知识  
+**异常处理器是通过从当前的方法开始，沿着方法调用链，按照异常的反向传播方向找到的。**即如果某方法的异常没有在该方法内被捕获和处理，就会被抛出给它的调用者，并在调用者中搜寻相应的异常处理器，如果还没有找到就继续上抛，如果在整个方法调用链中异常都没有被捕获处理，该异常会被抛给JVM，JVM会终止程序并打印错误信息。
+Java的异常处理模型基于三种操作：  
+* 声明异常  
+* 抛出异常  
+* 捕获异常  
+
+### 声明异常  
+一个方法不仅需要告诉编译器将要返回什么值，还要告诉编译器有可能发生什么错误。例如，一段读取文件的代码知道有可能读取的文件不存在， 或者内容为空，因此， 试图处理文件信息的代码就需要通知编译器可能会抛出 IOException 类的异常。
+方法应该在其首部声明所有可能抛出的异常，这样可以从首部反映出这个方法可能抛出异常。  
+每个方法只需声明所有它可能抛出的**必检异常类型**，这称为**声明异常**。无需声明免检异常，因为免检异常要么不可控制(Error)，要么就应该避免发生(RuntimeException)。  
+可以声明多个异常，用逗号隔开即可：  
+```java
+public void myMethod() throws Exception1, Exception2,...
+```
+当然，从前面的示例中可以知道：除了声明异常之外， 还可以捕获异常。这样会使异常不被抛到方法之外，也不需要 throws 规范。稍后，将会讨论如何决定一个异常是被捕获，还是被抛出让其他的处理器进行处理。  
+下面有一些规则：  
+* 如果在子类中覆盖了超类的一个方法，子类方法中声明的受查异常不能比超类方法中声明的异常更通用(也就是说，子类方法中可以抛出更特定的异常，或者根本不抛出任何异常)  
+* 如果在超类方法中没有声明/抛出异常，子类也不能声明/抛出异常  
+
+### 抛出异常  
+检测到错误的程序可以创建一个合适的异常类型的实例并抛出它，这就称为**抛出异常**。下面有一个例子，方法的参数必须是非负的，如果传入一个负参数，程序就创建一个IllegalArgumentException实例并抛出它：  
+```java
+IllegalArgumentException ex = 
+	new IllegalArgumentException("Wrong Argument");
+throw ex;
+```
+或者  
+```java
+throw new IllegalArgumentException("Wrong Argument");
+```
+第一种写法创建了一个异常对象并赋给一个异常类引用变量，并抛出它;第二种写法则直接抛出一个匿名异常对象。  
+Java库中每个异常类一般至少有两个构造方法：一个无参构造方法和一个带可描述这个异常的String参数的构造方法。如上述就使用了带参数的构造方法并传入了"Wrong Argument"的异常描述。可以通过在异常对象上调用getMessage()获取异常描述字符串。  
+抛出异常的三个步骤：  
+1. 找到一个合适的异常类  
+2. 创建这个类的一个对象 
+3. 将对象抛出  
+
+**注意：**这里所说抛出异常是指我们在编写程序时用throw关键字显式抛出异常，但是在很多情况下，异常是由库方法抛出的，throw关键字被封装在库方法中，对用户是不可见的，此时用户程序中是没有显式的throw关键字的。
+
+### 捕获异常  
+当抛出一个异常时，可以提供try-catch语句来捕获和处理它，如下所示：  
+```java
+	try {
+    	statements; // Statements that may throw exceptions
+     }
+     catch(Exception exVar1) {
+     	handler for exception1;
+     }
+     catch(Exception exVar2) {
+     	handler for exception2;
+     }
+     ...
+     catch(Exception exVarN) {
+     	handler for exceptionN;
+     }
+```
+可以为一个try块提供多个catch语句，因为一个try块可能抛出多种不同类型的异常。  
+如果在执行try块的过程中没有出现异常，则跳过catch子句。  
+如果try块中的某条语句抛出一个异常，Java就会跳过try块中剩余的语句，然后开始查找合适的处理异常的代码，即**异常处理器**。可以从当前的方法开始，沿着方法调用链，按照异常的**反向传播**方向找到这个处理器。从第一个到最后一个逐个检查catch块，判断在catch块中的异常类变量是否是该异常对象的类型。如果是，就将该异常对象赋值给所声明的变量，然后执行catch块中的代码。如果没有发现异常处理器，Java会退出这个方法，把异常传递给调用这个方法的方法，继续同样的过程来查找处理器。如果在调用的方法链中找不到处理器，程序就会终止并且在控制台上打印出错信息。**寻找处理器的过程称为捕获异常。**  
+**注意：**如果一个catch块可以捕获一个父类的异常对象，它就能捕获那个父类的所有子类的异常对象。在catch块中异常被指定的顺序是非常重要的，如果父类异常的catch块在子类异常的catch块之前，就会导致编译错误。道理很简单，如果将父类异常的catch块放在子类异常的catch块之前，则子类异常对象一定会被父类异常的catch块捕获，子类异常的catch块就失去了意义。  
+对于使用同样的处理代码处理多个异常的情况，可以使用**多捕获**特征简化异常的代码编写，如：  
+```java
+catch(Exception1 | Exception2 | ... | ExceptionN ex) {
+	// Same code for handling these exceptions
+}
+```
+### 创建自定义异常类  
+在程序中，可能会遇到任何标准异常类都没有能够充分地描述清楚的问题。在这种情况下，我们可以通过派生Exception类或其子类来创建自定义的异常类。   
+下面给出一个例子，当半径为负时，setRadius方法会抛出一个异常：  
+```java
+public class InvalidRadiusException extends Exception {
+	private double radius;
+    
+    public InvalidRadiusException(double radius) {
+    	super("Invalid radius " + radius);
+        this.radius = radius;
+    }
+    
+    public double getRadius() {
+    	return radius;
+    }
+```
+可见异常类里可定义数据域和访问器，使外界能访问到导致异常的非法参数。  
+**注意：**建议不要让自定义的异常类继承RuntimeException及其子类，这样会使自定义的异常类称为免检异常，最好使自定义的异常类必检，这样编译器就可以在程序中强制捕获或声明这些异常。
+
+### 从异常中获取信息  
+异常对象中包含了关于异常的有价值的信息，可以利用Throwable类中的实例方法获取有关的信息，如下所示：  
+![fail](Java学习总结之异常处理/Throwable1.png)
+![fail](Java学习总结之异常处理/Throwable2.png)
+* Throwable() 无参构造器  
+* Throwable(String message) 带描述异常信息字符串的构造器 
+* String getMessage() 返回一个描述该异常对象信息的字符串 
+* String toString() 返回三个字符串的连接：1) 异常类的全名; 2) ": " 一个冒号和一个空格 3) getMessage(方法)  
+* void printStackTrace() 在控制台上打印 Throwable对象和它的调用堆栈信息  
+同样Exception和RuntimeException也有类似的方法  
+![fail](Java学习总结之异常处理/Exception.png)  
+![fail](Java学习总结之异常处理/RuntimeException.png) 
+堆栈轨迹(stack trace)是一个方法调用过程的列表，它包含了程序执行过程中方法调用的特定位置。类似于数据结构中的栈，一个方法被调用就会入栈，即最先被调用的方法(main方法)在栈底，后被调用的方法在栈顶。当一个方法调用结束，就会出栈，也是栈顶方法先出栈，最后main方法也调用完毕，整个方法栈被销毁，程序结束。  
+Throwable的printStackTrace方法就是这样从上到下打印了方法栈，栈顶是产生异常的方法，栈底是main方法。比如下面的代码访问了数组的-1下标，抛出一个ArrayIndexOutOfBoundsException：  
+```java
+public class TestException {
+	public static void main(String[] args) {
+			int[] array = {1,2,3,4,5};
+		    printArrayElement(array,-1);
+	}
+	public static void printArrayElement(int[] a,int index) {
+		System.out.println(a[index]);
+	}
+}
+```
+打印的堆栈轨迹是：  
+![fail](Java学习总结之异常处理/stack trace.png)
+一种更灵活的方法是getStackTrace()，它会得到一个StackTraceElement对象的一个数组，每个元素都是方法堆栈中的一个方法，其API如下：  
+![fail](Java学习总结之异常处理/getStackTrace.png)  
+### 再次抛出异常与异常链  
+当异常被捕获之后，可以在catch子句中重新抛出异常，这样做的目的是改变异常的类型。如果开发了一个供其他程序员使用的子系统，那么，用于表示子系统的异常类型可能会产生多种解释。ServletException就是这样一个异常类型的例子。执行servlet的代码可能不想知道发生错误的细节原因，但希望明确地知道servlet是否有问题。  
+同原始异常一起抛出一个新异常(带有附加信息)，这称为**异常链**。
+下面给出了抛出异常链的基本方法：  
+```java
+try 
+{
+	access the database
+}
+catch(SQLException e)
+{
+	Throwable se = new ServletException("database error: " 
+    + e.getMessage());
+}
+```
+不过，我们发现原始异常被改变了。有一种更好的处理方法，可以将原始异常设置为新异常的"原因"：  
+```java
+try 
+{
+	access the database
+}
+catch(SQLException e)
+{
+	Throwable se = new ServletException("database error");
+	se.initCause(e);
+	throw se;
+}
+```
+当捕获到异常时，就可以使用下面的这条语句重新得到原始异常：  
+```java
+Throwable e = se.getCause();
+```
+强烈建议使用这种包装技术，这样可以让用户抛出子系统中的高级异常，而不会丢失原始异常的细节。  
+### finally子句  
+当代码抛出一个异常时，就会终止方法中剩余代码的处理，并退出这个方法的执行。如果方法获得了一些本地资源，并且只有这个方法自己知道，又如果这些资源在退出方法之前必须被回收，那么就会产生资源回收问题。一种解决方案是捕获并重新抛出所有的异常。但是，这种解决方案比较乏味，这是因为需要在两个地方清除所分配的资源。一个在正常的代码中；另一个在异常代码中。  
+Java 有一种更好的解决方案，这就是 finally 子句。无论异常是否产生，finally子句总是会被执行,即使在到达finally子句之前有一个return语句，finally块还是会执行。在try块(或try-catch块)和finally块之间不能有其他任何代码。finally子句常用于在抛出异常时关闭资源，比如关闭文件和关闭与数据库的连接。   
+比如下面的代码：  
+```java
+InputStream in = new FileInputStream(. . .);
+try
+{
+//1
+code that might throw exceptions
+//2
+}
+catch (IOException e)
+{
+// 3
+show error message
+// 4
+}
+finally
+{
+// 5
+in.close();
+}
+//6
+```
+在上面的代码中，有下列3种情况会执行finally子句：  
+1) 代码没有抛出异常。在这种情况下，程序首先执行 try 语句块中的全部代码，然后执行 finally 子句中的代码。随后，继续执行 try 语句块之后的下一条语句。也就是说，执行标
+注的1、2、5、6处  
+
+	2) 抛出一个在 catch 子句中捕获的异常。在上面的示例中就是 IOException 异常。在这种情况下，程序将执行 try语句块中的所有代码，直到发生异常为止。此时，将跳过 try语句块中的剩余代码，转去执行与该异常匹配的 catch 子句中的代码， 最后执行 finally 子句中的代码。  
+ 如果 catch 子句没有抛出异常，程序将执行 try 语句块之后的第一条语句。在这里，执行标注 1、 3、 4、5、 6 处的语句。  
+ 如果 catch 子句抛出了一个异常， 异常将被抛回这个方法的调用者。在这里， 执行标注
+1、 3、 5 处的语句。  
+
+	3) 代码抛出了一个异常，但这个异常不是由 catch 子句捕	获的。在这种情况下，程序将执行 try 语句块中的所有语句，直到有异常被抛出为止。此时，将跳过 try 语句块中的剩余代
+码，然后执行 finally 子句中的语句，并将异常抛给这个方法的调用者。在这里， 执行标注 1、5 处的语句。  
+
+	try 语句可以只有 finally 子句，而没有 catch 子句。例如，下面这条 try 语句：  
+    ```java
+    InputStream in = . .
+	try
+	{
+	code that might throw exceptions
+	}
+	finally
+	{
+	in.close();
+	}
+    ```
+无论在 try 语句块中是否遇到异常，finally 子句中的 in.close()语句都会被执行。当然,
+如果真的遇到一个异常，这个异常将会被重新抛出，并且必须由另一个 catch 子句捕获。  
+强烈建议解耦合 try/catch 和 try/finally 语句块。这样可以提高代码的清晰度。例如：  
+```java
+InputStream in = . . .;
+try
+{
+	try
+	{
+	code that might throw exceptions
+	}
+	finally
+	{
+	in.close();
+	}
+}
+catch (IOException e)
+{
+show error message
+}
+```
+内层的 try 语句块只有一个职责，就是确保关闭输入流。外层的 try 语句块也只有一个职责，就是确保报告出现的错误。这种设计方式不仅清楚， 而且还具有一个功能，就是**将会报告 finally 子句中出现的错误。**
+
+
+
