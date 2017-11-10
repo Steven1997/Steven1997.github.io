@@ -1,7 +1,7 @@
 ---
 title: Java学习总结之异常处理
 date: 2017-11-08 21:42:16
-tags:
+tags: Java
 ---
 ### 引言  
 在程序运行过程中**(注意是运行阶段，程序可以通过编译)**，如果JVM检测出一个不可能执行的操作，就会出现**运行时错误**。例如，使用一个越界的下标访问数组，程序就会产生一个ArrayIndexOutOfBoundsException的运行时错误。如果程序需要输入一个整数的时候用户输入了一个double值，会得到一个InputMismatchException的运行时错误。  
@@ -206,6 +206,7 @@ public class InvalidRadiusException extends Exception {
 * String getMessage() 返回一个描述该异常对象信息的字符串 
 * String toString() 返回三个字符串的连接：1) 异常类的全名; 2) ": " 一个冒号和一个空格 3) getMessage(方法)  
 * void printStackTrace() 在控制台上打印 Throwable对象和它的调用堆栈信息  
+
 同样Exception和RuntimeException也有类似的方法  
 ![fail](Java学习总结之异常处理/Exception.png)  
 ![fail](Java学习总结之异常处理/RuntimeException.png) 
@@ -287,17 +288,14 @@ in.close();
 在上面的代码中，有下列3种情况会执行finally子句：  
 1) 代码没有抛出异常。在这种情况下，程序首先执行 try 语句块中的全部代码，然后执行 finally 子句中的代码。随后，继续执行 try 语句块之后的下一条语句。也就是说，执行标
 注的1、2、5、6处  
-
-	2) 抛出一个在 catch 子句中捕获的异常。在上面的示例中就是 IOException 异常。在这种情况下，程序将执行 try语句块中的所有代码，直到发生异常为止。此时，将跳过 try语句块中的剩余代码，转去执行与该异常匹配的 catch 子句中的代码， 最后执行 finally 子句中的代码。  
+2) 抛出一个在 catch 子句中捕获的异常。在上面的示例中就是 IOException 异常。在这种情况下，程序将执行 try语句块中的所有代码，直到发生异常为止。此时，将跳过 try语句块中的剩余代码，转去执行与该异常匹配的 catch 子句中的代码， 最后执行 finally 子句中的代码。  
  如果 catch 子句没有抛出异常，程序将执行 try 语句块之后的第一条语句。在这里，执行标注 1、 3、 4、5、 6 处的语句。  
  如果 catch 子句抛出了一个异常， 异常将被抛回这个方法的调用者。在这里， 执行标注
 1、 3、 5 处的语句。  
-
-	3) 代码抛出了一个异常，但这个异常不是由 catch 子句捕	获的。在这种情况下，程序将执行 try 语句块中的所有语句，直到有异常被抛出为止。此时，将跳过 try 语句块中的剩余代
+3) 代码抛出了一个异常，但这个异常不是由 catch 子句捕	获的。在这种情况下，程序将执行 try 语句块中的所有语句，直到有异常被抛出为止。此时，将跳过 try 语句块中的剩余代
 码，然后执行 finally 子句中的语句，并将异常抛给这个方法的调用者。在这里， 执行标注 1、5 处的语句。  
-
-	try 语句可以只有 finally 子句，而没有 catch 子句。例如，下面这条 try 语句：  
-    ```java
+try 语句可以只有 finally 子句，而没有 catch 子句。例如，下面这条 try 语句：  
+```java
     InputStream in = . .
 	try
 	{
@@ -307,7 +305,7 @@ in.close();
 	{
 	in.close();
 	}
-    ```
+```
 无论在 try 语句块中是否遇到异常，finally 子句中的 in.close()语句都会被执行。当然,
 如果真的遇到一个异常，这个异常将会被重新抛出，并且必须由另一个 catch 子句捕获。  
 强烈建议解耦合 try/catch 和 try/finally 语句块。这样可以提高代码的清晰度。例如：  
@@ -329,7 +327,256 @@ catch (IOException e)
 show error message
 }
 ```
-内层的 try 语句块只有一个职责，就是确保关闭输入流。外层的 try 语句块也只有一个职责，就是确保报告出现的错误。这种设计方式不仅清楚， 而且还具有一个功能，就是**将会报告 finally 子句中出现的错误。**
+内层的 try 语句块只有一个职责，就是确保关闭输入流。外层的 try 语句块也只有一个职责，就是确保报告出现的错误。这种设计方式不仅清楚， 而且还具有一个功能，就是**将会报告 finally 子句中出现的错误。**  
+**注意：**当 finally 子句包含 return 语句时，将会出现一种意想不到的结果„ 假设利用 return 语句从 try 语句块中退出。在方法返回前，finally 子句的内容将被执行。如果 finally 子句中也有一个 return 语句，这个返回值将会覆盖原始的返回值。请看一个复杂的例子：  
+```java
+public static int f(int n)
+{
+	try
+	{
+		int r = n * n;
+		return r;
+	}
+	finally
+	{
+		if (n == 2) return 0;
+	}
+}
+```
+如果调用 f(2), 那么 try 语句块的计算结果为 r = 4, 并执行 return 语句然而，在方法真正返回前，还要执行 finally 子句。finally 子句将使得方法返回 0, 这个返回值覆盖了原始的返回值4。  
+有时候， finally 子句也会带来麻烦。例如， 清理资源的方法也有可能抛出异常。假设希望能够确保在流处理代码中遇到异常时将流关闭。  
+```java
+InputStream in = . . .;
+try
+{
+code that might throw exceptions
+}
+finally
+{
+in.close();
+}
+```
+现在，假设在 try 语句块中的代码抛出了一些非 IOException 的异常，这些异常只有这个方法的调用者才能够给予处理。执行 finally 语句块，并调用 close 方法。而 close 方法本身也
+有可能抛出 IOException 异常。当出现这种情况时， 原始的异常将会丢失，转而抛出 close 方法的异常。  
+这会有问题， 因为第一个异常很可能更有意思。如果你想做适当的处理，重新抛出原来的异常， 代码会变得极其繁琐。 如下所示：  
+```java
+InputStream in = . . .;
+Exception ex = null;
+try
+{
+	try
+    {
+    	code that might throw exceptions
+	}
+	catch (Exception e)
+    {
+    ex = e;
+	throw ex;
+    }
+}
+finally
+{
+	try
+	{
+		in.close()；
+	}
+	catch (Exception e)
+	{
+	if (ex = null) throw e;
+    }
+}
+```
+上面的代码太繁琐，在 Java SE 7中提供了一种更便捷的方法。  
+### 带资源的try语句  
+对于以下代码模式:
+```java
+open a resource
+try
+{
+	work with the resource
+}
+finally
+{
+	close the resource
+}
+```
+假设资源属于一个实现了 AutoCloseable 接口的类，Java SE 7 为这种代码模式提供了一个很有用的快捷方式。AutoCloseable 接口有一个方法：
+```java
+void close() throws Exception
+```
+另外，还有一个 Closeable 接口。这是 AutoCloseable 的子接口， 也包含一个 close方法。不过，这个方法声明为抛出一个 IOException。  
+带资源的 try 语句（try-with-resources) 的最简形式为：
+```java
+try (Resource res = . . .)
+{
+	work with res
+}
+```
+try块退出时，会自动调用 res.close()。下面给出一个典型的例子， 这里要读取一个文件中的所有单词：  
+```java
+try (Scanner in = new Scanner(new FileInputStream(7usr/share/dict/words")), "UTF-8")
+{
+	while (in.hasNext())
+	System.out.println(in.next());
+}
+```
+这个块正常退出时， 或者存在一个异常时， 都会调用 in.close() 方法， 就好像使用了finally块一样。  
+还可以指定多个资源,例如：  
+```java
+try (Scanner in = new Scanne(new FileInputStream("7usr/share/dict/words"), "UTF-8");
+PrintWriter out = new PrintWriter("out.txt"))
+{
+	while (in.hasNext())
+	out.println(in.next().toUpperCase());
+}
+```
+不论这个块如何退出， in 和 out 都会关闭。如果你用常规方式手动编程，就需要两个嵌套的 try/finally语句。  
+前面已经看到，如果 try 块抛出一个异常， 而且 close 方法也抛出一个异常，这就会带来一个难题。带资源的 try 语句可以很好地处理这种情况。原来的异常会重新抛出，而 close方法抛出的异常会"被抑制"。这些异常将自动捕获，并由 addSuppressed 方法增加到原来的异常。 如果对这些异常感兴趣， 可以调用 getSuppressed 方法，它会得到从 close 方法抛出并被抑制的异常列表。  
+你肯定不想采用这种常规方式编程。只要需要关闭资源， 就要尽可能使用带资源的 try语句。
+### 使用异常机制的技巧  
+#### 1.异常处理不能代替简单的测试  
+异常处理需要初始化新的异常对象，需要调用栈返回，而且还需要沿着方法调用链来传播异常以找到它的异常处理器，所以，异常处理通常需要更多的时间和资源。  
+如果能在发生异常的方法中处理异常，就不需要抛出异常。在个别方法中的简单错误最好进行局部处理，无须抛出异常。  
+例如：  
+```java
+try {
+	System.out.println(refVar.toString());
+}
+catch(NullPointerException ex) {
+	System.out.println("refVar is null");
+}
+```
+最好用下面的代码代替：  
+```java
+if (refVar != null)
+	System.out.println(refVar.toString());
+else
+	System.out.println("refVar is null");
+```
+只有在异常不可预料的情况下才抛出异常，简单的情况不应该使用异常机制。
+#### 1.不要过分细化异常  
+很多程序员习惯将每一条语句都分装在一个独立的 try 语句块中。  
+```java
+PrintStream out;
+Stack s;
+for (i = 0;i < 100; i++)
+{
+	try
+	{
+	n = s.pop();
+	}
+	catch (EmptyStackException e)
+	{
+		// stack was empty
+	}
+	try
+	{
+	out.writelnt(n);
+	}
+	catch (IOException e)
+	{
+		// problem writing to file
+	}
+}
+```
+这种编程方式将导致代码量的急剧膨胀。首先看一下这段代码所完成的任务。在这里，希望从栈中弹出 100 个数值， 然后将它们存入一个文件中。如果栈是空的， 则不会变成非空状态；如果文件出现错误， 则也很难给予排除。出现上述问题后，这种编程方式无能为力。因此，有必要将整个任务包装在一个 try语句块中，这样，当任何一个操作出现问题时，整个任务都可以取消。  
+```java
+try
+{
+	for (i = 0; i < 100; i++)
+	{
+	n = s.pop();
+	out.writelnt(n);
+	}
+}
+catch (IOException e)
+{
+	// problem writing to file
+}
+catch (EmptyStackException e)
+{
+	// stack was empty
+}
+```
+这段代码看起来清晰多了。这样也满足了异常处理机制的其中一个目标，将正常处理与错误处理分开。
+#### 3.利用异常层次结构  
+不要只抛出 RuntimeException 异常。应该寻找更加适当的子类或创建自己的异常类。  
+不要只捕获 Thowable 异常， 否则，会使程序代码更难读、 更难维护。  
+考虑受查异常与非受查异常的区别。 已检查异常本来就很庞大，不要为逻辑错误抛出这些异常。（例如， 反射库的做法就不正确。 调用者却经常需要捕获那些早已知道不可能发生的异常。）  
+将一种异常转换成另一种更加适合的异常时不要犹豫。例如， 在解析某个文件中的一个整数时，捕获NumberFormatException 异 常，然后将它转换成 IOException 或 MySubsystemException 的子类。  
+#### 4.不要压制异常  
+在 Java 中，往往强烈地倾向关闭异常。如果编写了一个调用另一个方法的方法，而这个方法有可能 100 年才抛出一个异常， 那么， 编译器会因为没有将这个异常列在 throws 表中产生抱怨。而没有将这个异常列在 throws 表中主要出于编译器将会对所有调用这个方法的方法进行异常处理的考虑。因此，应该将这个异常关闭：  
+```java
+public Image loadImage(String s)
+{
+	try
+	{
+		// code that threatens to throw checked exceptions
+	}
+	catch (Exception e)
+	{} // so there
+}
+```
+现在，这段代码就可以通过编译了。除非发生异常，否则它将可以正常地运行。即使发生了异常也会被忽略。如果认为异常非常重要，就应该对它们进行处理。  
+#### 5.在检测错误时，"苛刻"要比放任更好  
+当检测到错误的时候，有些程序员担心抛出异常。在用无效的参数调用一个方法时，返回一个虚拟的数值， 还是抛出一个异常， 哪种处理方式更好？ 例如， 当栈空时，Stack.pop 是
+返回一个 null, 还是抛出一个异常？ 我们认为：在出错的地方抛出一个 EmptyStackException异常要比在后面抛出一个 NullPointerException 异常更好。  
+#### 6.不要羞于传递异常  
+很多程序员都感觉应该捕获抛出的全部异常。如果调用了一个抛出异常的方法，例如，FilelnputStream 构造器或 readLine 方法，这些方法就会本能地捕获这些可能产生的异常。其实， 传递异常要比捕获这些异常更好：  
+```java
+public void readStuff(String filename) throws IOException
+// not a sign of shame!
+{
+InputStream in = new FilelnputStream(filename);
+. . .
+}
+```
+让高层次的方法通知用户发生了错误， 或者放弃不成功的命令更加适宜。  
+**规则 5、6 可以归纳为"早抛出，晚捕获"**
+### 使用断言  
+在测试期间，需要进行大量的检测以验证程序操作的正确性。然而，这些检测可能非常耗时，在测试完成后也不必保留它们，因此，可以将这些检测删掉，并在其他测试需要时将它们粘贴回来，这是一件很乏味的事。  
+#### 1.断言的概念  
+假设确信某个属性符合要求，并且代码的执行依赖于这个属性。例如，需要计算：  
+```java
+double y = Math.sqrt(x);
+```
+我们确信，这里的 X 是一个非负数值。原因是：X 是另外一个计算的结果，而这个结果不可能是负值；或者 X 是一个方法的参数，而这个方法要求它的调用者只能提供一个正整数。
+然而，还是希望进行检查，以避免让“不是一个数”的数值参与计算操作。当然，也可以抛出一个异常：  
+```java
+if (x < 0) throw new IllegalArgumentException("x < 0");
+```
+但是这段代码会一直保留在程序中，即使测试完毕也不会自动地删除。如果在程序中含有大量的这种检查，程序运行起来会相当慢。  
+断言机制允许在测试期间向代码中插入一些检査语句。当代码发布时，这些插入的检测语句将会被自动地移走。  
+Java 语言引人了关键字 assert。这个关键字有两种形式：  
+`assert 条件;`和`assert 条件：表达式;`  
+这两种形式都会对条件进行检测，如果结果为 false, 则在第一种形式中会抛出一个 AssertionError 异常。在第二种形式中，表达式将被传人 AssertionError 的构造器，并转换成一个消息字符串。  
+**注意：**"表达式"部分的唯一目的是产生一个消息字符串。AssertionError 对象并不存储表达式的值，因此，不可能在以后得到它。正如 JDK 文档所描述的那样：如果使用表达式的值，就会鼓励程序员试图从断言中恢复程序的运行，这不符合断言机制的初衷。
+要想断言 x 是一个非负数值，只需要简单地使用下面这条语句：   
+`assert x >= 0;`  
+或者将 x 的实际值传递给 AssertionError 对象， 从而可以在后面显示出来：  
+`assert x >= 0 : x;`  
+#### 2.启用和禁用断言  
+在默认情况下，断言被禁用。可以在运行程序时用  
+`-enableassertions` 或 `-ea` 选项启用：  
+```java
+java -enableassertions MyApp
+```
+需要注意的是，在启用或禁用断言时不必重新编译程序。启用或禁用断言是类加载器(class loader) 的功能。当断言被禁用时，类加载器将跳过断言代码，因此，不会降低程序运行的速度。  
+也可以在某个类或整个包中使用断言，例如：  
+`java -ea:MyClass -ea:com.mycompany.mylib... MyApp`  
+
+这条命令将开启 MyClass 类以及在 com.mycompany.mylib 包和它的子包中的所有类的断言。选项 -ea 将开启默认包中的所有类的断言。 也可以用选项 `-disableassertions` 或 `-da` 禁用某个特定类和包的断言：  
+`java -ea:... -da:MyClass MyApp`  
+有些类不是由类加载器加载，而是直接由虚拟机加载。可以使用这些开关有选择地启用或禁用那些类中的断言。  
+然而，启用和禁用所有断言的 `-ea` 和 `-da` 开关不能应用到那些没有类加载器的"系统类"上。对于这些系统类来说，需要使用 `-enablesystemassertions/-esa` 开关启用断言。  
+在程序中也可以控制类加载器的断言状态。有关这方面的内容请参看本节末尾的 API 注释。
+
+
+
+
+
+
+
 
 
 
