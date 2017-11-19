@@ -1,3 +1,4 @@
+http://habitdiary.cn/2017/11/19/使用telnet发送HTTP请求报文/
 http://habitdiary.cn/2017/11/19/使用telnet登录SMTP服务发送邮件/
 http://habitdiary.cn/2017/11/08/Java学习总结之异常处理/
 http://habitdiary.cn/2017/10/23/Java学习总结之集合/

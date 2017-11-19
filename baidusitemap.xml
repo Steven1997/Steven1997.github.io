@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://habitdiary.cn/2017/11/19/%E4%BD%BF%E7%94%A8telnet%E5%8F%91%E9%80%81HTTP%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87/</loc>
+    <lastmod>2017-11-19T15:43:46.313Z</lastmod>
+    <data>
+        <display>
+        <title>使用telnet发送HTTP请求报文</title>
+        <pubTime>2017-11-19T15:30:25.000Z</pubTime>
+        
+        <tag>计算机网络</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://habitdiary.cn/2017/11/19/%E4%BD%BF%E7%94%A8telnet%E7%99%BB%E5%BD%95SMTP%E6%9C%8D%E5%8A%A1%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</loc>
-    <lastmod>2017-11-19T14:38:23.154Z</lastmod>
+    <lastmod>2017-11-19T15:28:43.717Z</lastmod>
     <data>
         <display>
         <title>使用telnet登录SMTP服务发送邮件</title>
