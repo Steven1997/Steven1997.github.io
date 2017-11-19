@@ -549,7 +549,7 @@ if (x < 0) throw new IllegalArgumentException("x < 0");
 断言机制允许在测试期间向代码中插入一些检査语句。当代码发布时，这些插入的检测语句将会被自动地移走。  
 Java 语言引人了关键字 assert。这个关键字有两种形式：  
 `assert 条件;`和`assert 条件：表达式;`  
-这两种形式都会对条件进行检测，如果结果为 false, 则在第一种形式中会抛出一个 AssertionError 异常。在第二种形式中，表达式将被传人 AssertionError 的构造器，并转换成一个消息字符串。  
+这两种形式都会对条件进行检测，如果结果为 false, 则在第一种形式中会抛出一个 AssertionError 异常。在第二种形式中，表达式将被传人 AssertionError 的构造器，并转换成一个消息字符串,在打印异常信息时会随之显示出来。  
 **注意：**"表达式"部分的唯一目的是产生一个消息字符串。AssertionError 对象并不存储表达式的值，因此，不可能在以后得到它。正如 JDK 文档所描述的那样：如果使用表达式的值，就会鼓励程序员试图从断言中恢复程序的运行，这不符合断言机制的初衷。
 要想断言 x 是一个非负数值，只需要简单地使用下面这条语句：   
 `assert x >= 0;`  
@@ -561,7 +561,7 @@ Java 语言引人了关键字 assert。这个关键字有两种形式：
 ```java
 java -enableassertions MyApp
 ```
-需要注意的是，在启用或禁用断言时不必重新编译程序。启用或禁用断言是类加载器(class loader) 的功能。当断言被禁用时，类加载器将跳过断言代码，因此，不会降低程序运行的速度。  
+需要注意的是，在启用或禁用断言时**不必重新编译程序**。启用或禁用断言是类加载器(class loader) 的功能。当断言被禁用时，类加载器将跳过断言代码，因此，不会降低程序运行的速度。  
 也可以在某个类或整个包中使用断言，例如：  
 `java -ea:MyClass -ea:com.mycompany.mylib... MyApp`  
 
@@ -569,7 +569,74 @@ java -enableassertions MyApp
 `java -ea:... -da:MyClass MyApp`  
 有些类不是由类加载器加载，而是直接由虚拟机加载。可以使用这些开关有选择地启用或禁用那些类中的断言。  
 然而，启用和禁用所有断言的 `-ea` 和 `-da` 开关不能应用到那些没有类加载器的"系统类"上。对于这些系统类来说，需要使用 `-enablesystemassertions/-esa` 开关启用断言。  
-在程序中也可以控制类加载器的断言状态。有关这方面的内容请参看本节末尾的 API 注释。
+在程序中也可以控制类加载器的断言状态。有关这方面的内容请参看本文末尾的 API 注释。  
+还可以在eclipse里开启断言，只要Run -> Run Configurations -> Arguments页签 -> VM arguments文本框中加上断言开启的标志:  
+-enableassertions 或者-ea 就可以了。  
+#### 3.使用断言完成参数检查  
+在 Java 语言中，给出了3种处理系统错误的机制：
+* 抛出一个异常
+* 日志
+* 使用断言
+  
+什么时候应该选择使用断言呢？ 请记住下面几点：
+* 断言失败是致命的、 不可恢复的错误。
+* 断言检查只用于开发和测阶段(这种做法有时候被戏称为“ 在靠近海岸时穿上救生衣，但在海中央时就把救生衣抛掉吧”)。  
+
+因此，**不应该**使用断言向程序的其他部分通告发生了**可恢复性的错误**，或者，不应该作为程序向用户通告问题的手段。断言只应该用于在测试阶段**确定程序内部的错误位置**。
+下面看一个十分常见的例子：检查方法的参数。是否应该使用断言来检查非法的下标值或null 引用呢？ 要想回答这个问题， 首先阅读一下这个方法的文档。假设实现一个排序方法。
+```java
+/**
+Sorts the specified range of the specified array in ascending 
+numerical order.
+The range to be sorted extends from fromlndex, inclusive, 
+to tolndex, exclusive.
+@param a the array to be sorted.
+@param fromlndex the index of the first element (inclusive) 
+to be sorted.
+@param tolndex the index of the last element (exclusive) to be 
+sorted.
+©throws IllegalArgumentException if fromlndex > tolndex
+©throws ArraylndexOutOfBoundsException if fromlndex < 0 or 
+tolndex > a.length
+*/
+static void sort(int[] a, int fromlndex, int tolndex)
+```
+文档指出，如果方法中使用了错误的下标值，那么就会抛出一个异常。这是方法与调用者之间约定的处理行为。如果实现这个方法，那就必须要遵守这个约定，并抛出表示下标值有误的异常。因此，这里使用断言不太适宜。  
+是否应该断言 a 不是 null 呢？ 这也不太适宜。当 a 是 null 时，这个方法的文档没有指出应该采取什么行动。在这种情况下，调用者可以认为这个方法将会成功地返回，而不会抛出
+一个断言错误。  
+然而，假设对这个方法的约定做一点微小的改动：  
+```java
+@param a the array to be sorted (must not be null)
+```
+现在，这个方法的调用者就必须注意：不允许用 null 数组调用这个方法，并在这个方法的开头使用断言：`assert a != null;`  
+计算机科学家将这种约定称为前置条件(Precondition)。最初的方法对参数没有前置条件， 即承诺在任何条件下都能够给予正确的执行。修订后的方法有一个前置条件，即 a 非空。如果调用者在调用这个方法时没有提供满足这个前置条件的参数， 所有的断言都会失败，并且这个方法可以执行它想做的任何操作。事实上，由于可以使用断言，当方法被非法调用时， 将会出现难以预料的结果。有时候会拋出一个断言错误， 有时候会产生一个 null 指针异常， 这完全取决于类加载器的配置。  
+#### 4.为文档假设使用断言  
+很多程序员使用注释说明假设条件。看一下下面的示例：  
+```java
+if (i % 3 == 0)
+	. . .
+else if (i % 3 = 1)
+	. . .
+else // (i % 3 == 2)
+	. . .
+```
+在这个示例中，使用断言会更好一些。
+```java
+if (i % 3 == 0)
+	. . .
+else if (i % 3 == 1)
+	. . .
+else
+{
+	assert i % 3 == 2;
+    . . .
+}
+```
+当然，如果再仔细地考虑一下这个问题会发现一个更有意思的内容。i%3 会产生什么结果？如果 i 是正值，那余数肯定是 0、 1 或 2。如果 i 是负值，则余数则可以是 -1 和-2。然而，实际上都认为 i 是非负值， 因此， 最好在 if 语句之前使用下列断言：`assert i >= 0;`  
+无论如何，这个示例说明了程序员如何使用断言来进行自我检查。前面已经知道，断言是一种测试和调试阶段所使用的战术性工具; 而日志记录是一种在程序的整个生命周期都可以使用的策略性工具。  
+
+![fail](Java学习总结之异常处理/ClassLoader.png)
+
 
 
 
