@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="XJY&#39;s Blog">
 <meta property="og:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-14T06:33:23.119Z">
+<meta property="og:updated_time" content="2017-11-10T04:04:29.147Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之继承和多态">
 <meta name="twitter:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
@@ -465,6 +465,7 @@
 <li>对于任何非空引用x,x.equals(null)应该返回false</li>
 </ol>
 <p><strong>下面我们给出编写一个完美的equals方法的建议</strong>：<br>1) 先快速检测引用是否相等，如果相等两个对象一定相等，不用继续检测<br>2) 检测引用是否为空，如果为空，不必再检测，直接返回不等<br>3) 如果equals语义在每个子类中有所改变(子类决定相等的概念)，用getClass检测:<code>if(getClass() != obj.getClass()) return false</code>;如果所有子类都拥有统一的语义(父类决定相等)，就使用instanceof检测：<code>if(!(obj instanceof ClassName) return false)</code><br>4) 将obj向下转型为相应类的类型变量<br>5) 逐一比较数据域，注意基本数据类型用 == 检测，引用类型用equals方法检测<br><strong>数组对象用静态的Arrays.equals方法判等</strong></p>
+<p>拓展：<a href="http://www.jianshu.com/p/9cb9c61b0986" target="_blank" rel="external">Integer判断相等，到底该用==还是equals</a></p>
 <h4 id="2-hashCode方法"><a href="#2-hashCode方法" class="headerlink" title="2) hashCode方法"></a>2) hashCode方法</h4><p>散列码(hash code)是由对象导出的一个整型值。散列码是没有规律的，如果x和y是两个不同的对象,x.hashCode()与y.hashCode()基本上不会相同。<br>String类使用下列算法计算散列码：  </p>
 <pre><code class="java"><span class="keyword">int</span> hash = <span class="number">0</span>;
 <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; length();i++){
@@ -688,7 +689,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -701,7 +702,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
