@@ -99,9 +99,8 @@
 <meta property="og:image" content="http://habitdiary.cn/2017/11/28/Java学习总结之Java-IO系统/DataInputStream.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/11/28/Java学习总结之Java-IO系统/DataOutputStream.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/11/28/Java学习总结之Java-IO系统/FileReader.png">
-<meta property="og:image" content="http://habitdiary.cn/2017/11/28/Java学习总结之Java-IO系统/Java学习总结">
 <meta property="og:image" content="http://habitdiary.cn/2017/11/28/Java学习总结之Java-IO系统/FileWriter.png">
-<meta property="og:updated_time" content="2017-11-28T17:57:20.707Z">
+<meta property="og:updated_time" content="2017-11-29T14:27:17.441Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之Java IO系统">
 <meta name="twitter:description" content="Java.io 包几乎包含了所有操作输入、输出需要的类。所有这些流类代表了输入源和输出目标。Java.io 包中的流支持很多种格式，比如：基本类型、对象、本地化字符集等等。一个流可以理解为一个数据的序列。输入流表示从一个源读取数据，输出流表示向一个目标写数据。Java 为 I/O 提供了强大的而灵活的支持，使其更广泛地应用到文件传输和网络编程中。本节讲述最基本的和流与 I/O 相关的功能。先上一个">
@@ -434,7 +433,7 @@
 <p>在给出 File 对象的情况下构造一个 FileWriter 对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FileWriter(File file, <span class="keyword">boolean</span> append)</div></pre></td></tr></table></figure></p>
 <p>构造与某个文件描述符相关联的 FileWriter 对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FileWriter(FileDescriptor fd)</div></pre></td></tr></table></figure></p>
 <p>在给出文件名的情况下构造 FileWriter 对象，它具有指示是否挂起写入数据的 boolean 值。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FileWriter(String fileName, <span class="keyword">boolean</span> append)</div></pre></td></tr></table></figure></p>
-<p>创建FileWriter对象成功后，可以参照以下列表里的方法操作文件。<br><img src="/2017/11/28/Java学习总结之Java-IO系统/Java学习总结" alt="fail"><img src="/2017/11/28/Java学习总结之Java-IO系统/FileWriter.png" alt="fail" title="FileWriter"><br>下面的例子演示了FileReader和FileWriter的使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.*;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileRead</span></span>&#123;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span><span class="keyword">throws</span> IOException</span>&#123;</div><div class="line">      File file = <span class="keyword">new</span> File(<span class="string">"Hello1.txt"</span>);</div><div class="line">      <span class="comment">// 创建文件</span></div><div class="line">      file.createNewFile();</div><div class="line">      <span class="comment">// creates a FileWriter Object</span></div><div class="line">      FileWriter writer = <span class="keyword">new</span> FileWriter(file); </div><div class="line">      <span class="comment">// 向文件写入内容</span></div><div class="line">      writer.write(<span class="string">"This\n is\n an\n example\n"</span>); </div><div class="line">      writer.flush();</div><div class="line">      writer.close();</div><div class="line">      <span class="comment">//创建 FileReader 对象</span></div><div class="line">      FileReader fr = <span class="keyword">new</span> FileReader(file); </div><div class="line">      <span class="keyword">char</span> [] a = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">50</span>];</div><div class="line">      fr.read(a); <span class="comment">// 从数组中读取内容</span></div><div class="line">      <span class="keyword">for</span>(<span class="keyword">char</span> c : a)</div><div class="line">          System.out.print(c); <span class="comment">// 一个个打印字符</span></div><div class="line">      fr.close();</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>创建FileWriter对象成功后，可以参照以下列表里的方法操作文件。<br><img src="/2017/11/28/Java学习总结之Java-IO系统/FileWriter.png" alt="fail" title="FileWriter"><br>下面的例子演示了FileReader和FileWriter的使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.io.*;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileRead</span></span>&#123;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span><span class="keyword">throws</span> IOException</span>&#123;</div><div class="line">      File file = <span class="keyword">new</span> File(<span class="string">"Hello1.txt"</span>);</div><div class="line">      <span class="comment">// 创建文件</span></div><div class="line">      file.createNewFile();</div><div class="line">      <span class="comment">// creates a FileWriter Object</span></div><div class="line">      FileWriter writer = <span class="keyword">new</span> FileWriter(file); </div><div class="line">      <span class="comment">// 向文件写入内容</span></div><div class="line">      writer.write(<span class="string">"This\n is\n an\n example\n"</span>); </div><div class="line">      writer.flush();</div><div class="line">      writer.close();</div><div class="line">      <span class="comment">//创建 FileReader 对象</span></div><div class="line">      FileReader fr = <span class="keyword">new</span> FileReader(file); </div><div class="line">      <span class="keyword">char</span> [] a = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">50</span>];</div><div class="line">      fr.read(a); <span class="comment">// 从数组中读取内容</span></div><div class="line">      <span class="keyword">for</span>(<span class="keyword">char</span> c : a)</div><div class="line">          System.out.print(c); <span class="comment">// 一个个打印字符</span></div><div class="line">      fr.close();</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h3 id="Java中的目录"><a href="#Java中的目录" class="headerlink" title="Java中的目录"></a>Java中的目录</h3><p><strong>创建目录：</strong><br>File类中有两个方法可以用来创建文件夹：</p>
 <ul>
 <li>mkdir( )方法创建一个文件夹，成功则返回true，失败则返回false。失败表明File对象指定的路径已经存在，或者由于整个路径还不存在，该文件夹不能被创建。</li>
@@ -493,6 +492,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/01/使用jsoup简易爬取POJ题面/" rel="prev" title="使用jsoup简易爬取POJ题面">
+                使用jsoup简易爬取POJ题面 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -600,7 +603,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -613,7 +616,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

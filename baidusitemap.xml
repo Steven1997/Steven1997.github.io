@@ -4,8 +4,27 @@
 
     
   <url>
+    <loc>http://habitdiary.cn/2017/12/01/%E4%BD%BF%E7%94%A8jsoup%E7%AE%80%E6%98%93%E7%88%AC%E5%8F%96POJ%E9%A2%98%E9%9D%A2/</loc>
+    <lastmod>2017-12-01T15:59:20.563Z</lastmod>
+    <data>
+        <display>
+        <title>使用jsoup简易爬取POJ题面</title>
+        <pubTime>2017-12-01T15:16:14.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>爬虫</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://habitdiary.cn/2017/11/28/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8BJava-IO%E7%B3%BB%E7%BB%9F/</loc>
-    <lastmod>2017-11-28T17:57:20.707Z</lastmod>
+    <lastmod>2017-11-29T14:27:17.441Z</lastmod>
     <data>
         <display>
         <title>Java学习总结之Java IO系统</title>
@@ -22,7 +41,7 @@
     
   <url>
     <loc>http://habitdiary.cn/2017/11/19/%E4%BD%BF%E7%94%A8telnet%E5%8F%91%E9%80%81HTTP%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87/</loc>
-    <lastmod>2017-11-19T15:43:46.313Z</lastmod>
+    <lastmod>2017-11-29T13:32:18.128Z</lastmod>
     <data>
         <display>
         <title>使用telnet发送HTTP请求报文</title>
