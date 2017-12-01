@@ -7,7 +7,7 @@ tags: 计算机网络
 
 比如，打开终端输入下面命令：  
 
-telnet www.baidu.com 80  Web服务器ip或域名、端口
+telnet www.baidu.com 80  //Web服务器ip或域名、端口
 GET https://www.baidu.com/  HTTP/1.1  
 //请求行：方法字段、URL字段、HTTP版本字段  
 Host: www.baidu.com //首部行

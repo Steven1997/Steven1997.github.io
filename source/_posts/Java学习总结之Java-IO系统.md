@@ -512,7 +512,7 @@ FileWriter(FileDescriptor fd)
 FileWriter(String fileName, boolean append)
 ```
 创建FileWriter对象成功后，可以参照以下列表里的方法操作文件。
-![fail](Java学习总结)![fail](Java学习总结之Java-IO系统/FileWriter.png "FileWriter")  
+![fail](Java学习总结之Java-IO系统/FileWriter.png "FileWriter")  
 下面的例子演示了FileReader和FileWriter的使用  
 ```java
 import java.io.*;
