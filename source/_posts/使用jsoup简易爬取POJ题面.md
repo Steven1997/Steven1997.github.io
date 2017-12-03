@@ -34,8 +34,11 @@ public class Crawler {
                     //选择TABLE标签之后的table标签
 					text.select(".ptt").attr("align", "center");
                     //题目没有居中，添加居中属性
-                    String href = text.select("img").attr("src");
-					text.select("img").attr("src","http://poj.org/"+href);
+                    Elements image = text.select("img");
+					for(Element e:image) {
+							String href = e.attr("src");
+							e.attr("src","http://poj.org/"+href);
+					}
   //图片在poj服务器上，必须修改图片路径为绝对路径，否则无法显示					
                     System.setOut(new PrintStream(new 
                      FileOutputStream("problem"+pid+".html")));
