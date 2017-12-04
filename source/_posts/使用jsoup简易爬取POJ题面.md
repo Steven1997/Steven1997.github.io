@@ -27,23 +27,24 @@ import org.jsoup.select.Elements;
 public class Crawler {
 
 	public static void main(String[] args) throws IOException {
-				for(int pid = 1000;pid <= 1100;pid++) {
-					Document doc = Jsoup.connect("http://poj.org/"
+	for(int pid = 1000;pid <= 1100;pid++) {
+		Document doc = Jsoup.connect("http://poj.org/"
                     +"problem?id=" + pid).get();
-					Elements text = doc.select("TABLE+table");
-                    //选择TABLE标签之后的table标签
-					text.select(".ptt").attr("align", "center");
-                    //题目没有居中，添加居中属性
-                    Elements image = text.select("img");
-					for(Element e:image) {
-							String href = e.attr("src");
-							e.attr("src","http://poj.org/"+href);
-					}
-  //图片在poj服务器上，必须修改图片路径为绝对路径，否则无法显示					
-                    System.setOut(new PrintStream(new 
-                     FileOutputStream("problem"+pid+".html")));
-					 System.out.println(text);
-                     //重定向输出到html文件
+        Elements text = doc.select("TABLE+table");
+        //选择TABLE标签之后的table标签
+	    text.select(".ptt").attr("align", "center");
+        //题目没有居中，添加居中属性
+        Elements image = text.select("img");
+		for(Element e:image) {
+				String href = e.attr("src");
+				e.attr("src","http://poj.org/"+href);
+        }
+       /*图片在poj服务器上，必须修改图片路径为
+         绝对路径，否则无法显示*/					
+        System.setOut(new PrintStream(new 
+                      FileOutputStream("problem"+pid+".html")));
+        System.out.println(text);
+      //重定向输出到html文件
             }
 		}
 	}

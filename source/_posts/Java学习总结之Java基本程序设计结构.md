@@ -478,32 +478,56 @@ Scanner in = new Scanner(System.in);
 ```
 下面给出Scanner类的常用API：  
 * Scanner(InputStream in)  
- 用给定的输入流创建一个Scanner对象  
+ 用给定的输入流创建一个Scanner对象(System.in就是一个InputStream,表示系统标准输入流，默认从键盘读取输入)  
+* Scanner(File source)  
+  用文件创建一个Scanner对象从文件读取输入，如果文件不存在会抛出FileNotFoundException
 *  String nextLine()  
   读取输入的下一行内容(以回车作为分隔符)  
 *  String next()   
-   读取输入的下一个单词(以空白字符如空格、回车作为分割符)  
+   读取输入的下一个字符串(以空白字符如空格、回车作为分割符)  
+* String next(Pattern pattern)  
+ 读取输入的下一个字符串，进行正则验证，如果输入不符合正则表达式会抛出InputMismatchException    
 *  int nextInt()  
 读取下一个int  
 *  double nextDouble()  
 读取下一个double()  
 * boolean hasNext()    
 检测输入是否还有单词  
+* boolean hasNext(Pattern pattern)  
+检测输入的数据是否符合指定的正则标准
 * boolean hasNextInt()  
 检测输入是否还有int  
 * boolean hasDouble()  
-检测输入是否还有double  
+检测输入是否还有double 
+* useDelimiter(String pattern)
+修改输入分隔符(如果用`\n`作分隔符,next()就可以实现和nextLine()一样的功能)
 
-因为输入是可见的，所以Scanner类不使用于从控制台读取密码。Java SE 6特别引入了Console类实现不回显的输入。要想读取一个密码，可以采用下列代码：  
+**Scanner读入时会有回车残留的问题！**在使用**除了nextLine()**的其他方法读入时，本次读入不会读入分隔符，即空格、Tab和回车等，但分隔符会进入缓冲区，下一次再读入时会先读取缓冲区的内容。而如果**使用nextLine()**读入，本次读入不会读入回车，且回车不会进入缓冲区而是直接被舍弃，不影响下一次读入。  
+
+因为输入是可见的，所以Scanner类不使用于从控制台读取密码。Java SE 6特别在io包中引入了Console类实现不回显的输入。要想读取一个密码，可以采用下列代码：  
 ```java
 Console cons = System.console();
-String username = cons.readLine("User name: ");
-char[] passwd = cons.readPassword("Password: ");
+		if(cons != null) {
+	    String username = cons.readLine("User name: ");
+		char[] passwd = cons.readPassword("Password: ");
+		cons.printf("Username is: " + username + "\n");     
+        // 显示用户名
+	    cons.printf("Password is: " + passwd + "\n");   
+        // 显示密码
+		}
+		else {
+			 System.out.println("Console is unavailable."); 
+             // 提示无控制台使用权限
+		}
 ```
 **几点注意：  
 1.Console类不能用new构造对象，属于单例模式，构造方法被private修饰  
 2.为了安全起见，返回的密码存放在一维字符数组中，而不是字符串中。在对密码进行处理后，应该马上用一个填充值覆盖数组元素。  
-3.采用Console对象处理输入不如Scanner方便，每次只能读取一行输入，而没有能够读取一个单词或一个数值的方法**  
+3.采用Console对象处理输入不如Scanner方便，每次只能读取一行输入，而没有能够读取一个单词或一个数值的方法。  
+4.Java要与Console进行交互，不总是能得到可用的Java Console类的。一个JVM是否有可用的Console，依赖于底层平台和JVM如何被调用。如果JVM是在交互式命令行(比如linux的终端或windows的cmd)中启动的，并且输入输出没有重定向到另外的地方，那么就我们可以得到一个可用的Console实例。  
+当用Eclipse或NetBean中运行以上代码时Console中将会有以下文字输出：  
+`Console is unavailable.`  
+表示Java程序无法获得Console实例，是因为JVM不是在命令行中被调用的，或者输入输出被重定向了。**  
 
 下面给出Console类的常用API：  
 * static Console console()   
@@ -586,6 +610,8 @@ Java使用System.out(系统类的输出流对象)来表示标准输出设备，�
 ```
 java MyProg < input.txt > output.txt
 ```
+
+本节只是介绍了最常用的输入输出方式，更多输入输出知识详见：[Java学习总结之Java IO系统](http://habitdiary.cn/2017/11/28/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8BJava-IO%E7%B3%BB%E7%BB%9F/)
 ### 方法  
 #### 1) 定义方法  
 下面先来看一个方法的定义，其作用是返回两个整数中的较大者：
