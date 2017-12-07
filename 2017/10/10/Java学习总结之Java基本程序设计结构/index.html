@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/格式说明符语法.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/Arrays类常用API1.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/Arrays类常用API2.png">
-<meta property="og:updated_time" content="2017-11-10T04:01:57.774Z">
+<meta property="og:updated_time" content="2017-12-03T15:12:16.429Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之Java基本程序设计结构">
 <meta name="twitter:description" content="数据类型Java是一种强类型语言，即意味着必须为每一个变量声明一种类型。在Java中一共有8种基本数据类型，其中有4种整型、2种浮点类型、1种用于表示Unicode编码的字符单元的字符类型char和一种用于表示真值的boolean类型。   1) 整型整型用于表示没有小数部分的值，它允许是负数，Java提供了4种整型：类型　　　　存储需求　　　　　　　　取值范围byte　　　　 1字节">
@@ -458,17 +458,22 @@
 <h3 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h3><h4 id="1-输入"><a href="#1-输入" class="headerlink" title="1) 输入"></a>1) 输入</h4><p>从控制台读取”标准输入流”System.in，需要构造一个<strong>Scanner</strong>对象，并与”标准输入流”System.in关联。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Scanner in = <span class="keyword">new</span> Scanner(System.in);</div></pre></td></tr></table></figure></p>
 <p>下面给出Scanner类的常用API：  </p>
 <ul>
-<li>Scanner(InputStream in)<br>用给定的输入流创建一个Scanner对象  </li>
+<li>Scanner(InputStream in)<br>用给定的输入流创建一个Scanner对象(System.in就是一个InputStream,表示系统标准输入流，默认从键盘读取输入)  </li>
+<li>Scanner(File source)<br>用文件创建一个Scanner对象从文件读取输入，如果文件不存在会抛出FileNotFoundException</li>
 <li>String nextLine()<br>读取输入的下一行内容(以回车作为分隔符)  </li>
-<li>String next()<br>读取输入的下一个单词(以空白字符如空格、回车作为分割符)  </li>
+<li>String next()<br>读取输入的下一个字符串(以空白字符如空格、回车作为分割符)  </li>
+<li>String next(Pattern pattern)<br>读取输入的下一个字符串，进行正则验证，如果输入不符合正则表达式会抛出InputMismatchException    </li>
 <li>int nextInt()<br>读取下一个int  </li>
 <li>double nextDouble()<br>读取下一个double()  </li>
 <li>boolean hasNext()<br>检测输入是否还有单词  </li>
+<li>boolean hasNext(Pattern pattern)<br>检测输入的数据是否符合指定的正则标准</li>
 <li>boolean hasNextInt()<br>检测输入是否还有int  </li>
-<li>boolean hasDouble()<br>检测输入是否还有double  </li>
+<li>boolean hasDouble()<br>检测输入是否还有double </li>
+<li>useDelimiter(String pattern)<br>修改输入分隔符(如果用<code>\n</code>作分隔符,next()就可以实现和nextLine()一样的功能)</li>
 </ul>
-<p>因为输入是可见的，所以Scanner类不使用于从控制台读取密码。Java SE 6特别引入了Console类实现不回显的输入。要想读取一个密码，可以采用下列代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Console cons = System.console();</div><div class="line">String username = cons.readLine(<span class="string">"User name: "</span>);</div><div class="line"><span class="keyword">char</span>[] passwd = cons.readPassword(<span class="string">"Password: "</span>);</div></pre></td></tr></table></figure></p>
-<p><strong>几点注意：<br>1.Console类不能用new构造对象，属于单例模式，构造方法被private修饰<br>2.为了安全起见，返回的密码存放在一维字符数组中，而不是字符串中。在对密码进行处理后，应该马上用一个填充值覆盖数组元素。<br>3.采用Console对象处理输入不如Scanner方便，每次只能读取一行输入，而没有能够读取一个单词或一个数值的方法</strong>  </p>
+<p><strong>Scanner读入时会有回车残留的问题！</strong>在使用<strong>除了nextLine()</strong>的其他方法读入时，本次读入不会读入分隔符，即空格、Tab和回车等，但分隔符会进入缓冲区，下一次再读入时会先读取缓冲区的内容。而如果<strong>使用nextLine()</strong>读入，本次读入不会读入回车，且回车不会进入缓冲区而是直接被舍弃，不影响下一次读入。  </p>
+<p>因为输入是可见的，所以Scanner类不使用于从控制台读取密码。Java SE 6特别在io包中引入了Console类实现不回显的输入。要想读取一个密码，可以采用下列代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Console cons = System.console();</div><div class="line">		<span class="keyword">if</span>(cons != <span class="keyword">null</span>) &#123;</div><div class="line">	    String username = cons.readLine(<span class="string">"User name: "</span>);</div><div class="line">		<span class="keyword">char</span>[] passwd = cons.readPassword(<span class="string">"Password: "</span>);</div><div class="line">		cons.printf(<span class="string">"Username is: "</span> + username + <span class="string">"\n"</span>);     </div><div class="line">        <span class="comment">// 显示用户名</span></div><div class="line">	    cons.printf(<span class="string">"Password is: "</span> + passwd + <span class="string">"\n"</span>);   </div><div class="line">        <span class="comment">// 显示密码</span></div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			 System.out.println(<span class="string">"Console is unavailable."</span>); </div><div class="line">             <span class="comment">// 提示无控制台使用权限</span></div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>几点注意：<br>1.Console类不能用new构造对象，属于单例模式，构造方法被private修饰<br>2.为了安全起见，返回的密码存放在一维字符数组中，而不是字符串中。在对密码进行处理后，应该马上用一个填充值覆盖数组元素。<br>3.采用Console对象处理输入不如Scanner方便，每次只能读取一行输入，而没有能够读取一个单词或一个数值的方法。<br>4.Java要与Console进行交互，不总是能得到可用的Java Console类的。一个JVM是否有可用的Console，依赖于底层平台和JVM如何被调用。如果JVM是在交互式命令行(比如linux的终端或windows的cmd)中启动的，并且输入输出没有重定向到另外的地方，那么就我们可以得到一个可用的Console实例。<br>当用Eclipse或NetBean中运行以上代码时Console中将会有以下文字输出：<br><code>Console is unavailable.</code><br>表示Java程序无法获得Console实例，是因为JVM不是在命令行中被调用的，或者输入输出被重定向了。</strong>  </p>
 <p>下面给出Console类的常用API：  </p>
 <ul>
 <li>static Console console()<br>返回一个Console对象  </li>
@@ -492,6 +497,7 @@
 <p>现在，已经了解了 printf 方法的所有特性。下表给出了格式说明符的语法图： </p>
 <p><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/格式说明符语法.png" alt="fail" title="格式说明符语法">  </p>
 <h4 id="3-重定向语法"><a href="#3-重定向语法" class="headerlink" title="3) 重定向语法"></a>3) 重定向语法</h4><p>Java使用System.out(系统类的输出流对象)来表示标准输出设备，默认情况下是显示器，而用System.in(系统类的输入流对象)来表示标准输入设备，默认情况下是键盘。<br>有时，我们需要从文件而不是键盘读入数据，并希望将程序输出结果保存到文件中而不是打印在控制台上。此时，可以在命令行利用Shell的重定向语法将任意文件关联到System.in和System.out，例如下面的语句实现了从input.txt文件输入并将程序输出结果输入output.txt：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java MyProg &lt; input.txt &gt; output.txt</div></pre></td></tr></table></figure></p>
+<p>本节只是介绍了最常用的输入输出方式，更多输入输出知识详见：<a href="http://habitdiary.cn/2017/11/28/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8BJava-IO%E7%B3%BB%E7%BB%9F/">Java学习总结之Java IO系统</a></p>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="1-定义方法"><a href="#1-定义方法" class="headerlink" title="1) 定义方法"></a>1) 定义方法</h4><p>下面先来看一个方法的定义，其作用是返回两个整数中的较大者：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1,<span class="keyword">int</span> num2)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> result;</div><div class="line">    <span class="keyword">if</span>(num1 &gt; num2)</div><div class="line">    	result = num1;</div><div class="line">    <span class="keyword">else</span></div><div class="line">    	result = num2;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>其中花括号前的部分是<strong>方法头</strong>，花括号包括的部分是<strong>方法体</strong>。方法头包括<strong>修饰符(public static)、返回值类型(int)、方法名(max)、形式参数(int num1、int num2)</strong>。形式参数构成<strong>参数列表</strong>，方法名和参数列表构成<strong>方法签名</strong>。<br>对带返回值的方法而言，return语句是必需的，且如果存在多个选择分支，要确保任何分支都有返回值。对于void方法，也可以在方法中使用return结束方法调用。</p>
 <h4 id="2-调用方法"><a href="#2-调用方法" class="headerlink" title="2) 调用方法"></a>2) 调用方法</h4><p>如调用上述max方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> z = max(x,y);</div></pre></td></tr></table></figure></p>
