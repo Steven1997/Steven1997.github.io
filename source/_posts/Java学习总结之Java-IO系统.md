@@ -13,7 +13,7 @@ JAVA中IO操作有相应步骤，以文件操作为例，主要操作流程如�
 4.关闭输入/输出  
 
 那么我们先来介绍一下File类  
-Java文件类以**抽象**的方式代表文件名和目录路径名。该类主要用于**文件和目录**的**创建**、文件的**查找**和文件的**删除**等。  
+Java文件类在Java.io包中，它以**抽象**的方式代表文件名和目录路径名。该类主要用于获取文件和目录的**属性**，文件和目录的**创建、查找、删除、重命名**等,但**不能**进行文件的**读写操作**。  
 File对象代表磁盘中实际存在的文件和目录。通过以下构造方法创建一个File对象。  
 
 通过给定的**父抽象路径名**和**子路径名字符串**创建一个新的File实例。  
@@ -28,7 +28,9 @@ File对象代表磁盘中实际存在的文件和目录。通过以下构造方�
 通过将给定的 file: URI 转换成一个抽象路径名来创建一个新的 File 实例。  
 `File(URI uri)`  
 
-**注意：**在各个操作系统中，路径的分隔符是不一样的，例如：Windows中使用反斜杠："`\`"，Linux|Unix中使用正斜杠："`/`"。在使用反斜杠时要写成"`\\`"的形式，因为反斜杠要进行转义。如果要让Java保持可移植性，应该使用File类的静态常量File.pathSeparator。
+**注意：**  
+1.在各个操作系统中，路径的分隔符是不一样的，例如：Windows中使用反斜杠："`\`"，Linux|Unix中使用正斜杠："`/`"。在使用反斜杠时要写成"`\\`"的形式，因为反斜杠要进行转义。如果要让Java保持可移植性，应该使用File类的静态常量File.pathSeparator。  
+2.**构建一个File实例并不会在机器上创建一个文件。**不管文件是否存在，都可以创建任意文件名的File实例。可以调用File实例上的exists()方法来判断这个文件是否存在。通过后续的学习我们会知道，当把一个输出流绑定到一个不存在的File实例上时，会自动在机器上创建该文件，但这不是创建File实例时进行的。
 
 创建File对象成功后，可以使用以下列表中的方法操作文件。  
 ![fail](Java学习总结之Java-IO系统/File1.png)
@@ -60,6 +62,7 @@ public class DirList {
   }
 }
 ```
+**小贴士：**lastModified()方法返回的是从时间戳(1970年1月1日0时0分0秒)到当前的毫秒数，返回值类型是long，可以用Date类对它进行包装使其更易读。
 ### Java中的目录  
 **创建目录：**  
 File类中有两个方法可以用来创建文件夹：
@@ -169,7 +172,7 @@ public class DeleteFileDemo {
 **两者比较：**  
 1.字符流是由Java虚拟机将字节转化为2个字节的Unicode字符为单位的字符而成的，所以它对多国语言支持性较好，如果要操作中文数据等，用字符流。  
 2.字符流只用来处理文本数据，字节流还可以用来处理媒体数据，如视频、音频、图片等。  
-3.字符流的两个抽象基类为Reader和Writer，字节流的两个抽象基类为InputStream和OutputStream。它们的具体子类名以基类名为后缀进行扩展。  
+3.字符流的两个**抽象基类**为Reader和Writer，字节流的两个**抽象基类**为InputStream和OutputStream。它们的具体子类名以基类名为后缀进行扩展。  
 4.字节流在操作的时候不会用到缓冲区(内存)，是直接对文件本身操作的，而字符流在操作的时候使用缓冲区。  
 ![fail](Java学习总结之Java-IO系统/Compare.jpg)
 
@@ -251,11 +254,35 @@ public class IOPractice {
 输入流：程序从输入流读取数据源。数据源包括外界(键盘、文件、网络等)，即是将数据源读入到程序的通信通道。输入流主要包括两个抽象基类：InputStream(字节输入流)和Reader(字符输入流)及其扩展的具体子类。  
 输出流：程序向输出流写入数据。将程序中的数据输出到外界（显示器、打印机、文件、网络等）的通信通道。输出流主要包括两个抽象基类：OutputStream(字节输出流)和Writer(字符输出流)及其扩展的具体子类。 
 
-#### 3.按功能分：节点流和处理流
+#### 3.按功能分：节点流和处理流  
+按照流是否**直接**与特定的地方(如磁盘、内存、设备等)相连，分为节点流和处理流两类。  
+节点流：程序用于直接操作目标设备所对应的类叫节点流。(低级流)  
+处理流：程序通过一个间接流类去调用节点流类，以达到更加灵活方便地读写各种类型的数据，这个间接流类就是处理流。处理流可以看成是对已存在的流进行连接和封装的流。(高级流)  
+##### (1) 节点流  
+![fail](Java学习总结之Java-IO系统/节点流.png)  
+* File 文件流。对文件进行读、写操作：FileReader、FileWriter、FileInputStream、FileOutputStream。  
+* Memory 流。  
+向内存数组读写数据: CharArrayReader与 CharArrayWriter、ByteArrayInputStream与ByteArrayOutputStream。  
+向内存字符串读写数据：StringReader、StringWriter、StringBufferInputStream。  
+* Pipe管道流：实现管道的输入和输出(进程间通信)： PipedReader与PipedWriter、PipedInputStream与PipedOutputStream。    
+
+![fail](Java学习总结之Java-IO系统/节点流示意图.png)  
+##### (1) 处理流  
+![fail](Java学习总结之Java-IO系统/处理流.png)  
+* Buffering缓冲流：在读入或写出时，对数据进行缓存，以减少I/O的次数：BufferedReader与BufferedWriter、BufferedInputStream与BufferedOutputStream。   
+* Filtering 滤流：在数据进行读或写时进行过滤：FilterReader与FilterWriter、FilterInputStream与FilterOutputStream。  
+* Converting between Bytes and Characters 转换流：按照一定的编码/解码标准将字节流转换为字符流，或进行反向转换(Stream到Reader)：InputStreamReader、OutputStreamWriter。   
+* Object Serialization 对象流 ：ObjectInputStream、ObjectOutputStream。   
+* DataConversion数据流：按基本数据类型读、写(处理的数据是Java的基本类型)：DataInputStream、DataOutputStream 。 
+* Counting计数流：在读入数据时对行记数 ：LineNumberReader、LineNumberInputStream。 
+* Peeking Ahead预读流： 通过缓存机制，进行预读 ：PushbackReader、PushbackInputStream。   
+* Printing打印流： 包含方便的打印方法 ：PrintWriter、PrintStream。  
+
+![fail](Java学习总结之Java-IO系统/处理流示意图.png)  
 ### 读取控制台输入  
 在Java中，从控制台输入有三种方法：  
 #### 1.使用标准输入流对象System.in  
-System.in是System中内置的InputStream类对象，它的read方法一次只读入**一个字节**数据，返回0 ~ 255的一个int字节值,一般用来读取一个字符，需要强制类型转换为char类型，而我们通常要取得一个字符串或一组数字，故这种方法不常用。下面给出这种方法的一个例子：  
+System.in是System中内置的InputStream类对象，它的read方法一次只读入**一个字节**数据，返回0 ~ 255的一个byte值,一般用来读取一个字符，需要强制类型转换为char类型，而我们通常要取得一个字符串或一组数字，故这种方法不常用。下面给出这种方法的一个例子：  
 ```java
 public class CharTest{
 public static void main(String[] args) {
@@ -269,7 +296,7 @@ public static void main(String[] args) {
 	}
 }
 ```
-**使用这种方法必须提供try-catch块或者在main方法首部声明IOException异常**  
+**使用这种方法必须提供try-catch块或者在main方法首部声明IOException异常，因为System.in是一个流对象**  
 #### 2.使用Scanner类  
 Scanner类功能十分强大，可以读入字符串、整数、浮点数、布尔类型值等等。下面是例子：  
 ```java
@@ -409,7 +436,7 @@ InputStream f = new FileInputStream("C:/java/hello");
 也可以使用一个文件对象来创建一个输入流对象来读取文件。我们首先得使用 File() 方法来创建一个文件对象：  
 ```java
 File f = new File("C:/java/hello");
-InputStream out = new FileInputStream(f);
+InputStream in = new FileInputStream(f);
 ```
 创建了InputStream对象，就可以使用下面的方法来读取流或者进行其他的流操作。
 ![fail](Java学习总结之Java-IO系统/InputStream.png "InputStream")
@@ -426,7 +453,7 @@ public static void main(String[] args) throws IOException{
 ```
 当我们需要创建一个byte[]来保存读取的字节时，如果数组太小，无法完整读入数据，如果太大又会造成内存浪费。**可以使用File类的length方法得到文件的数据字节数，从而有效确定byte数组的大小。**
 
-**注意:** 每调用一次read方法,当前读取在文件中的位置就会向后移动一个字节，已经到文件末尾会返回-1，可以通过read方法返回-1判断是否读到文件末尾，也可以使用available方法返回下一次可以不受阻塞读取的字节数来读取。**FileInputStream不支持mark和reset方法进行重复读取。**  
+**注意:** 每调用一次read方法,当前读取在文件中的位置就会向后移动一个字节，已经到文件末尾会返回-1，可以通过read方法返回-1判断是否读到文件末尾，也可以使用available方法返回下一次可以不受阻塞读取的字节数来读取。**FileInputStream不支持mark和reset方法进行重复读取。BufferedInputStream支持此操作。**  
   
 **FileOutputStream**  
 该类用来创建一个文件并向文件中写数据。  
@@ -461,7 +488,7 @@ import java.io.*;
 public class FileStreamTest{
   public static void main(String args[]){
     try{
-      byte bWrite [] = {'A','B','C'};
+      byte bWrite[] = "ABC".getBytes();
       OutputStream os = new FileOutputStream("/home/xiejunyu/桌面/test.txt");
       for(int x=0; x < bWrite.length ; x++){
       os.write(bWrite[x] ); // writes the bytes
@@ -534,6 +561,7 @@ public class fileStreamTest2{
 ```
 以上例子证明：在对多国语言的支持上，字符流表现更优，此时应使用字符流而不是字节流。  
 
+
 ### 字符流(Writer、Reader)  
 Java提供了两个操作字符的字符流基类，分别是Writer和Reader。先来了解两个用于读写文件的字符流FileReader(字符输入流)和FileWriter(字符输出流)：  
 
@@ -605,8 +633,8 @@ public class FileRead{
 在整个IO包中，实际上就是分为字节流和字符流，但是除了这两个流之外，还存在了一组字节流-字符流的转换类。  
 
 **InputStreamReader**  
-InputStreamReader是字节流通向字符流的桥梁，它使用指定的charset读取字节并将其解码为字符。它拥有一个InputStream类型的变量，并继承了Reader，使用了对象的适配器模式，如图所示：  
-![fail](Java学习总结之Java-IO系统/InputStreamReader.jpg) 
+InputStreamReader是**字节流**通向**字符流**的桥梁，它使用指定的charset读取字节并将其解码为字符。它拥有一个InputStream类型的变量，并继承了Reader，使用了对象的适配器模式，如图所示：  
+![fail](Java学习总结之Java-IO系统/InputStreamReader.jpg)   
 根据InputStream的实例创建InputStreamReader的方法有4种：  
 1.根据默认字符集创建  
 InputStreamReader(InputStream in)  
@@ -683,25 +711,69 @@ public class OutputStreamWriterDemo01{
 };
 ```
 **特别说明：**OutputStreamWriter是字符流到字节流的桥梁，这不表示OutputStreamWriter接收一个字符流并将其转换为字节流，恰恰相反，其接收的OutputStream是一个字节流，而它本身是一个字符流。**那为什么说它是字符流到字节流的桥梁呢？**  
-我们以文件操作为例，之前已经提到，在内存中数据是以字符形式存在的，而在文件中数据是以字节形式保存的。所以在**内存**中的**字符数据**需要通过OutputStreamWriter变为**字节流**才能保存在文件之中，读取的时候需要将读入的**字节流**通过InputStreamReader变为**字符**流。  
+我们以文件操作为例，之前已经提到，在内存中数据是以字符形式存在的，而在文件中数据是以字节形式保存的。所以在**内存**中的**字符数据**需要通过OutputStreamWriter变为**字节流**才能保存在文件之中，读取的时候需要将读入的**字节流**通过InputStreamReader变为**字符流**。  
 但OutputStreamWriter和InputStreamReader都是字符流，也就是说，OutputStreamWriter以字符输出流形式操作了字节的输出流，但实际上还是以字节的形式输出。而InputStreamReader，虽然以字符输入流的形式操作，但实际上还是使用的字节流输入，也就是说，传输或者是从文件中读取数据的时候，文件中真正保存的数据永远是字节。
 ![fail](Java学习总结之Java-IO系统/change.png)  
 
 **FileWriter和FileReader的说明**  
 从JDK文档中可以知道FileOutputStream是OutputStream的直接子类，FileInputStream也是InputStream的直接子类，但是在字符流文件的两个操作类却有一些特殊，FileWriter并不直接是Writer的子类，而是转换流OutputStreamWriter的子类，而FileReader也不直接是Reader的子类，而是转换流InputStreamReader的子类，那么从这两个类的继承关系就可以清楚的发现，不管是是使用字节流还是字符流实际上最终都是以字节形式操作输出流的。
 
-### 缓冲字符流(BufferedReader、BufferedWriter) 
+### 缓冲流(BufferedReader和BufferedWriter、BufferedInputStream和BufferedOutputStream) 
+缓冲流是一系列处理流(包装流)，目的是为了提高I/O效率，它们为I/O提供了内存缓冲区，这是一种常见的性能优化，增加缓冲区的两个目的：  
+(1)允许Java的I/O一次不只操作一个字符，这样提高了整个系统的性能  
+(2)由于有缓冲区，使得在流上执行skip、mark和reset方法都成为可能。  
+如果没有缓冲区，每次调用 read() 或 write()方法都会对文件进行读或写字节，在文件和内存之间发生字节和字符的转换，这是极其低效的。  
+
 **BufferedReader**  
-BufferedReader是一个包装类，是为了提高读效率提供的，其可以接收一个Reader,然后用readLine()逐行读入字符流，直到遇到换行符为止（相当于反复调用Reader类对象的read()方法读入多个字符）。BufferedReader提供一个缓冲区，先将数据读入缓冲区，等缓冲区满了或者调用flush方法，才将缓冲区数据读入内存。如果没有缓冲，则Reader每次调用 read() 都会导致从文件中读取字节，并将其转换为字符后返回，而这是极其低效的。  
+BufferedReader是一个包装类，是为了提高读效率提供的，其可以接收一个Reader,然后用readLine()逐行读入字符流，直到遇到换行符为止（相当于反复调用Reader类对象的read()方法读入多个字符）。  
 **因此，建议用 BufferedReader 包装所有其 read() 操作可能开销很高的 Reader（如 FileReader 和 InputStreamReader),如：**   
 
 ![fail](Java学习总结之Java-IO系统/Buffer.png)    
 ![fail](Java学习总结之Java-IO系统/BufferedReader1.png)  
 ![fail](Java学习总结之Java-IO系统/BufferedReader2.png) 
+  
+ markSupported 判断该输入流能支持 mark 和 reset 方法。mark 用于标记当前位置，readlimit 制定可以重新读取的最大字节数，如果标记后读取的字节数不超过 readlimit 可以用 reset 回到标志位置重复读取。
 
 **BufferedWriter**  
 同理建议用BfferedWriter包装所有其write()操作可能开销很高的Writer(如FileWriter和OutputStreamWriter)  
 ![fail](Java学习总结之Java-IO系统/BufferedWriter.png "BufferedWriter")    
+
+**BufferedInputStream**  
+BufferedInputStream用于包装其他较为缓慢的InputStream  
+构造方法摘要  
+* BufferedInputStream(InputStream in)  
+  创建一个使用默认大小输入缓冲区的缓冲字节输入流
+* BufferedInputStream(InputStream in, int size)
+  创建一个使用指定大小输入缓冲区的缓冲字节输入流  
+
+方法摘要  
+* public int read();
+  从该输入流中读取一个字节
+* public int read(byte[] b,int off,int len);  
+  从此字节输入流中给定偏移量处开始将各字节读取到指定的 byte 数组中。  
+  
+**BufferedOutputStream**  
+BufferedOutputStream用于包装其他较为缓慢的OutputStream  
+构造方法摘要  
+* BufferedOutputStream(OutputStream out);  
+  创建一个使用默认大小输入缓冲区的缓冲字节输出流
+* BufferedOutputStream(OutputStream out,int size);  
+  创建一个使用默认大小输入缓冲区的缓冲字节输出流  
+
+方法摘要  
+* public void write(int b);  
+  向输出流中输出一个字节  
+* public void write(byte[] b,int off,int len);  
+  将指定 byte 数组中从偏移量 off 开始的 len 个字节写入此缓冲的输出流。  
+* public void flush();  
+  刷新此缓冲的输出流。这迫使所有缓冲的输出字节被写出到底层输出流中。  
+  
+**其他**  
+（1）缓冲输入流BufferedInputSTream除了支持read和skip方法意外，还支持其父类的mark和reset方法;   
+（2）BufferedReader提供了一种新的ReadLine方法用于读取一行字符串（以\r或\n分隔）;   
+（3）BufferedWriter提供了一种新的newLine方法用于写入一个行分隔符;   
+（4）对于输出的缓冲流，BufferedWriter和BufferedOutputStream，写出的数据会先在内存中缓存， 
+使用flush方法将会使内存的数据立刻写出,注意BufferedReader和BufferedInputStream没有flush方法，因为flush只用于输出到文件时。  
 
 ### 打印流(PrintStream、PrintWriter)  
 在整个IO包中，打印流是**输出信息最方便**的类，主要包含字节打印流(PrintStream)和字符打印流(PrintWriter)。打印流提供了非常方便的打印功能，可以打印任何的数据类型，例如：小数、整数、字符串等等。  
@@ -829,13 +901,14 @@ public void write(String s,int off,int len)
 
 **提示：**由于BufferedWriter没有PrintWriter使用灵活，所以在实际的操作中，我们往往会使用**PrinterWriter/BufferedReader**这种组合。  
 
-### 内存操作流(ByteArrayInputStream、ByteArrayOutputStream)  
-之前的程序中，输出输入都是从文件中来的，当然，也可以将输出的位置设置在内存之上。此时就要使用ByteArrayInputStream(内存输入流)、ByteArrayOutputStream(内存输出流)来完成输入、输出的功能了。
-ByteArrayInputStream的主要功能是完成将内容写入到内存之中，而ByteArrayOutputStream的主要功能是将内存中的数据输出。  
+### 内存操作流
+之前的程序中，输出输入都是在内存和文件之间进行的，当然，输入输出也可以不访问文件，只在内存中进行。  
+#### 字节数组流(ByteArrayInputStream、ByteArrayOutputStream)
+ByteArrayInputStream的主要功能是完成将byte数组的内容写入到内存之中，而ByteArrayOutputStream的主要功能是将内存中的数据输出到byte数组。  
 ![fail](Java学习总结之Java-IO系统/test.png)  
 
 **ByteArrayInputStream**  
-字节数组输入流在内存中创建一个字节数组缓冲区，从输入流读取的数据保存在该字节数组缓冲区中。创建字节数组输入流对象有以下几种方式。  
+字节数组输入流从内存中的一个字节数组缓冲区读取字节到内存。创建字节数组输入流对象有以下几种方式。  
 接收字节数组作为参数创建：  
 ```java
 ByteArrayInputStream bArray = 
@@ -850,14 +923,14 @@ ByteArrayInputStream(byte []a,int off,int len)
 ![fail](Java学习总结之Java-IO系统/ByteArrayInputStream.png "ByteArrayInputStream")  
 
 **ByteArrayOutputStream**   
-字节数组输出流在内存中创建一个字节数组缓冲区，所有发送到输出流的数据保存在该字节数组缓冲区中。创建字节数组输出流对象有以下几种方式。  
+字节数组输出流在内存中创建一个字节数组缓冲区，所有发送到输出流的数据保存在该字节数组缓冲区中，可以用toByteArray()得到该字节数组，也可以用toString()得到缓冲区内容转换得到的字符串。创建字节数组输出流对象有以下几种方式。  
 下面的构造方法创建一个32字节（默认大小）的缓冲区。
 ```java
 OutputStream bOut = new ByteArrayOutputStream();
 ```
 另一个构造方法创建一个大小为n字节的缓冲区。
 ```java
-OutputStream bOut = new ByteArrayOutputStream(int a)
+OutputStream bOut = new ByteArrayOutputStream(int n)
 ```
 成功创建字节数组输出流对象后，可以参见以下列表中的方法，对流进行写操作或其他操作。  
 ![fail](Java学习总结之Java-IO系统/ByteArrayOutputStream.png "ByteArrayOutputStream")   
@@ -871,7 +944,7 @@ public class ByteStreamTest {
          // 获取用户输入
          bOutput.write(System.in.read()); 
       }
-      byte b [] = bOutput.toByteArray();
+      byte b[] = bOutput.toByteArray();
       System.out.println("Print the content");
       for(int x= 0 ; x < b.length; x++) {
          // 打印字符
@@ -891,9 +964,104 @@ public class ByteStreamTest {
 }
 ```
 
+
+#### 字符数据流(CharArrayReader、CharArrayWriter)
+CharArrayReader、CharArrayWriter和ByteArrayInputStream、ByteArrayOutputStream类似，只不过后者是字节数组输入流，而前者是字符数组输入流。  
+**CharArrayReader**  
+构造方法摘要  
+* CharArrayReader(char buf[]); 
+  使用传入的buf构造CharArrayReader 
+* CharArrayReader(char buf[], int offset, int length);  
+  使用传入的buf的一部分构造CharArrayReader    
+  
+方法摘要  
+* void close(); 关闭此流  
+* void mark(int readAheadLimit); 标记当前流读取的位置  
+* void markSupport(); 检测此流是否支持标记  
+* int read(); 读取一个字符、并以整数形式返回  
+* int read(char[] b, int off, int len); 将buf中len个字符读取到下标从off开始的b中、返回读取的字符个数  
+* boolean ready(); 查看CharArrayReader是否可读。  
+* void reset(); 将此流开始位置重置到最后一次调用mark是流的读取位置  
+* long skip(long n); 丢弃buf中n个字符、返回实际丢弃的字符个数  
+
+**CharArrayWriter**  
+构造方法摘要    
+* public CharArrayWriter()   
+  使用默认的buf大小创建CharArrayWriter。   
+* public CharArrayWriter(int initialSize)   
+  使用指定的buf大小创建CharArrayWriter。  
+
+方法摘要  
+* CharArrayWriter append(CharSequence csq)  
+  将一串有序字符序列写入buf中  
+* CharArrayWriter append(CharSequence csq, int start, int end) 
+  将一串有序字符序列的一部分写入buf中  
+* CharArrayWriter append(char c) 将一个字符写入buf中
+* void close() 关闭此流（没有效果，因为不访问文件）
+* void flush() flush此流（没有效果，因为不访问文件）
+* void reset() 清空buf、重头开始
+* int size() 查看当前buf中字符总数
+* char[] toCharArray() 将buf中内容转换成char[]
+* String toString() 将buf中字符转换成String返回
+* void write(int c) 写入一个字符。
+* void write(char c[], int off, int len)   
+  将一个char[]的一部分写入buf中、若buf满、扩容。
+* void write(String str, int off, int len)   
+  将一个字符串写入buf中、满自动扩容
+* void writeTo(Writer out)  
+  将buf中现有的字节写入到另一个输出字符流out中
+
+#### 字符串流(StringReader、StringWriter)  
+字符串流和字符数据流基本一样，只是把char[]数组换成了String，在此不赘述。  
+
+### 合并流(SequenceInputStream、SequenceOutputStream)  
+
+**SequenceInputStream**  
+有些情况下，当我们需要从多个输入流中向程序读入数据。此时，可以使用合并流，将多个输入流合并成一个SequenceInputStream流对象。 
+SequenceInputStream会将与之相连接的流集组合成一个输入流并从第一个输入流开始读取，直到到达文件末尾，接着从第二个输入流读取，依次类推，直到到达包含的最后一个输入流的文件末 尾为止。 合并流的作用是将多个源合并合一个源。
+![fail](Java学习总结之Java-IO系统/合并流.png)  
+
+构造方法  
+public SequenceInputStream(InputStream s1,InputStream s2)    
+使用两个输入流对象实例化本类对象。  
+
+示例：  
+```java
+
+import java.io.File ;
+import java.io.SequenceInputStream ;
+import java.io.FileInputStream ;
+import java.io.InputStream ;
+import java.io.FileOutputStream ;
+import java.io.OutputStream ;
+public class SequenceDemo{
+	public static void main(String args[]) throws Exception {	
+    // 所有异常抛出
+		InputStream is1 = null ;		// 输入流1
+		InputStream is2 = null ;		// 输入流1
+		OutputStream os = null ;		// 输出流
+		SequenceInputStream sis = null ;	// 合并流
+		is1 = new FileInputStream("d:" + File.separator + "a.txt");
+		is2 = new FileInputStream("d:" + File.separator + "b.txt");
+		os = new FileOutputStream("d:" + File.separator + "ab.txt");
+		sis = new SequenceInputStream(is1,is2) ;
+        // 实例化合并流
+		int temp = 0 ;	// 接收内容
+		while((temp=sis.read())!=-1){	// 循环输出
+			os.write(temp) ;	// 保存内容
+		}
+		sis.close() ;	// 关闭合并流
+		is1.close() ;	// 关闭输入流1`
+		is2.close() ;	// 关闭输入流2
+		os.close() ;	// 关闭输出流
+	}
+};
+```
+**SequenceOutputStream**   
+同SequenceInputStream,区别在于合并的是两个OutputStream，在此不赘述。
 ### 数据操作流(DataInputStream、DataOutputStream)
 **DataInputStream**  
-数据输入流允许应用程序以与机器无关方式从底层输入流中读取基本 Java 数据类型。
+数据输入流允许应用程序以与机器无关方式从底层输入流中读取**Java 8种基本数据类型**，方法命名为readXxx。
 下面的构造方法用来创建数据输入流对象。  
 ```java
 DataInputStream dis = new DataInputStream(InputStream in);
@@ -904,7 +1072,7 @@ DataInputStream dis = new DataInputStream(byte[] a,int off,int len);
 ```
 ![fail](Java学习总结之Java-IO系统/DataInputStream.png "DataInputStream")
 **DataOutputStream**  
-数据输出流允许应用程序以与机器无关方式将Java基本数据类型写到底层输出流。
+数据输出流允许应用程序以与机器无关方式将**Java 8种基本数据类型**写到底层输出流,方法命名为writeXxx。
 下面的构造方法用来创建数据输出流对象。
 ```java
 DataOutputStream out = new DataOutputStream(OutputStream  out);
@@ -935,6 +1103,11 @@ public class Test{
    }
 }
 ```
+### 压缩流  
+在日常的使用中经常会使用到像WinRAR或WinZIP这样的压缩文件，通过这些软件可以把一个很大的文件进行压缩以方便传输。
+在JAVA中 为了减少传输时的数据量也提供了专门的压缩流，可以将文件或文件夹压缩成ZIP、JAR、GZIP等文件的格式。  
+具体见大牛博客：  
+http://blog.csdn.net/u013087513/article/details/52151227
 ### 选择合适的IO流  
 1.首先，明确IO流中有两个主要的体系，即  InputStream、OutputStream和Reader、Writer。其次，明确数据的来源和数据将要到达的目的地。  
 

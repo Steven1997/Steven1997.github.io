@@ -407,9 +407,8 @@ void close() throws Exception
 另外，还有一个 Closeable 接口。这是 AutoCloseable 的子接口， 也包含一个 close方法。不过，这个方法声明为抛出一个 IOException。  
 带资源的 try 语句（try-with-resources) 的最简形式为：
 ```java
-try (Resource res = . . .)
-{
-	work with res
+try (声明和创建资源){
+	使用资源来处理文件;
 }
 ```
 try块退出时，会自动调用 res.close()。下面给出一个典型的例子， 这里要读取一个文件中的所有单词：  

@@ -481,6 +481,8 @@ Scanner in = new Scanner(System.in);
  用给定的输入流创建一个Scanner对象(System.in就是一个InputStream,表示系统标准输入流，默认从键盘读取输入)  
 * Scanner(File source)  
   用文件创建一个Scanner对象从文件读取输入，如果文件不存在会抛出FileNotFoundException
+* Scanner(String str)  
+  用字符串创建一个Scanner对象从字符串读取输入
 *  String nextLine()  
   读取输入的下一行内容(以回车作为分隔符)  
 *  String next()   
@@ -502,7 +504,8 @@ Scanner in = new Scanner(System.in);
 * useDelimiter(String pattern)
 修改输入分隔符(如果用`\n`作分隔符,next()就可以实现和nextLine()一样的功能)
 
-**Scanner读入时会有回车残留的问题！**在使用**除了nextLine()**的其他方法读入时，本次读入不会读入分隔符，即空格、Tab和回车等，但分隔符会进入缓冲区，下一次再读入时会先读取缓冲区的内容。而如果**使用nextLine()**读入，本次读入不会读入回车，且回车不会进入缓冲区而是直接被舍弃，不影响下一次读入。  
+**Scanner读入时会有回车残留的问题！**在使用**除了nextLine()**的其他方法(称为标记读取方法)读入时，本次读入不会读取分隔符，即空格、Tab和回车等，但分隔符会进入缓冲区，如果在标记读取方法之后调用nextLine()就会先读取缓冲区的内容。**使用nextLine()**读入，本次读入则不会读入行分隔符(回车)，且回车不会进入缓冲区而是直接被舍弃，不影响下一次读入。    
+行分隔符字符串是由系统定义的，在Windows平台上是\r\n，而在Linux|UNIX平台上是\n。为了得到特定平台上的行分隔符，使用：`String lineSeparator = System.getProperty("line.separator");`
 
 因为输入是可见的，所以Scanner类不使用于从控制台读取密码。Java SE 6特别在io包中引入了Console类实现不回显的输入。要想读取一个密码，可以采用下列代码：  
 ```java
@@ -766,11 +769,11 @@ x.length可以获取二维数组的第一维长度，x[index].length可以获取
 **二维数组中的每一行本身就是一个数组，因此，各行的长度可以不同。这样的数组称为锯齿数组**，例如：  
 ```java
 int[][] triangleArray = {
-	{1, 2, 3, 4, 5},
-    {2, 3, 4, 5},
-    {3, 4, 5},
-    {4, 5},
-    {5}
+   {1, 2, 3, 4, 5},
+   {2, 3, 4, 5},
+   {3, 4, 5},
+   {4, 5},
+   {5}
 };
 ```
 **其余没有赋值的部分并不会被赋为默认值，就是未分配空间,如果进行访问会抛出ArrayIndexOutOfBoundsException**  
