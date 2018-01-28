@@ -44,10 +44,29 @@ if(x == Double.NaN) // is never true
 if(Double.isNaN(x)) // check whether x is "not a number"
 ```
 浮点数在运算时会产生一定误差,如果对精度有极高要求，应该使用BigDecimal类
-#### 3）Unicode和char类型  
-char类型原本用于表示单个字符。不过，现在情况已经有所变化。如今，有些Unicode字符可以用一个char值描述，另外一些则需要两个char值。  
+#### 3）Unicode和char类型
+Java中字符采用Unicode编码(统一的字符编号，仅仅提供字符与编号间映射。符号数量在不断增加，已超百万)，Unicode又有不同的UTF(即Unicode转换格式，定义Unicode中编号的编码方式)，常用的有UTF-16和UTF-8，其中UTF-8为变长表示，长度可能为1～6个字节；UTF-16为变长表示，长度可能是2或4个字节。  
+我们先来明确几个概念：  
+**内码：**某种语言运行时，其char和string在内存中的编码方式。  
+**外码：**除了内码，皆是外码。  
+**码点：**Unicode编码中一个字符对应的二进制数。  
+**代码单元：**在UTF-16编码中，用char表示的十六位二进制数，占两个字节。  
+**要注意的是，源代码编译产生的目标代码文件(可执行文件或class文件)中的编码方式属于外码。**
 
-详见：[Java中char占几个字节](https://www.cnblogs.com/louiswong/p/6062417.html)
+**JVM中内码采用UTF-16。**早期，UTF-16采用固定长度2字节的方式编码，两个字节可以表示65536种符号（其实真正能表示要比这个少），足以表示当时Unicode中所有字符，也就是说当时一个码点就对应一个代码单元，即每个Unicode字符都用一个char表示。但是随着Unicode中字符的增加，2个字节无法表示所有的字符，UTF-16采用了2字节或4字节的方式来完成编码。Java为应对这种情况，考虑到向前兼容的要求，Java用一对char来表示那些需要4字节的字符。所以，Java中的char固定占用两个字节(即一个代码单元)，大多数常用Unicode字符使用一个代码单元表示，而辅助Unicode字符需要两个代码单元来表示，即一个码点由一个或两个代码单元组成。  
+
+String的length()方法返回的是采用UTF-16编码表示的给定字符串所需要的**代码单元**数量，它在一些情况下不等于字符串中实际的字符数，length()是一个较为底层的方法。  
+如果要得到实际的字符数(即码点数量),可以调用:  
+`int cpCount = str.codePointCount(0,str.length());`  
+调用str.charAt(n)将返回位置n的代码单元，n介于0~str.length()-1之间。要想获得第i个码点,应该使用下列语句：  
+```java
+int index = str.offsetByCodePoints(0,i);
+int cp = str.codePointAt(index);
+```
+![fail](Java学习总结之Java基本程序设计结构/码点1.png)
+![fail](Java学习总结之Java基本程序设计结构/码点2.png)  
+
+更多详见：[Java中char占几个字节](https://www.cnblogs.com/louiswong/p/6062417.html)
     
 char类型的字面量值要用单引号括起来。例如：'A'是编码值为65所对应的字符常量。它与"A"不同，"A"是包含一个字符A的字符串。char类型可以表示为十六进制值，范围从'\u0000'到'\uFFFF'  
 有一些用于表示特殊字符的**转义序列**,如下：  
@@ -247,7 +266,7 @@ switch(switch表达式){
 1) switch表达式可以为char、byte、short、int或者String型值(整型中只有long不行),并且总要用括号括住  
 2) value1,...,valueN必须与switch表达式具有相同的数据类型，且是常量表达式，不能出现变量，例如：x、y+1等  
 3) 当switch表达式的值与case语句匹配时,执行从该case开始的语句，直到遇到一个break语句或到达switch语句的结束。break语句是可选的,会立即终止switch语句  
-4) default语句是可选的，当没有一个给出的case与switch表达式匹配时执行default语句指定的操作，如果加default语句，就什么也不做**
+4) default语句是可选的，当没有一个给出的case与switch表达式匹配时执行default语句指定的操作，如果不加default语句，就什么也不做**
 #### 5) 条件表达式  
 条件表达式基于一个条件计算表达式的值，它是Java中唯一的三元操作符。  
 ```java
@@ -353,7 +372,7 @@ while(true){
 }
 ```
 #### 5) for-each循环  
-Java有一种很强的循环结构，可以用来依次处理数组中的每个元素(其他类型的元素集合亦可)而不必为指定的下表值而分心。  
+Java有一种很强的循环结构，可以用来依次处理数组中的每个元素(其他类型的元素集合亦可)而不必为指定的下标值而分心。  
 这种增强的for循环的语句格式为：  
 ```java
 for(variable : collection) statement
@@ -389,7 +408,7 @@ for(variable : collection) statement
 上述代码中，i在等于5时也跳出循环到循环首部的标签label2位置，但由于是带标签的continue语句，会重新进入循环。
 ### 枚举类型    
 有时，变量的取值只在一个有限集合内。例如：销售的服装或比萨饼只有小、中、大、超大这四种尺寸。此时可以给每种尺寸编号为1、2、3、4,但是为了程序的可读性，可以定义一个枚举类。    
-可以把枚举类看作普通类，它们都可以定义一些属性和方法，不同之处是：枚举类不能使用 extends 关键字继承其他类，因为 枚举类已经继承了 java.lang.Enum`<T>`(java是单一继承),其中T是定义的枚举类类型，可类比每个普通类的Class对象都是Class`<T>`类的实例。**Enum类是一个抽象类。**  
+可以把枚举类看作普通类，它们都可以定义一些属性和方法，也可以添加public等访问修饰符，不同之处是：枚举类不能使用 extends 关键字继承其他类，因为 枚举类已经继承了 java.lang.Enum`<T>`(java是单一继承),其中T是定义的枚举类类型，也就是说一个枚举类T的类型其实是`<T extends Enum<T>>`。**Enum类是一个抽象类。**  
 下面定义一个简单的枚举类：  
 ```java
 public enum Size {SMALL, MEDIUM, LARGE, EXTRA_LARGE};
@@ -422,24 +441,35 @@ public class TestSize{
 
 枚举类型的每一个值都将映射到 protected Enum(String name, int ordinal)构造函数中，在这里，每个枚举值的名称都被转换成一个字符串，且按照在枚举类中出现的先后次序，从0开始进行编号。  
 下面是枚举类的常用API：  
-* int compareTo(E o)   
-按照序号(枚举类中的定义次序)比较此枚举与指定对象的顺序   
+* int ordinal()  
+  返回enum声明中枚举常量的位置，位置从0开始计数
+* int compareTo(`<T extends Enum<T>>` o)   
+按照序号(枚举类中的定义次序，即ordinal返回值)比较此枚举与指定对象的顺序，小于返回一个负值，绝对值是两者的序号差;等于返回0;大于返回一个正值，绝对值是两者的序号差   
+* boolean equals(`<T extends Enum<T>>` o)  
+比较两个枚举常量是否相等,可以用==代替
 * String toString()  
- 返回枚举常量的名称  
-* static `<T extends Enum<T>>` T valueOf(Class`<T>` enumType, String name)   
- 返回带指定名称的指定枚举类型的枚举常量(是toString的逆操作)，例如：  
- ```java
- Size s = Enum.valueof(Size.class,"SMALL");
- ```  
- s的值为Size.SMALL  
- 
+ 返回枚举常量的名称
+* static `<T extends Enum<T>>` valueOf(Class`<T>` enumType, String name)   
+ 返回带指定名称的指定枚举类型的枚举常量(是toString的逆操作)  
 * static T[] values()  
-返回一个包含全部枚举值的数组，例如：  
-```java
-Size[] values = Size.values();
-```
-返回一个包含Size.SMALL,Size.MEDIUM,Size.LARGE,  Size.EXTRA_LARGE的数组  
+返回一个包含全部枚举值的数组  
 
+例如：
+ ```java
+ int index = Size.SMALL.ordinal();
+ //index是0
+ int cmp = Size.SMALL.compareTo(Size.MEDIUM);
+ //cmp是-1
+ boolean isEqual = Size.SMALL.equals(Size.MEDIUM);
+ //isEqual为false
+ String enumName = Size.SMALL.toString();
+//enumName是"SMALL"
+ Size s = Enum.valueof(Size.class,"SMALL");
+ //s是Size.SMALL
+Size[] values = Size.values(); 
+/*返回一个包含Size.SMALL,Size.MEDIUM,Size.LARGE,  
+Size.EXTRA_LARGE的数组 */
+```
 **要比较两个枚举值是否相同，既可以使用equals也可以使用==**  
 
 枚举类型可以在一个类内定义，此时枚举类被作为内部类对待。程序编译后，将创建一个名为`OuterClassName$EnumName`的字节码文件。  
@@ -507,7 +537,7 @@ Scanner in = new Scanner(System.in);
 **Scanner读入时会有回车残留的问题！**在使用**除了nextLine()**的其他方法(称为标记读取方法)读入时，本次读入不会读取分隔符，即空格、Tab和回车等，但分隔符会进入缓冲区，如果在标记读取方法之后调用nextLine()就会先读取缓冲区的内容。**使用nextLine()**读入，本次读入则不会读入行分隔符(回车)，且回车不会进入缓冲区而是直接被舍弃，不影响下一次读入。    
 行分隔符字符串是由系统定义的，在Windows平台上是\r\n，而在Linux|UNIX平台上是\n。为了得到特定平台上的行分隔符，使用：`String lineSeparator = System.getProperty("line.separator");`
 
-因为输入是可见的，所以Scanner类不使用于从控制台读取密码。Java SE 6特别在io包中引入了Console类实现不回显的输入。要想读取一个密码，可以采用下列代码：  
+因为输入是可见的，所以Scanner类不适用于从控制台读取密码。Java SE 6特别在io包中引入了Console类实现不回显的输入。要想读取一个密码，可以采用下列代码：  
 ```java
 Console cons = System.console();
 		if(cons != null) {
@@ -712,10 +742,12 @@ list2 = list1;
 
 复制数组的四种方法  
 1.申请一个新数组，遍历原数组逐一复制元素  
-2.使用System类的静态方法arraycopy  
-3.使用`数组对象.clone`返回一个数组克隆的引用  
-4.使用Arrays类的copyOf方法  
+2.使用System类的静态方法arraycopy()  
+3.使用`数组对象.clone()`返回一个数组克隆的引用  
+4.使用Arrays类的copyOf()方法  
 
+下面是四种复制数组的方法的效率比较，非常有趣，看来要多读读JDK源码^-^  
+参考博客：https://www.cnblogs.com/zhengbin/p/5671403.html  
 #### 5) 匿名数组  
 来看下面的语法：  
 ```java
@@ -787,7 +819,7 @@ triangleArray[2] = new int[3];
 triangleArray[3] = new int[4];
 triangleArray[4] = new int[5];
 ```
-如果想打印多维数组，可以使用嵌套循环打印，也可以使用Arrays类的**deepToString**方法。
+如果想打印多维数组，可以使用嵌套循环打印，也可以使用Arrays类的**deepToString()**方法。
 
 ### 零敲碎打  
 * 一个Java源文件内只能有一个public类,且该类名称必须与文件名相同  
