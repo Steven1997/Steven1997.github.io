@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/格式说明符语法.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/Arrays类常用API1.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/Arrays类常用API2.png">
-<meta property="og:updated_time" content="2018-01-29T12:44:35.960Z">
+<meta property="og:updated_time" content="2018-02-01T14:42:39.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之Java基本程序设计结构">
 <meta name="twitter:description" content="数据类型Java是一种强类型语言，即意味着必须为每一个变量声明一种类型。在Java中一共有8种基本数据类型，其中有4种整型、2种浮点类型、1种用于表示Unicode编码的字符单元的字符类型char和一种用于表示真值的boolean类型。   1) 整型整型用于表示没有小数部分的值，它允许是负数，Java提供了4种整型： 在通常情况下,int类型最常用。如果要表示星球上居住的人数，就需要使用long">
@@ -390,7 +390,7 @@
 <p>应该改成<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(Double.isNaN(x)) <span class="comment">// check whether x is "not a number"</span></div></pre></td></tr></table></figure></p>
 <p>浮点数在运算时会产生一定误差,如果对精度有极高要求，应该使用BigDecimal类</p>
 <h4 id="3）Unicode和char类型"><a href="#3）Unicode和char类型" class="headerlink" title="3）Unicode和char类型"></a>3）Unicode和char类型</h4><p>Java中字符采用Unicode编码(统一的字符编号，仅仅提供字符与编号间映射。符号数量在不断增加，已超百万)，Unicode又有不同的UTF(即Unicode转换格式，定义Unicode中编号的编码方式)，常用的有UTF-16和UTF-8，其中UTF-8为变长表示，长度可能为1～6个字节；UTF-16为变长表示，长度可能是2或4个字节。<br>我们先来明确几个概念：<br><strong>内码：</strong>某种语言运行时，其char和string在内存中的编码方式。<br><strong>外码：</strong>除了内码，皆是外码。<br><strong>码点：</strong>Unicode编码中一个字符对应的二进制数。<br><strong>代码单元：</strong>在UTF-16编码中，用char表示的十六位二进制数，占两个字节。<br><strong>要注意的是，源代码编译产生的目标代码文件(可执行文件或class文件)中的编码方式属于外码。</strong></p>
-<p><strong>JVM中内码采用UTF-16。</strong>早期，UTF-16采用固定长度2字节的方式编码，两个字节可以表示65536种符号（其实真正能表示要比这个少），足以表示当时Unicode中所有字符，也就是说当时一个码点就对应一个代码单元，即每个Unicode字符都用一个char表示。但是随着Unicode中字符的增加，2个字节无法表示所有的字符，UTF-16采用了2字节或4字节的方式来完成编码。Java为应对这种情况，考虑到向前兼容的要求，Java用一对char来表示那些需要4字节的字符。所以，Java中的char固定占用两个字节(即一个代码单元)，大多数常用Unicode字符使用一个代码单元表示，而辅助Unicode字符需要两个代码单元来表示，即一个码点由一个或两个代码单元组成。  </p>
+<p><strong>JVM中内码采用UTF-16。</strong>早期，UTF-16采用固定长度2字节的方式编码，两个字节可以表示65536种符号（其实真正能表示要比这个少），足以表示当时Unicode中所有字符，也就是说当时一个码点就对应一个代码单元，即每个Unicode字符都用一个char表示，一个16位的Unicode码以\u开头的4位十六进制表示，范围从’\u0000’到’\uFFFF’,范围是0~65535。但是随着Unicode中字符的增加，2个字节无法表示所有的字符，UTF-16采用了2字节或4字节的方式来完成编码。Java为应对这种情况，考虑到向前兼容的要求，Java用一对char来表示那些需要4字节的字符。所以，Java中的char固定占用两个字节(即一个代码单元)，大多数常用Unicode字符使用一个代码单元表示，而辅助Unicode字符需要两个代码单元来表示，即一个码点由一个或两个代码单元组成。  </p>
 <p>String的length()方法返回的是采用UTF-16编码表示的给定字符串所需要的<strong>代码单元</strong>数量，它在一些情况下不等于字符串中实际的字符数，length()是一个较为底层的方法。<br>如果要得到实际的字符数(即码点数量),可以调用:<br><code>int cpCount = str.codePointCount(0,str.length());</code><br>调用str.charAt(n)将返回位置n的代码单元，n介于0~str.length()-1之间。要想获得第i个码点,应该使用下列语句：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> index = str.offsetByCodePoints(<span class="number">0</span>,i);</div><div class="line"><span class="keyword">int</span> cp = str.codePointAt(index);</div></pre></td></tr></table></figure></p>
 <p><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/码点1.png" alt="fail"><br><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/码点2.png" alt="fail">  </p>
 <p>更多详见：<a href="https://www.cnblogs.com/louiswong/p/6062417.html" target="_blank" rel="external">Java中char占几个字节</a></p>
@@ -405,6 +405,9 @@
 <p><strong>2.x1 op= x2形式的增强赋值表达式的执行为x1 = (T)(x1 op x2),T是x1的类型。因此，下面代码是正确的：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">sum += <span class="number">4.5</span>;<span class="comment">// 等价于sum = (int)(sum + 4.5)</span></div></pre></td></tr></table></figure></p>
 <p><strong>3.将一个int型变量赋值给short型或byte型的变量，必须显式地使用类型转换，如下面的语句会产生编译错误：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</div><div class="line"><span class="keyword">byte</span> b = i; <span class="comment">// Error because explicit casting is required</span></div></pre></td></tr></table></figure></p>
 <p>然而如果整型直接量在目标变量允许的范围内，那么将整型直接量赋给short型或byte型就不需要显式类型转换，如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">byte</span> b = <span class="number">1</span>;</div></pre></td></tr></table></figure></p>
+<p><strong>4.字符型数据和数值型数据之间的转换：</strong><br>char 型数据可以转换成任意一种数值类型，反之亦然。将整数转换成 char 型数据时，只用到该数据的低十六位，其余部分都被忽略。例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> ch = (<span class="keyword">char</span>)<span class="number">0XAB0041</span>; <span class="comment">/* The lower 16 bits hex code 0041 </span></div><div class="line"><span class="comment">is assigned to ch*/</span> </div><div class="line">System.out.println(ch); <span class="comment">// ch is character A</span></div></pre></td></tr></table></figure></p>
+<p><strong>注意：如果数值类型的值表示范围在0~65535之间，可以隐式转换为char，但如果超过65535就需要强制类型转换，char会截取数据的低十六位。</strong><br>当一个char 型数据转换成数值型时，这个字符的Unicode码就被转换成某个特定的数值类型。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i = (<span class="keyword">int</span>)<span class="string">'A'</span>; <span class="comment">// Decimal 65 is assigned to ch</span></div><div class="line">System.out.println(ch) <span class="comment">// i is 65</span></div></pre></td></tr></table></figure></p>
+<p><strong>如果char的Unicode值未超过数值型范围，可以隐式转换，否则也要强制类型转换。如：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">byte</span> b = <span class="string">'A'</span>; <span class="comment">//is OK,b = 65</span></div><div class="line"><span class="keyword">byte</span> c = (<span class="keyword">byte</span>)<span class="string">'\uFFF4'</span>; <span class="comment">//超过byte范围，必须强转</span></div></pre></td></tr></table></figure></p>
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>变量用于表示在程序中可能被改变的值。<strong>变量声明</strong>告知编译器根据数据类型为变量分配合适的内存空间。变量声明的语法如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datatype variableName;</div></pre></td></tr></table></figure></p>
 <p>如果几个变量为同一类型,允许一起声明它们：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datatype variable1, variable2, ..., variablen;</div></pre></td></tr></table></figure></p>
 <p>可以在声明变量的同时初始化，也可以先声明后初始化：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> count = <span class="number">1</span>; <span class="comment">// 声明同时初始化变量</span></div><div class="line"></div><div class="line"><span class="keyword">int</span> count;</div><div class="line">count = <span class="number">1</span>; <span class="comment">//先声明，后初始化</span></div></pre></td></tr></table></figure></p>
@@ -558,7 +561,9 @@
 <p>为了改正错误，可以将该字符串分成几个单独的子串，然后再用连接符(+)将它们组合起来：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">System.out.println(<span class="string">"Welcome to the“ +</span></div><div class="line"><span class="string">”world of Java!"</span>);</div></pre></td></tr></table></figure></p>
 <ul>
 <li>在eclipse中创建一个工程，目录包含关系如下：在work-space文件夹下会生成一个以工程名命名的文件夹，下面有bin和src文件，bin文件夹用于存放字节码文件，src用于存放源文件。如果工程创建了包，比如cn.habitdiary.core，会在bin和src文件夹下都创建三级文件夹cn/habitdiary/core。特别注意，在eclipse中哪怕没有编译，bin中也会出现字节码文件。事实上每次保存源文件都会自动编译。  </li>
-<li>eclipse调试和设置断点：<br>按F11进入程序调试，程序运行到设置的断点处会暂停执行，注意调试到某条语句时该语句是还未执行的状态，按F6单步执行，按F8向下执行直到遇到断点或程序结束，按F5从进入方法进行调试(step in)，按F7从方法内部返回调用处(step out)。</li>
+<li>eclipse调试和设置断点：<br>按F11进入程序调试，程序运行到设置的断点处会暂停执行，注意调试到某条语句时该语句是还未执行的状态，按F6单步执行，按F8向下执行直到遇到断点或程序结束，按F5从进入方法进行调试(step in)，按F7从方法内部返回调用处(step out)。  </li>
+<li>eclipse中按Alt+/调出代码提示。  </li>
+<li>eclipse中输入Sysout，按Alt+/即可补全为System.out.println();</li>
 </ul>
 
       
@@ -719,7 +724,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -732,7 +737,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

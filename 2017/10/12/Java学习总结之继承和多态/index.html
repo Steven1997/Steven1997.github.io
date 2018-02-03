@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="XJY&#39;s Blog">
 <meta property="og:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-10T04:04:29.147Z">
+<meta property="og:updated_time" content="2018-01-30T05:58:00.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之继承和多态">
 <meta name="twitter:description" content="父类与子类在Java术语中，如果C1类扩展自另一个类C2，我们称C2为父类，也称超类或基类，称C1为子类，也称次类、扩展类、派生类。父类是更通用的类，子类是扩充父类得到的更特定的类。子类从它的父类中继承可访问的数据域和方法，还可以添加新的数据域和方法。从物理层面来看，为子类对象开辟的内存的前一部分存储从父类继承的成员(可访问)，后面再放置子类新扩展的成员。 继承面向对象的编程允许从已经存在的类中定">
@@ -400,9 +400,9 @@
 <p>打印结果为:<br>(1) Performs Person’s tasks<br>(2) Invoke Employee’s overloaded constructor<br>(3) Performs Employee’s tasks<br>(4) Performs Faculty’s tasks  </p>
 <p>我们可以知道：子类的构造方法的第一条语句要么是<strong>super语句(包括编译器隐式插入的)</strong>,要么是<strong>this语句</strong>，它通过调用同一个类的另一个重载的构造方法，再调用该方法的super语句初始化父类  </p>
 <p>注意:如果没有显式在子类构造方法中定义super语句，编译器自动插入的super语句匹配的是父类的无参构造方法，如果父类没有无参构造方法，编译器会报错。所以建议为每个类都提供一个无参构造方法，以便于日后对该类进行扩展。  </p>
-<h3 id="方法重载与重写"><a href="#方法重载与重写" class="headerlink" title="方法重载与重写"></a>方法重载与重写</h3><p><strong>重载</strong><br>方法重载是指在一个类中定义多个同名的方法，但要求每个方法具有不同的参数的类型或参数的个数。重载的方法方法名相同，返回值类型可以不同，参数列表必须不同(包括参数个数、类型和次序，有一个不同就算不同)  </p>
-<p><strong>重写</strong><br>方法重写是指在继承时子类覆盖父类中已有的方法并提供对其的新的实现(修改方法体)。重写的方法和原方法返回值类型、方法名、参数列表均相同，可见性修饰符范围不可缩小(要么相同要么扩大)。<br>为了避免错误，可以使用重写标注，在要重写的方法前加上<code>@Override</code>，该标注会强制编译器检查是否重写了某方法，如果没有重写，编译器会报告一个错误。</p>
-<p><strong>关于重写的几点注意</strong><br>1.仅当实例方法时刻访问的，它才能被覆盖<br>2.静态方法可以被继承，但不能被覆盖。如果子类中重新定义了父类的静态方法，父类的静态方法会被隐藏，可以使用父类名.静态方法名调用隐藏的静态方法  </p>
+<h3 id="方法重载与重写"><a href="#方法重载与重写" class="headerlink" title="方法重载与重写"></a>方法重载与重写</h3><p><strong>重载</strong><br>方法重载是指在一个类中定义多个同名的方法，但要求每个方法具有不同的参数的类型或参数的个数。重载的方法方法名相同，返回值类型和访问修饰符可以不同，参数列表必须不同(包括参数个数、类型和次序，有一个不同就算不同)  </p>
+<p><strong>重写</strong><br>方法重写是指在继承时子类覆盖父类中已有的方法并提供对其的新的实现(修改方法体)。重写的方法和原方法返回值类型、方法名、参数列表均相同，可见性修饰符范围不可缩小(要么相同要么扩大)。<br>为了避免错误，可以使用重写注解，在要重写的方法前加上<code>@Override</code>，该注解会强制编译器检查是否重写了某方法，如果没有重写，编译器会报告一个错误。</p>
+<p><strong>关于重写的几点注意</strong><br>1.仅当实例方法是可访问的，它才能被覆盖<br>2.静态方法可以被继承，但不能被覆盖。如果子类中重新定义了父类的静态方法，父类的静态方法会被隐藏，可以使用父类名.静态方法名调用隐藏的静态方法<br>3.尽管重写一般用于方法，属性其实也可以重写，即子类可以定义和父类同名的属性，子类的属性会覆盖父类的属性。</p>
 <p>方法重写发生在通过继承而相关的不同类中，方法重载可以发生在同一类中，也可以发生在由于继承关系而相关的不同类中。</p>
 <h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><p>Java允许把子类对象的引用赋给父类引用变量，即父类型变量可以引用子类型的对象。从物理层面理解，继承自父类的子类的内存先存储父类数据域再存储子类的新增数据域，所以子类对象既可以看成子类对象本身(看整段内存)也可以看成父类对象(看内存的前一部分)。<br>注意：子类引用赋给父类变量之后，只能访问父类属性和方法或在子类中重写过的父类方法，不能访问子类的特有属性和方法，除非进行向下转型。</p>
 <h3 id="动态绑定"><a href="#动态绑定" class="headerlink" title="动态绑定"></a>动态绑定</h3><p>多态机制的底层实现技术是<strong>动态绑定</strong>，动态绑定是指JVM在执行期间（非编译期）判断所引用对象的实际类型，根据其实际的类型调用其相应的方法。程序运行过程中，把函数（或过程）调用与响应调用所需要的代码相结合的过程称为动态绑定。</p>
@@ -525,7 +525,7 @@ list.toArray(array);
 </code></pre>
 <h4 id="2-Collections类"><a href="#2-Collections类" class="headerlink" title="2.Collections类"></a>2.Collections类</h4><p>Collections类中有很多适用于ArrayList的静态方法，比如max和min方法返回列表中的最大和最小元素，sort方法对列表排序，shuffle方法随机打乱列表元素。</p>
 <p><strong>ArrayList的元素只能是非基本数据类型的，所以如果要容纳基本类型的元素，我们需使用相应的包装类，且此时ArrayList的使用支持自动装箱和自动开箱。</strong>  </p>
-<h3 id="final关键字总结"><a href="#final关键字总结" class="headerlink" title="final关键字总结"></a>final关键字总结</h3><p>final关键字在不同语句中有不同的作用：<br>1) <strong>修饰类变量或成员变量</strong> 如果是基本数据类型，表示该变量的值不可改变;如果是引用类型，表示该变量不能再指向其它对象，即引用值不可变。final还可以修饰方法的局部变量，即常量<br>2) <strong>修饰方法</strong> 表示该方法不能被重写<br>3) <strong>修饰类</strong> 表示该类不能被扩展</p>
+<h3 id="final关键字总结"><a href="#final关键字总结" class="headerlink" title="final关键字总结"></a>final关键字总结</h3><p>final关键字在不同语句中有不同的作用：<br>1) <strong>修饰类变量或成员变量</strong> 如果是基本数据类型，表示该变量的值不可改变;如果是引用类型，表示该变量不能再指向其它对象，即引用值不可变。只能在定义时、构造方法中或构造代码块中赋值。<br>2）<strong>修饰方法的局部变量，即常量</strong> final修饰的局部变量只要在使用前被赋值即可，不要求在定义时即赋值，但赋值后不可改变。<br>3) <strong>修饰方法</strong> 表示该方法不能被重写，注意final不能修饰构造方法。<br>4) <strong>修饰类</strong> 表示该类不能被扩展</p>
 <h3 id="继承的设计技巧"><a href="#继承的设计技巧" class="headerlink" title="继承的设计技巧"></a>继承的设计技巧</h3><h4 id="1-将公共操作和域放在超类"><a href="#1-将公共操作和域放在超类" class="headerlink" title="1.将公共操作和域放在超类"></a>1.将公共操作和域放在超类</h4><h4 id="2-不要使用受保护的域"><a href="#2-不要使用受保护的域" class="headerlink" title="2.不要使用受保护的域"></a>2.不要使用受保护的域</h4><p>protected机制并不能够带来更好的保护，其原因主要有两点:<br>第一，子类集合是无限制的，任何一个人都能够由某个类派生一个子类，并编写代码以直接访问protected的域，从而破坏了封装性。<br>第二，同一个包中的所有类都可以访问protected的域，而不管它是否为这个类的子类。<br>不过，protected方法对于指示那些不提供一般用途而应在子类中重新定义的方法很有用，比如Object提供的clone方法就是protected的  </p>
 <h4 id="3-使用继承实现-“is-a”-关系"><a href="#3-使用继承实现-“is-a”-关系" class="headerlink" title="3.使用继承实现 “is-a” 关系"></a>3.使用继承实现 “is-a” 关系</h4><h4 id="4-除非所有继承的方法都有意义，否则不要使用继承"><a href="#4-除非所有继承的方法都有意义，否则不要使用继承" class="headerlink" title="4.除非所有继承的方法都有意义，否则不要使用继承"></a>4.除非所有继承的方法都有意义，否则不要使用继承</h4><p>比如在使用ArrayList类设计一个Stack类时，不应该使用继承，因为栈只能在栈顶操作元素，而ArrayList中的方法可以在任意位置插入、删除和访问任意位置的元素，这显然不合适。此时应该使用组合代替继承。  </p>
 <h4 id="5-在覆盖方法时，不要改变预期的行为"><a href="#5-在覆盖方法时，不要改变预期的行为" class="headerlink" title="5.在覆盖方法时，不要改变预期的行为"></a>5.在覆盖方法时，不要改变预期的行为</h4><h4 id="6-使用多态，而非类型信息"><a href="#6-使用多态，而非类型信息" class="headerlink" title="6.使用多态，而非类型信息"></a>6.使用多态，而非类型信息</h4><p>即尽量面向父类泛化编程，把不同子类的类似行为的方法定义在父类里，并在子类里覆盖该行为</p>
@@ -689,7 +689,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -702,7 +702,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
