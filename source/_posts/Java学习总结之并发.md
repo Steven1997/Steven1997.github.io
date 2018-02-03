@@ -21,6 +21,56 @@ tags: Java
 ### 线程  
 在早期的操作系统中并没有线程的概念，进程是能拥有资源和独立运行的最小单位，也是程序执行的最小单位。任务调度采用的是时间片轮转的抢占式调度方式，而进程是任务调度的最小单位，每个进程有各自独立的一块内存，使得各个进程之间内存地址相互隔离。  
 后来，随着计算机的发展，对CPU的要求越来越高，进程之间的切换开销较大，已经无法满足越来越复杂的程序的要求了。于是就发明了线程，线程是程序执行中一个单一的顺序控制流程，是程序执行流的最小单元，是处理器调度和分派的基本单位。一个进程可以有一个或多个线程，各个线程之间共享程序的内存空间(也就是所在进程的内存空间)。一个标准的线程由线程ID、当前指令指针(PC)、寄存器和堆栈组成。而进程由内存空间(代码、数据、进程空间、打开的文件)和一个或多个线程组成。**简言之，线程是比进程还要小的运行单位，可以看作是子程序，一个进程包含一个或多个线程。**  
+#### 主线程  
+JVM调用main()所产生的线程。
+#### 当前线程  
+当前正在运行的进程，可通过Thread.currentThread()来获取当前线程。  
+#### 后台线程(守护线程)  
+指为其他线程提供服务的线程，也称为守护线程。比如JVM的垃圾回收、内存管理等线程都是守护线程。当所有前台线程(用户线程)都结束，程序只剩下后台线程的时候，JVM就退出了，由于如果只剩下守护线程，就没必要继续运行程序了。可以通过isDaemon()和setDaemon()方法来判断一个线程是否为后台线程和设置一个线程为后台线程。    
+守护线程有时会被初学者错误地使用，他们不打算考虑关机(shutdown)动作。但这是很危险的。守护线程应该永远不去访问固有资源, 如文件、数据库, 因为它会在任何时候甚至在一个操作的中间发生中断。比如一个守护线程在操作资源的时候，如果所有用户线程都退出了，JVM将直接杀死该守护线程而无法执行finally块中的关闭资源的语句。  
+
+来看一个例子：  
+```java
+class DemoThread implements Runnable {
+ 
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        try {
+            Thread.currentThread().sleep(1000);
+            System.out.println("我是非守护线程");
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        };
+         
+    }
+ 
+}
+
+public class Main {
+    public static void main(String[] args) {
+        threadStart();
+    }
+     
+    public static void threadStart(){
+        DemoThread dt = new DemoThread();
+        Thread thread = new Thread(dt);
+        thread.setDaemon(true);
+         
+        thread.start();
+    }
+ 
+}
+```
+结果：  
+1、当直接启动时，不会打印出内容  
+2、当去掉thread.setDaemon(true)时，会打印出“我是非守护线程”。
+
+原因分析：当thread被设置为守护线程时，主线程是前台线程，执行完之后就直接结束，JVM直接杀死thread，这个守护线程中的内容就不会继续执行下去；当去掉那一行时，thread就默认为前台线程，jvm会等所有前台线程执行完之后才会结束，thread线程就打印出内容  
+
+#### 前台线程(用户线程、非守护线程) 
+是指接受后台线程服务的线程，其实前台后台线程是联系在一起。由前台线程创建的线程默认也是前台线程。
 
 #### 单线程  
 只包含一个线程的程序，即主线程(主方法所在线程)。  
@@ -43,7 +93,7 @@ tags: Java
 * **运行状态:** 如果就绪状态的线程获取 CPU 使用权，就可以执行 run()，此时线程便处于运行状态。处于运行状态的线程最为复杂，它可以变为阻塞状态、就绪状态和死亡状态。处于运行状态的线程如果CPU的时间片用完或者调用了yield()方法都会转化为就绪状态。而如果线程调用了sleep()方法、join()方法、wait()方法、获取synchronized同步锁失败或发出了I/O请求**(比如等待用户输入)**，线程都会进入阻塞状态。
 * **阻塞状态:** 如果一个线程执行了sleep（睡眠）、suspend（挂起）等方法，失去所占用资源之后，该线程就从运行状态进入阻塞状态。在睡眠时间已到或获得设备资源后可以重新进入就绪状态(注意阻塞状态无法直接转入运行状态，阻塞解除只能转入就绪状态！)。可以分为三种：  
 **1)等待阻塞：**运行状态中的线程执行 wait() 方法，使线程进入到**等待队列**，即进入等待阻塞状态(wait()会释放线程持有的锁)，当调用notice()或noticeAll()方法线程重新转入就绪状态。  
-**2)同步阻塞：**也称**锁池状态**，线程在获取 synchronized 同步锁失败(因为同步锁被其他线程占用)进入同步阻塞状态，当同步锁占用被解除，线程重新转入就绪状态。  
+**2)同步阻塞：**也称**锁池状态**，线程在获取 synchronized 同步锁失败(因为同步锁被其他线程占用)进入同步阻塞状态，当其他线程释放该锁，并且线程调度器允许本线程持有它的时候，线程重新转入就绪状态。  
 **3)其他阻塞：**通过调用线程的 sleep() 或 join() 或发出了 I/O 请求时，线程就会进入到阻塞状态。当sleep() 状态超时，join() 等待线程终止或超时，或者 I/O 请求完毕**(比如用户输入完毕)**，线程重新转入就绪状态。
 * **死亡状态(终止状态):**
 一个线程执行完毕或者异常终止，该线程就切换到终止状态。其他四个状态都可以通过调用stop()方法来进入死亡状态，但stop()方法已经过时了，不建议使用。
@@ -315,11 +365,315 @@ class MyRunnable1 implements Runnable{
 #### 3、线程加入  
 join方法，重载形式如下：  
 ![fail](Java学习总结之并发/join.png)
+在当前线程中调用要加入的线程的join()方法，则当前线程转入阻塞状态，转而执行新加入的线程，即新加入的线程被优先执行，抢占了CPU资源，直到该进程运行结束(如果调用带参的join方法，则超出时限该进程就会让出CPU)，当前线程再由阻塞转为就绪状态。 
+下面是一个例子：  
+```java
+package com.imooc.join;
 
+class MyThread extends Thread{
+	public void run(){
+		for(int i=1;i<=500;i++)
+		System.out.println(getName()+"正在执行"+i+"次！");
+	}
+}
+public class JoinDemo {
+
+	public static void main(String[] args) {
+		MyThread mt=new MyThread();
+		mt.start();
+		try {
+			mt.join(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for(int i=1;i<=20;i++){
+			System.out.println("主线程运行第"+i+"次！");
+		}
+		System.out.println("主线程运行结束！");
+	}
+
+}
+```
+**注意：**join方法也会抛出InterruptedException，要进行异常处理。  
+
+#### 4、线程让步  
+让步使用Thread.yield()方法，yield方法为静态方法，功能是让当前运行线程回到可运行状态，以允许具有**相同优先级的其他线程**获得运行机会。因此，使用yield()的目的是让相同优先级的线程之间能适当的轮转执行。但是，实际中无法保证yield()达到让步目的，因为让步的线程还有可能被线程调度程序再次选中。让出的时间和让出给哪个线程都是不可设定的，所以执行yield()的线程有可能在进入到可执行状态后马上又被执行。  
+实际上，yield()方法对应了如下操作：先检测当前是否有相同优先级的线程处于同可运行状态，如有，则把 CPU  的占有权交给此线程，否则，继续运行原来的线程。所以yield()方法称为“退让”，它把运行机会让给了**同等优先级**的其他线程。
+例子：一个线程先让步，让另一个线程先执行，然后再执行该线程。  
+```java
+package cn.habitdiary.thread;
+public class YieldTest {
+	public static void main(String[] args){
+          Thread t1=new MyThread();
+          Thread t2=new Thread(new MyRunnable());
+          t2.start();
+          t1.start();
+          
+      }
+ }
+ class MyThread extends Thread{
+     public void run(){
+         for(int i=0;i<10;i++){
+             System.out.println("线程1第"+i+"次执行！");
+             }
+     }
+ }
+ class MyRunnable implements Runnable{
+     public void run(){
+         for(int i=0;i<10;i++){
+             System.out.println("线程2第"+i+"次执行！");
+             Thread.yield();
+          }
+     }
+ }
+```
+
+**sleep()和yield()的区别**  
+    sleep()使当前线程进入阻塞状态，所以执行sleep()的线程在指定的时间内肯定不会被执行；yield()只是使当前线程重新回到可执行状态，所以执行yield()的线程有可能在进入到可执行状态后马上又被执行。  
+    sleep 方法使当前运行中的线程休眠一段时间，进入阻塞状态，这段时间的长短是由程序设定的，yield 方法使当前线程让出 CPU 占有权，但让出的时间是不可设定的。
+       另外，sleep 方法允许较低优先级的线程获得运行机会，但 yield()方法执行时，当前线程仍处在就绪状态，所以，不可能让出较低优先级的线程些时获得 CPU 占有权。在一个运行系统中，如果较高优先级的线程没有调用 sleep() 方法，又没有受到 I\O 阻塞，那么，较低优先级线程只能等待所有较高优先级的线程运行结束，才有机会运行。   
+       
+#### 5、线程等待和线程唤醒
+#### 6、未捕获异常处理器  
 ### 线程同步  
-  
-### 常用函数说明  
-### 常见线程名词解释
-### 线程间通信  
+在大多数实际的多线程应用中, 两个或两个以上的线程需要共享对同一数据的存取。如果两个线程存取相同的对象, 并且每一个线程都调用了一个修改该对象状态的方法，将会发生什么呢？可以想象,线程彼此踩了对方的脚。根据各线程访问数据的次序，可能会产生讹误的对象。这样一个情况通常称为竞争条件(race condition)。  
+
+我们先来看一个银行存取款的例子。  
+
+**Bank类**
+```java
+package cn.habitdiary.bank;
+
+public class Bank {
+	private String account;// 账号
+	private int balance;// 账户余额
+
+	public Bank(String account, int balance) {
+		this.account = account;
+		this.balance = balance;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+
+	@Override
+	public String toString() {
+		return "Bank [账号：" + account + ", 余额：" 
+        + balance + "]";
+	}
+
+	// 存款
+	public void saveAccount() {
+		// 获取当前的账号余额
+		int balance = getBalance();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// 修改余额，存100元
+		balance += 100;
+		// 修改账户余额
+		setBalance(balance);
+		// 输出存款后的账户余额
+		System.out.println("存款后的账户余额为：" + balance);
+	}
+
+	public void drawAccount() {
+		   /* 在不同的位置处添加sleep方法来模拟方法在执行过程因为
+           时间片轮转而发生暂停的情况*/
+
+			// 获得当前的帐户余额
+			int balance = getBalance();
+			// 修改余额，取200
+			balance = balance - 200;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// 修改帐户余额
+			setBalance(balance);
+			System.out.println("取款后的帐户余额：" + balance);
+
+	}
+}
+```
+
+**SaveAccount类**  
+```java
+package cn.habitdiary.bank;
+//存款
+public class SaveAccount implements Runnable{
+	Bank bank;
+	public SaveAccount(Bank bank){
+		this.bank=bank;
+	}
+	public void run(){
+		bank.saveAccount();
+	}
+}
+```
+
+**DrawAccount类**  
+```java
+package com.imooc.bank;
+//取款
+public class DrawAccount implements Runnable{
+	Bank bank;
+	public DrawAccount(Bank bank){
+		this.bank=bank;
+	}
+	@Override
+	public void run() {
+		bank.drawAccount();
+	}
+	
+}
+```
+**Test类**  
+```java
+package com.imooc.bank;
+
+public class Test {
+
+	public static void main(String[] args) {
+		// 创建帐户，给定余额为1000
+		Bank bank=new Bank("1001",1000);
+		//创建线程对象
+		SaveAccount sa=new SaveAccount(bank);
+		DrawAccount da=new DrawAccount(bank);
+		Thread save=new Thread(sa);
+		Thread draw=new Thread(da);
+		save.start();
+		draw.start();
+		try {
+			draw.join();
+			save.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(bank);
+	}
+
+}
+```
+我们把程序设计为账户初始金额1000元，存100元，取200元，余额应该为900元。但输出结果如下：  
+![fail](Java学习总结之并发/Bank.png)  
+
+这样的银行系统给人极不可靠的感觉，我们来分析一下原因：由于存取款方法都对同一个数据balance进行操作，很可能在执行存款方法的SaveAccount线程运行到`balance += 100`时被剥夺了CPU使用权，所以还没来得及修改账户余额，而其中的balance局部变量为1100。此时转入执行取款方法的DrawAccount线程，由于账户余额未被修改还是1000，当这个线程运行到`balance = balance + 200;`时，balance局部变量为800，此时线程可能又转入SaveAccount线程，继续执行setBalance方法把账户余额设置为1100元并打印输出，之后又回到DrawAccount把账户
+发生上述问题的原因就在于存取款方法在执行过程中余额设置为800元再打印输出。于是造成了混乱。  
+混乱的可能还不只如此，通过对Bank.class文件进行反编译，我们会发现一条Java语句(宏指令)会对应多条机器指令，也就是说**Java指令不是原子操作**。所以Java指令可能在任何一条机器指令被执行时被打断。  会被其他线程打断，而它们修改的又是同一个数据，所以造成了讹误。  
+
+为了解决这一问题达到线程同步的目的。我们需要引入**锁**。 多线程的锁，其实本质上就是给一块内存空间的访问添加访问权限，因为Java中是没有办法直接对某一块内存进行操作的，又因为Java是面向对象的语言，一切皆对象，所以具体的表现就是某一个对象承担锁的功能，每一个对象都可以是一个锁。现在的Java语言中，提供了2种锁，一种是语言特性提供的内置锁，还有一种是java.util.concurrent.locks 包中的显式锁。我们来一一介绍： 
+#### 1、内置锁 
+内置锁，即使用 synchronized 关键字，是一种同步锁。  
+它修饰的对象包括以下几种：  
+1) 修饰一个代码块，被修饰的代码块称为同步代码块，其作用的范围是大括号{}括起来的代码，作用的对象是调用这个代码块的对象 
+2) 修饰一个方法，被修饰的方法称为同步方法，其作用的范围是整个方法，作用的对象是调用这个方法的对象 
+3) 修改一个静态的方法，其作用的范围是整个静态方法，作用的对象是这个类的所有对象 
+4）修改一个类，其作用的范围是synchronized后面括号括起来的部分，作用的对象是这个类的所有对象。
+#### 2、显式锁  
+### 线程中断  
+当线程的 run 方法执行方法体中最后一条语句后，或者出现了在方法中没有捕获的异常时, 线程将终止。在 Java 的早期版本中，还有一个 stop 方法, 其他线程可以调用它终止线程。但是，这个方法现在已经被弃用了。  
+没有可以强制线程终止的方法。然而,interrupt方法可以用来**请求终止线程**。  
+当对一个线程调用 interrupt 方法时, 线程的中断状态将被置位。这是每一个线程都具有的 boolean 标志。每个线程都应该**不时地检査这个标志**，以判断线程是否被中断。要想弄清中断状态是否被置位，首先调用静态的Thread.currentThread方法获得当前线程，然后调用 islnterrupted 方法:  
+```java
+while (!Thread.currentThread().isInterrupted() && more work to do)
+{
+do more work
+}
+```
+但是，如果线程被阻塞，就无法检测中断状态。这是产生 InterruptedException 异常的地方。当在一个被阻塞的线程 (调用 sleep 或 wait)上调用 interrupt 方法时, 阻塞调用将会被 InterruptedException 异常中断。  
+没有任何语言方面的需求要求一个被中断的线程应该终止。中断一个线程不过是引起它的注意。被中断的线程可以决定如何响应中断。某些线程是如此重要以至于应该处理完异常后，继续执行，而不理会中断。**但是, 更普遍的情况是, 线程将简单地将中断作为一个终止的请求。**这种线程的 run 方法具有如下形式：  
+```java
+Runnable r= () -> {
+	try{
+    	...
+		while (!Thread.currentThread().isInterrupted && 
+    	more work to do){
+				do more work
+			}
+		}
+	catch(InterruptedException e){
+	// thread was interruputed during sleep or wait
+	}
+	finally{
+	 cleanup,if required
+    }// exiting the run method terminates the thread
+};
+```
+如果在每次工作迭代之后都调用 sleep 方法 (或者其他的可阻塞方法，isInterrupted 检测既没有必要也没有用处。如果在中断状态被置位时调用 sleep 方法，它不会休眠。相反，它将清除这一状态并拋出InterruptedException。因此,如果你的循环调用sleep,不要检测中断状态。相反,要如下所示捕获InterruptedException异常:  
+```java
+Runnable r= () -> {
+	try{
+    	...
+		while (more work to do){
+				do more work
+                Thread.sleep(delay);
+			}
+		}
+	catch(InterruptedException e){
+	// thread was interruputed during sleep or wait
+	}
+	finally{
+	 cleanup,if required
+    }// exiting the run method terminates the thread
+};
+```
+**注意：**有两个非常类似的方法, interrupted 和isInterrupted。Interrupted 方法是一个静态方法，它检测当前的线程是否被中断。而且，调用 interrupted 方法会清除该线程的中断状态。另一方面，isInterrupted 方法是一个实例方法，可用来检验是否有线程被中断。调用这个方法不会改变中断状态。  
+
+在很多发布的代码中会发现 InterruptedException 异常被抑制在很低的层次上，像这样：  
+```java
+void mySubTask(){
+	...
+	try { sleep(delay) ; }
+	catch(InterruptedException e) { } // Don't ignore!
+	...
+}
+```
+不要这样做！如果不认为在 catch 子句中做这一处理有什么好处的话，仍然有两种合理的选择:  
+* 在 catch 子句中调用 Thread.currentThread().interrupt() 来设置中断状态。于是，调用者可以对其进行检测。
+
+```java
+void mySubTask()
+{
+	...
+	try { sleep(delay);}
+	catch(InterruptedException e) 
+	{
+		Thread.currentThread().interrupt();
+	} 
+...
+}
+```
+* 或者, 更好的选择是, 用 throws InterruptedException 标记你的方法, 不采用 try 语句块捕获异常。于是，调用者(或者 最终的 run 方法)可以捕获这一异常。  
+
+```java
+void mySubTask() throws InterruptedException
+{
+	...
+    sleep(delay);
+    ...
+}
+```
+下面是与线程中断有关的API  
+![fail](Java学习总结之并发/线程中断.png)
+
 ### 线程死锁  
-### 线程控制：挂起、停止、恢复
+### 线程间通信  
+#### 生产者消费者模型
