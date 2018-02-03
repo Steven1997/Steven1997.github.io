@@ -29,12 +29,11 @@ files.add(new File(". . ."));
 ```
 此调用在编译和运行时都不会出错，但如果将get的结果强制转换为String会产生一个错误  
 
-为了解决上述问题，引入了类型参数。ArrayList有一个类型参数用来指示元素类型：`ArrayList<T> files = new ArrayList<T>();`在Java SE 7及以后的版本，构造函数可以省略类型参数，即`ArrayList<T> files = new ArrayList<>();`  
+为了解决上述问题，引入了类型参数。ArrayList有一个类型参数用来指示元素类型：`ArrayList<T> files = new ArrayList<T>();`，**注意前后两个T必须一致，不能是子类和父类！**在Java SE 7及以后的版本，构造函数可以省略类型参数，即`ArrayList<T> files = new ArrayList<>();`  
 这种方法有三个好处：  
 1)get得到的值不必进行强制类型转换  
 2)向数组列表中添加对象时会进行类型检查，如果不符合类型，无法通过编译，出现编译错误比类在运行时出现类的强制转换异常要好得多  
 3)程序具有更好的可读性，比如`ArrayList<String> files`一看就是聚集了String对象的数组列表  
-
 ### 定义简单的泛型类  
 一个泛型类就是具有一个或多个类型变量的类，下面使用一个简单的Pair类作为例子：  
 ```java
@@ -73,7 +72,7 @@ class ArrayAlg
 ```java
 String middle = ArrayAlg.<String>getMiddle("John","Q.","Public");
 ```
-
+**我们注意到上面的泛型方法的参数必须是T类型，如果想要传入T类型的子类怎么办呢？我们可以把`<T>`改为`<? extends T>`，这样参数就可以接受T类型以及它的子类。类似的`<? super T>`则表示参数可以为T类型以及它的超类。**
 ### 类型变量的限定  
 有时，类或方法需要对类型变量加以约束。下面是一个典型的例子，我们要计算数组中的最小元素：  
 ```java

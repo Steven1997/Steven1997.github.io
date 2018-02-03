@@ -14,7 +14,7 @@ tags: Java
 　　4.利用Method对象，这个对象很像C++中的函数指针  
 
 ### 3.Class类  
-　　我们知道使用javac能够将.java文件编译为.class文件，这个.class文件包含了我们对类的原始定义信息（父类、接口、构造器、属性、方法等）。.class文件在运行时会被ClassLoader加载到JVM中，当一个.class文件被加载后，JVM会为之生成一个Class对象，我们在程序中通过new实例化的对象实际上是在运行时根据相应的Class对象构造出来的。确切的说，这个Class对象实际上是`java.lang.Class<T>`泛型类的一个实例，比如`Class<MyClass>`对象即为一个封装了MyClass类的定义信息的`Class<T>`实例，从中我们可以得出结论：万物皆对象，`任何类型(包括基本类型和引用类型).class`都是`java.lang.Class<T>`的实例，简言之，class对象是Class泛型类的实例，它代表了一个类型。由于`java.lang.Class<T>`类不存在公有构造器，因此我们不能直接实例化这个类，我们可以通过以下方法获取一个Class对象。  
+　　我们知道使用javac能够将.java文件编译为.class文件，这个.class文件包含了我们对类的原始定义信息（父类、接口、构造器、属性、方法等）。Class 类的实例表示正在运行的 Java 应用程序中的类或接口。在 Java 中，每个 Class 都有一个相应的 Class 对象，即对于每一个类，.class文件在运行时会被ClassLoader加载到JVM中，当一个.class文件被加载后，JVM会为之生成一个Class对象，用于表示这个类的类型信息，我们在程序中通过new实例化的对象实际上是在运行时根据相应的Class对象构造出来的。确切的说，这个Class对象实际上是`java.lang.Class<T>`泛型类的一个实例，比如`Class<MyClass>`对象即为一个封装了MyClass类的定义信息的`Class<T>`实例，从中我们可以得出结论：万物皆对象，`任何类型(包括基本类型和引用类型).class`都是`java.lang.Class<T>`的实例，简言之，class对象是Class泛型类的实例，它代表了一个类型。由于`java.lang.Class<T>`类不存在公有构造器，它在每个类第一次被加载时由JVM自动调用，因此我们不能直接实例化这个类，我们可以通过以下方法获取一个Class对象。  
 　　在下面的讲解中，我们将以People类和Student类为例：  
 ```java
 public class People {
@@ -113,12 +113,27 @@ Class<People> peopleClass = people.getClass();
 　　`实例对象.getClass().getCanonicalName()`大部分情况和getName()相同，但在表示数组或内部类时有所区别，比如对于String数组，getName返回的是[Ljava.lang.String之类的表现形式，而getCanonicalName返回的就是跟我们声明类似的形式。  
 　　但在类加载的时候需要的是getName得到的那样的名字，而在根据类名字创建文件的时候最好使用getCanonicalName()  
 
-**注意：  
+**对于基本数据类型的封装类，还可以采用.TYPE来获取相对应的基本数据类型的 Class 实例**   
+
+**三种方式的比较：**    
+1.调用`Class.forName()`方法，如果类没有加载就加载，加载时执行static语句，找不到就抛出异常，也可以理解为手动加载类的一种方法，它会自动初始化Class对象。  
+
+2.`getClass()`方法，在已经持有该类的对象时来获取Class引用。  
+
+3.`.class`方式创建Class对象引用时，不会自动初始化Class对象。主要进行下面的步骤：  
+1)加载，类加载器查找字节码（classpath）创建Class对象；   
+2)链接，为静态域分配存储空间；   
+3)初始化，其被延迟到静态方法或非常数静态域首次引用时。  
+
+**总结：**Java获得Class对象的引用的方法中，`Class.forName()`方法会自动初始化Class对象，而`.class`方法不会，`.class`的初始化被延迟到静态方法或非常数静态域的首次引用。
+
+
+**注意：**  
 　　1.一个Class对象实际上表现的是一个类型，而这个类型未必一定是一种类。例如，int不是类，但int.class是一个Class对象  
 　　2.Class类是一个泛型类，但有时候我们不能提前确定class对象的类型,就可以用`Class<?>`来代替，即上面代码中的`Class<People> peopleClass`可以写成`Class<?> peopleClass`  
 　　3.虚拟机为每个类型管理一个Class对象，可以用 == 运算符实现两个类对象比较的操作   
 　　4.getClass()方法返回的是对象实际类型的class对象，而不是声明类型的class对象  
-　　5.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，比如:**
+　　5.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，比如:
 
 ```java
 String s = "java.util.Random";
