@@ -76,7 +76,7 @@ public class Main {
 只包含一个线程的程序，即主线程(主方法所在线程)。  
 
 #### 多线程  
-可以同时运行一个以上线程的程序。  
+可以同时运行一个以上线程的程序。在具有多个处理器的机器上，每一个处理器运行一个线程，可以有多个线程并行运行。当然，如果线程的数目多于处理器的数目，调度器依然采用时间片机制。当选择下一个线程时，操作系统考虑线程的优先级。  
 
 下面是单线程和多线程的关系示意图：  
 ![fail](Java学习总结之并发/单线程和多线程.png)
@@ -312,7 +312,7 @@ Thread.NORM_PRIORITY(等价于5)
 如果确实要使用优先级，应该避免初学者常犯的一个错误。如果有几个高优先级的线程没有进入非活动状态，低优先级的线程可能永远也不能执行。每当调度器决定运行一个新线程时,首先会在具有高优先级的线程中进行选择,尽管这样会使低优先级的线程完全饿死。  
 
 Thread类提供了改变和获取某线程优先级的方法  
-![fail](Java学习总结之并发/线程优先级.png)  
+![fail](Java学习总结之并发/优先级.png)  
 
 #### 2、线程休眠  
 线程休眠是使线程让出CPU使用权的最简单做法，某线程休眠的时候，会将CPU交给其他线程，以便轮换执行，而它自身进入阻塞状态，休眠一定时间后，线程会苏醒，进入就绪状态等待执行。线程的休眠方法是`Thread.sleep(long millis)`和`Thread.sleep(long millis,int nanos)`，均为静态方法，millis参数设定睡眠的时间，以毫秒为单位。**调用sleep休眠的哪个线程呢？在哪个线程中调用sleep，哪个线程就休眠。**  
@@ -365,7 +365,8 @@ class MyRunnable1 implements Runnable{
 #### 3、线程加入  
 join方法，重载形式如下：  
 ![fail](Java学习总结之并发/join.png)
-在当前线程中调用要加入的线程的join()方法，则当前线程转入阻塞状态，转而执行新加入的线程，即新加入的线程被优先执行，抢占了CPU资源，直到该进程运行结束(如果调用带参的join方法，则超出时限该进程就会让出CPU)，当前线程再由阻塞转为就绪状态。 
+在当前线程中调用要加入的线程的join()方法，则当前线程转入阻塞状态，转而执行新加入的线程，即新加入的线程被优先执行，抢占了CPU资源，直到该进程运行结束(如果调用带参的join方法，则超出时限该进程就会让出CPU)，当前线程再由阻塞转为就绪状态。可以认为join方法的作用是父线程等待子线程执行完成后再执行，换句话说是将异步执行的线程合并为同步执行的线程。  
+
 下面是一个例子：  
 ```java
 package com.imooc.join;
@@ -432,11 +433,9 @@ public class YieldTest {
     sleep()使当前线程进入阻塞状态，所以执行sleep()的线程在指定的时间内肯定不会被执行；yield()只是使当前线程重新回到可执行状态，所以执行yield()的线程有可能在进入到可执行状态后马上又被执行。  
     sleep 方法使当前运行中的线程休眠一段时间，进入阻塞状态，这段时间的长短是由程序设定的，yield 方法使当前线程让出 CPU 占有权，但让出的时间是不可设定的。
        另外，sleep 方法允许较低优先级的线程获得运行机会，但 yield()方法执行时，当前线程仍处在就绪状态，所以，不可能让出较低优先级的线程些时获得 CPU 占有权。在一个运行系统中，如果较高优先级的线程没有调用 sleep() 方法，又没有受到 I\O 阻塞，那么，较低优先级线程只能等待所有较高优先级的线程运行结束，才有机会运行。   
-       
-#### 5、线程等待和线程唤醒
-#### 6、未捕获异常处理器  
+#### 5、未捕获异常处理器  
 ### 线程同步  
-在大多数实际的多线程应用中, 两个或两个以上的线程需要共享对同一数据的存取。如果两个线程存取相同的对象, 并且每一个线程都调用了一个修改该对象状态的方法，将会发生什么呢？可以想象,线程彼此踩了对方的脚。根据各线程访问数据的次序，可能会产生讹误的对象。这样一个情况通常称为竞争条件(race condition)。  
+在大多数实际的多线程应用中, 两个或两个以上的线程需要共享对同一数据的存取。如果两个线程存取相同的对象, 并且每一个线程都调用了一个修改该对象状态的方法，将会发生什么呢？可以想象,线程彼此踩了对方的脚。根据各线程访问数据的次序，可能会产生讹误的对象。这样一个情况通常称为**竞争条件(race condition)**。  
 
 我们先来看一个银行存取款的例子。  
 
@@ -575,19 +574,213 @@ public class Test {
 我们把程序设计为账户初始金额1000元，存100元，取200元，余额应该为900元。但输出结果如下：  
 ![fail](Java学习总结之并发/Bank.png)  
 
-这样的银行系统给人极不可靠的感觉，我们来分析一下原因：由于存取款方法都对同一个数据balance进行操作，很可能在执行存款方法的SaveAccount线程运行到`balance += 100`时被剥夺了CPU使用权，所以还没来得及修改账户余额，而其中的balance局部变量为1100。此时转入执行取款方法的DrawAccount线程，由于账户余额未被修改还是1000，当这个线程运行到`balance = balance + 200;`时，balance局部变量为800，此时线程可能又转入SaveAccount线程，继续执行setBalance方法把账户余额设置为1100元并打印输出，之后又回到DrawAccount把账户
-发生上述问题的原因就在于存取款方法在执行过程中余额设置为800元再打印输出。于是造成了混乱。  
-混乱的可能还不只如此，通过对Bank.class文件进行反编译，我们会发现一条Java语句(宏指令)会对应多条机器指令，也就是说**Java指令不是原子操作**。所以Java指令可能在任何一条机器指令被执行时被打断。  会被其他线程打断，而它们修改的又是同一个数据，所以造成了讹误。  
+这样的银行系统给人极不可靠的感觉，我们来分析一下原因：由于存取款方法都对同一个数据balance进行操作，很可能在执行存款方法的SaveAccount线程运行到`balance += 100`时被剥夺了CPU使用权，所以还没来得及修改账户余额，而其中的balance局部变量为1100。此时转入执行取款方法的DrawAccount线程，由于账户余额未被修改还是1000，当这个线程运行到`balance = balance + 200;`时，balance局部变量为800，此时线程可能又转入SaveAccount线程，继续执行setBalance方法把账户余额设置为1100元并打印输出，之后又回到DrawAccount把账户余额设置为800元再打印输出，于是造成了混乱。  
+混乱的可能还不只如此，这里我们引入一个**原子性**的概念。在Java中，对基本数据类型的变量的**读取和简单赋值操作**是原子性操作，即这些操作是不可被中断的，要么执行，要么不执行。  
+比如下面4条赋值语句：  
+1）x = 10  　　　　2）x = y  　　　3）x++ 　　　4）x = x + 2  
+**只有1)是原子性操作，2)要先读取y的值并放入寄存器，再赋值给内存中的x，3)和4)则都要先读取x的值。**  
+所以一条非原子性的Java语句由多条指令组成，它在执行过程中的任何一个时间点都可能被其他线程打断。  
+所以上述问题的发生的原因就在于存取款方法不是原子性的，它们在执行的过程中可能被其他线程在随机时间点打断，而这些方法操作的又是同一个数据，所以造成了数据更新延迟、更新的数据被覆盖等讹误。
 
-为了解决这一问题达到线程同步的目的。我们需要引入**锁**。 多线程的锁，其实本质上就是给一块内存空间的访问添加访问权限，因为Java中是没有办法直接对某一块内存进行操作的，又因为Java是面向对象的语言，一切皆对象，所以具体的表现就是某一个对象承担锁的功能，每一个对象都可以是一个锁。现在的Java语言中，提供了2种锁，一种是语言特性提供的内置锁，还有一种是java.util.concurrent.locks 包中的显式锁。我们来一一介绍： 
+为了解决这一问题达到线程同步的目的。我们需要引入**锁**。多线程的锁，其实本质上就是给一块内存空间的访问添加访问权限，因为Java中是没有办法直接对某一块内存进行操作的，又因为Java是面向对象的语言，一切皆对象，所以具体的表现就是某一个对象承担锁的功能，每一个对象都可以是一个锁。现在的Java语言中，提供了2种锁，一种是语言特性提供的内置锁，还有一种是java.util.concurrent.locks 包中的显式锁。我们来一一介绍： 
 #### 1、内置锁 
-内置锁，即使用 synchronized 关键字，是一种同步锁。  
-它修饰的对象包括以下几种：  
-1) 修饰一个代码块，被修饰的代码块称为同步代码块，其作用的范围是大括号{}括起来的代码，作用的对象是调用这个代码块的对象 
-2) 修饰一个方法，被修饰的方法称为同步方法，其作用的范围是整个方法，作用的对象是调用这个方法的对象 
-3) 修改一个静态的方法，其作用的范围是整个静态方法，作用的对象是这个类的所有对象 
-4）修改一个类，其作用的范围是synchronized后面括号括起来的部分，作用的对象是这个类的所有对象。
+内置锁是用语言特性实现的锁，即使用 synchronized 关键字，又叫同步锁、互斥锁，Java的所有对象都有一个同步锁，甚至每个类的class对象也对应一个同步锁。  
+我们先引入一个临界区的概念，**临界区是一个用以访问共享资源的代码块，这个代码块在同一时间内只允许一个线程执行**。  
+Java提供了同步机制。当一个线程试图访问一个临界区时，它将使用一种同步机制来查看是不是已有其他线程进入临界区。如果没有其他线程进入临界区，它就可以进入临界区，即获得了该同步锁；如果已有线程进入了临界区，即同步锁被其他线程占用，它就被同步机制挂起，直到进入的线程离开这个临界区并释放锁，JVM允许它持有锁才能进入临界区。如果在等待进入临界区的线程不止一个，JVM会随机选择其中的一个，其余的将继续等待。  
+**使用synchronized内置锁的好处在于，无论线程是执行完临界区代码正常退出还是抛出异常，JVM都会自动释放锁。**   
+
+synchronized 修饰的对象包括以下几种：  
+#### 修饰一个代码块  
+被修饰的代码块称为**同步代码块**，其作用的范围(临界区)是大括号{}括起来的代码，锁住的对象是括号里的obj对象。   
+例如：  
+```java
+	synchronized(obj)  /*obj是同步锁锁住的对象,如果是this，
+                         就表示锁住当前对象*/
+    {
+        System.out.println("我是同步代码块");
+        try
+        {
+            Thread.sleep(500);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+```
+#### 修饰一个非静态方法  
+被修饰的方法称为同步方法，临界区是整个方法，锁住的对象是调用这个方法的对象。   
+例如：
+```java
+public synchronized void Method() 
+{ 
+	System.out.println("我是同步方法1"); 
+	try 
+	{ 
+		Thread.sleep(500); 
+	} 
+    catch (InterruptedException e) 
+	{ 
+		e.printStackTrace(); 
+	}
+}
+```
+下面使用同步代码块的写法是等价的，临界区是整个方法，锁住的也是调用方法的对象：  
+```java
+public void Method() 
+{ 
+	synchronized(this){
+    	System.out.println("我是同步方法2"); 
+		try 
+		{ 
+			Thread.sleep(500); 
+		} 
+    	catch (InterruptedException e) 
+		{ 
+		e.printStackTrace(); 
+		}
+    }
+}在
+```
+#### 修改一个类
+其临界区是synchronized后面大括号括起来的部分，作用的对象是这个类的所有对象。  
+```java
+ synchronized(Test.class){
+        System.out.println(＂我修饰Test类＂);
+        try
+  		{
+            Thread.sleep(500);
+        } 
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+ }
+```在
+#### 修饰一个静态方法  
+其临界区是整个静态方法，锁住的对象是这个类的所有对象。 
+例如：  
+```java
+public class Test{
+	public static synchronized void Method(){ 
+	System.out.println("我修饰静态方法"); 
+	try 
+	{ 
+		Thread.sleep(500); 
+	} 
+    catch (InterruptedException e) 
+	{ 
+		e.printStackTrace(); 
+	}
+ }
+}
+
+```
+下面使用同步代码块的写法是等价的，临界区是整个静态方法，锁住的对象也是这个类的所有对象。  
+```java
+public void Method()
+{
+    synchronized (Test.class)
+    {
+        System.out.println(＂我修饰静态方法＂);
+        try
+        {
+            Thread.sleep(500);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+}
+```
+#### 对象锁(方法锁)和类锁  
+根据锁住的是对象还是类，我们把同步锁分为**对象锁(方法锁)和类锁。**  
+对象锁就是方法锁，是用于非静态方法或者一个对象实例上的;类锁是用于类的静态方法或者一个类的class对象上的。我们知道，类的对象实例可以有很多个，但是每个类只有一个class对象，所以不同对象实例的对象锁是互不干扰的，但是每个类只有一个类锁。  
+**也就是说，对象锁只是锁住了一个对象的代码段，防止多个线程同时执行同一对象的同一代码段，但多个线程访问不同对象的这一代码段不受干扰。而类锁则可以锁住同一个类的所有实例对象，它起到了全局锁的作用，真正锁住了代码段。**
+
+例子见大牛博客：[synchronized锁住的是代码还是对象](https://www.cnblogs.com/QQParadise/articles/5059824.html)
+
+**注意：** 我们在用synchronized关键字的时候，能缩小代码段的范围就尽量缩小，能在代码段上加同步就不要再整个方法上加同步。这叫减小锁的粒度，使代码更大程度的并发。原因是基于以上的思想，锁的代码段过长，其他线程等待进入临界区的时间会很长。
+
+**学习了synchronized关键字，我们就可以解决银行转账的讹误了！只要用给setAccount()和drawAccount()加锁即可。**
+
+**使用内置锁的缺点：**内置锁在采取的是无限等待的策略，一旦开始等待，就既不能中断也不能取消，容易产生饥饿与死锁的问题。在线程调用notify方法时，会随机选择相应对象的等待队列的一个线程将其唤醒，而不是按照FIFO(先入先出)的方式，如果有强烈的公平性要求，就无法满足。  
+
 #### 2、显式锁  
+java.util.concurrent.locks 包中提供了可重入锁(ReentrantLock)，是一种递归无阻塞的同步机制。它是一种显式锁，需要显式进行 lock 以及 unlock 操作。  
+
+用 ReentrantLock 保护代码块的基本结构如下 :
+```java
+myLock.lock() ; // myLock是一个ReentrantLock对象
+try
+{
+  //被同步的临界区
+}
+finally
+{
+myLock.unlock(); //即使异常抛出也要关闭锁
+}
+```
+这一结构确保任何时刻只有一个线程进人临界区。一旦一个线程封锁了锁对象，其他任何线程都无法通过 lock 语句。当其他线程调用 lock 时，它们被阻塞，直到第一个线程释放锁对象。  
+
+**可重入锁：**又称递归锁，可重入是指一个线程可以重复获得已持有的锁。即一个线程获得了某个对象的锁，此时这个对象还没有释放，当这个线程再次想获得这个对象的锁的时候还是可以获得的。**synchronized和ReentrantLock都是可重入的。**  
+应用场景：  
+1、递归调用一个带锁的方法  
+2、在一个带锁的方法里嵌套调用另一个需要同一个对象的锁的方法。  
+**如果锁是不可重入的，那么内部方法将无法获得外部方法的锁，一直等待外部方法释放该锁，于是造成了死锁。** 
+
+每个锁关联一个线程持有者和一个计数器。当计数器为0时表示该锁没有被任何线程持有，那么任何线程都都可能获得该锁而调用相应方法。当一个线程请求成功后，JVM会记下持有锁的线程，并将计数器计加1。此时其他线程请求该锁，则必须等待。而该持有锁的线程如果再次请求这个锁，就可以再次拿到这个锁，同时计数器会递增。当线程退出一个ReentrantLock锁住的方法或synchronized方法/块时，计数器会递减，直到计数器为0才释放该锁。  
+
+**注意：**  
+1.把解锁操作置于 finally 子句之内是至关重要的。如果在临界区的代码抛出异常，锁必须被释放。否则，其他线程将永远阻塞。  
+2.如果使用锁，就不能使用带资源的 try 语句。首先，解锁方法名不是 close。不过，即使将它重命名，带资源的 try 语句也无法正常工作。它的首部希望声明一个新变量。但是如果使用一个锁，你可能想使用多个线程共享的那个变量 (而不是新变量)。
+
+
+#### 条件对象  
+通常, 线程进人临界区，却发现在某一条件满足之后它才能执行。要使用一个条件对象来管理那些已经获得了一个锁但是却不能做有用工作的线程，我们在条件对象上可以调用Condition类的await(),signal(),signalAll()方法，它们的功能分别对应Object类的wait(),notify(),notifyAll()方法，但前者一般和ReentrantLock配合使用，后者和synchronized块配合使用。我们来介绍Java 库中条件对象的实现。  
+下面是条件对象相关的API  
+![fail](Java学习总结之并发/条件对象.png)  
+
+我们来看一个满足账户余额充足条件才能取款的例子。  
+```java
+class Bank
+{
+	private Condition sufficientFunds; //条件对象
+    private Lock bankLock = new ReentrantLock(); //锁对象
+    private int balance;//账户余额
+    ...
+    public Bank()
+    {
+    	...
+        sufficientFunds = bankLock.newCondition();
+        //获得该锁的条件对象
+    }
+    
+    public void drawAccount(int amount)
+    {
+    	bankLock.lock();
+        try
+        {
+        	while(balance < amount)
+            	sufficientFunds.await();
+            //saveAccount
+            ...
+            sufficientFunds.signalAll();
+         }
+         finally
+         {
+         	bankLock.unlock();
+         }
+   }
+```
+我们一般使用类似结构检测条件是否满足：  
+```java
+while(!(ok to proceed))
+	condition.await();
+```
+
+
 ### 线程中断  
 当线程的 run 方法执行方法体中最后一条语句后，或者出现了在方法中没有捕获的异常时, 线程将终止。在 Java 的早期版本中，还有一个 stop 方法, 其他线程可以调用它终止线程。但是，这个方法现在已经被弃用了。  
 没有可以强制线程终止的方法。然而,interrupt方法可以用来**请求终止线程**。  
@@ -674,6 +867,138 @@ void mySubTask() throws InterruptedException
 下面是与线程中断有关的API  
 ![fail](Java学习总结之并发/线程中断.png)
 
-### 线程死锁  
 ### 线程间通信  
-#### 生产者消费者模型
+有时我们需要在线程之间进行通信，如上面银行的例子，如果账户余额不足，就要通知取款的线程暂停取款，等存款的线程把钱存入银行后再取款。
+#### 线程等待和线程通知  
+我们来了解几个**用于同步方法和同步代码块中**进行线程间通信的常用方法。**它们都是Object类的final方法，都只能在同步方法或同步代码块中调用，否则将抛出一个IllegalMonitorStateException。**  
+
+**wait方法**  
+wait()方法导致进入该同步方法或同步代码块的线程进入等待阻塞状态，并释放它持有的同步锁，它有三个重载的方法。  
+1.void wait()  
+导致进入该方法的线程进入等待状态，直到它被通知或者被中断。  
+2.wait(long millis) 设定一个超时间隔，如果在规定时间内没有被通知或中断，线程将被唤醒，millis是毫秒数。  
+3.wait(long millis,int nanos) 设定一个超时间隔，如果在规定时间内没有被通知或中断，线程将被唤醒，millis是毫秒数，nanos是纳秒数。  
+  
+如果在等待阻塞状态线程被中断会抛出一个InterruptedException异常。  
+
+**notify方法**  
+在同步方法或同步代码块调用该方法后，JVM会随机选择一个在该对象上调用wait方法的的线程，解除其阻塞状态。
+
+**notifyAll方法**  
+在同步方法或同步代码块调用该方法后，会解除所有在该对象上调用wait方法的线程的阻塞状态。  
+
+**注意：**线程被唤醒只是从等待阻塞状态进入了就绪状态，可以参与锁的竞争，但并不代表它已经获得了锁。  
+
+#### sleep方法和wait方法的区别  
+最简单的区别是，wait方法只能用于同步方法或同步代码块，而sleep方法可以直接调用。而更深层次的区别在于sleep方法只是暂时让出CPU的执行权，并不释放同步锁。而wait方法则会释放锁。sleep()必须捕获异常，wait()不用捕获异常。一个调用了sleep()或wait()方法的线程如果调用interrupt()方法请求中断，都会立即抛出InterruptedException。  
+
+#### 生产者-消费者模型  
+下面使用wait()和notifyAll()配合实现一个经典的生产者-消费者模型，即一个线程生产，一个线程消费。  
+```java
+//Queue.java
+package cn.habitdiary.queue;
+
+public class Queue {
+	private int n;
+	boolean flag=false;
+	
+	public synchronized int get() {
+		if(!flag){
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("消费："+n);
+		flag=false;//消费完毕，容器中没有数据
+		notifyAll();
+		return n;
+	}
+
+	public synchronized void set(int n) {
+		if(flag){
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("生产："+n);
+		this.n = n;
+		flag=true;//生产完毕，容器中已经有数据
+		notifyAll();
+	}
+	
+}
+```
+
+```java
+//Producer.java
+package cn.habitdiary.queue;
+
+public class Producer implements Runnable{
+	Queue queue;
+	Producer(Queue queue){
+		this.queue=queue;
+	}
+
+	@Override
+	public void run() {
+		int i=0;
+		while(true){
+			queue.set(i++);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+```
+
+```java
+//Consumer.java
+package cn.habitdiary.queue;
+
+public class Consumer implements Runnable{
+	Queue queue;
+	Consumer(Queue queue){
+		this.queue=queue;
+	}
+
+	@Override
+	public void run() {
+		while(true){
+			queue.get();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+}
+```
+
+```java
+package cn.habitdiary.queue;
+
+public class Test {
+
+	public static void main(String[] args) {
+		Queue queue=new Queue();
+		new Thread(new Producer(queue)).start();
+		new Thread(new Consumer(queue)).start();
+	}
+
+}
+```
+### 线程死锁  
+如果最后一个活动线程在解除其他线程的阻塞状态之前就调用了wait()或await()，那么它也被阻塞，没有任何线程可以解除其他线程的阻塞，所有的线程都在互相等待，那么程序就发生了死锁。
