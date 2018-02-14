@@ -191,7 +191,15 @@ return Objects.equals(name,other.name)
 5) 逐一比较数据域，注意基本数据类型用 == 检测，引用类型用equals方法检测    
 **数组对象用静态的Arrays.equals方法判等**
 
-拓展：[Integer判断相等，到底该用==还是equals](http://www.jianshu.com/p/9cb9c61b0986)
+拓展：[Integer判断相等，到底该用==还是equals](http://www.jianshu.com/p/9cb9c61b0986)  
+
+当我们在方法里调用equals方法时，建议写字符串常量.equals(参数)的形式。比如：  
+```java
+public static boolean function(String str){
+	return "hello world".equals(str);
+}
+```
+这样可以防止str为null而抛出空指针异常，而根据equals()方法的对称性，这种调换并不会影响方法的功能。
 #### 2) hashCode方法  
 散列码(hash code)是由对象导出的一个整型值。散列码是没有规律的，如果x和y是两个不同的对象,x.hashCode()与y.hashCode()基本上不会相同。  
 String类使用下列算法计算散列码：  
