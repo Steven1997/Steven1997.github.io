@@ -293,14 +293,16 @@ StringBuilder类和StirngBuffer类的区别
 详见[Java学习总结之反射](http://habitdiary.cn/2017/10/14/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E5%8F%8D%E5%B0%84/)  
 
 #### Object类  
-详见[Java学习总结之继承和多态](http://habitdiary.cn/2017/10/12/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E7%BB%A7%E6%89%BF%E5%92%8C%E5%A4%9A%E6%80%81/)  
+掌握Object类的九个方法：equals()，hashCode(),getClass(),toString(),clone(),sleep(),wait()(三个重载方法)  
+详见 [Java学习总结之继承和多态](http://habitdiary.cn/2017/10/12/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E7%BB%A7%E6%89%BF%E5%92%8C%E5%A4%9A%E6%80%81/)  和 [Java学习总结之并发](http://habitdiary.cn/2018/02/01/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E5%B9%B6%E5%8F%91/#more)
 
 #### System类   
+详见[Java学习总结之Java IO系统](http://habitdiary.cn/2017/11/28/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8BJava-IO%E7%B3%BB%E7%BB%9F/#more)
 
 #### Enum类  
 详见[Java学习总结之Java基本程序设计结构](http://habitdiary.cn/2017/10/10/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8BJava%E5%9F%BA%E6%9C%AC%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BB%93%E6%9E%84/)  
 #### Thread类  
-详见[Java学习总结之并发]
+详见[Java学习总结之并发](http://habitdiary.cn/2018/02/01/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E5%B9%B6%E5%8F%91/#more)
 ### java.math包   
 java.math包主要包含BigInteger类和BigDecimal类，主要应用于高精度的运算，BigInteger 支持任意精度的整数，BigDecimal 支持任意精度带小数点的运算。**不要混淆java.math包和java.lang包中的Math类。**
 #### BigInteger类   
