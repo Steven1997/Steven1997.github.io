@@ -14,7 +14,7 @@ tags: Java
 　　4.利用Method对象，这个对象很像C++中的函数指针  
 
 ### 3.Class类  
-　　我们知道使用javac能够将.java文件编译为.class文件，这个.class文件包含了我们对类的原始定义信息（父类、接口、构造器、属性、方法等）。Class 类的实例表示正在运行的 Java 应用程序中的类或接口。在 Java 中，每个 Class 都有一个相应的 Class 对象，即对于每一个类，.class文件在运行时会被ClassLoader加载到JVM中，当一个.class文件被加载后，JVM会为之生成一个Class对象，用于表示这个类的类型信息，我们在程序中通过new实例化的对象实际上是在运行时根据相应的Class对象构造出来的。确切的说，这个Class对象实际上是`java.lang.Class<T>`泛型类的一个实例，比如`Class<MyClass>`对象即为一个封装了MyClass类的定义信息的`Class<T>`实例，从中我们可以得出结论：万物皆对象，`任何类型(包括基本类型和引用类型).class`都是`java.lang.Class<T>`的实例，简言之，class对象是Class泛型类的实例，它代表了一个类型。由于`java.lang.Class<T>`类不存在公有构造器，它在每个类第一次被加载时由JVM自动调用，因此我们不能直接实例化这个类，我们可以通过以下方法获取一个Class对象。  
+　　我们知道使用javac能够将.java文件编译为.class文件，这个.class文件包含了我们对类的原始定义信息（父类、接口、构造器、属性、方法等）。Class 类的实例表示正在运行的 Java 应用程序中的类或接口。在 Java 中，每个 Class 都有一个相应的 Class 对象，即对于每一个类，.class文件在运行时会被ClassLoader加载到JVM中，当一个.class文件被加载后，JVM会为之生成一个Class对象，用于表示这个类的类型信息，我们在程序中通过new实例化的对象实际上是在运行时根据相应的Class对象构造出来的。确切的说，这个Class对象实际上是`java.lang.Class`类的一个实例，从中我们可以得出结论：万物皆对象，`任何类型(包括基本类型，引用类型，void关键字等).class`都是`java.lang.Class`的实例，简言之，class对象是Class泛型类的实例，它代表了一个类型。由于`java.lang.Class`类不存在公有构造器，它在每个类第一次被加载时由JVM自动调用，因此我们不能直接实例化这个类，我们可以通过以下方法获取一个Class对象。  
 　　在下面的讲解中，我们将以People类和Student类为例：  
 ```java
 public class People {
@@ -79,13 +79,13 @@ public class Student extends People {
  1) 可以通过`类名.class`得到相应类的Class对象，如:   
  
 ```java
-  Class<People> peopleClass = People.class;
+  Class peopleClass = People.class;
 ```
  
 2) 如果已知类的**全限定名称(包含包名)**，可以通过Class的forName静态方法得到类的Class对象，如：  
 
 ```java
-Class<People> peopleClass = Class.forName("cn.habitdiary.People");
+Class peopleClass = Class.forName("cn.habitdiary.People");
 //假设People类在cn.habitdiary包中
 ```
 
@@ -105,7 +105,7 @@ try{
 
 ```java
 People people = new People("Steven"， 20);
-Class<People> peopleClass = people.getClass();
+Class peopleClass = people.getClass();
 ```
 
 　　`实例对象.getClass().getName()` 可以获取当前对象的类的全限定名称(包含包名)  
@@ -118,29 +118,69 @@ Class<People> peopleClass = people.getClass();
 **三种方式的比较：**    
 1.调用`Class.forName()`方法，如果类没有加载就加载，加载时执行static语句，找不到就抛出异常，也可以理解为手动加载类的一种方法，它会自动初始化Class对象。  
 
-2.`getClass()`方法，在已经持有该类的对象时来获取Class引用。  
+2.`getClass()`方法，在已经持有该类的对象时来获取Class引用。其Class对象已经被初始化。  
 
-3.`.class`方式创建Class对象引用时，不会自动初始化Class对象。主要进行下面的步骤：  
+3.`.class`方式创建Class对象引用时，不会自动初始化Class对象。主要进行下面的步骤：    
 1)加载，类加载器查找字节码（classpath）创建Class对象；   
 2)链接，为静态域分配存储空间；   
 3)初始化，其被延迟到静态方法或非常数静态域首次引用时。  
 
 **总结：**Java获得Class对象的引用的方法中，`Class.forName()`方法会自动初始化Class对象，而`.class`方法不会，`.class`的初始化被延迟到静态方法或非常数静态域的首次引用。
 
-
 **注意：**  
-　　1.一个Class对象实际上表现的是一个类型，而这个类型未必一定是一种类。例如，int不是类，但int.class是一个Class对象  
-　　2.Class类是一个泛型类，但有时候我们不能提前确定class对象的类型,就可以用`Class<?>`来代替，即上面代码中的`Class<People> peopleClass`可以写成`Class<?> peopleClass`  
-　　3.虚拟机为每个类型管理一个Class对象，可以用 == 运算符实现两个类对象比较的操作   
-　　4.getClass()方法返回的是对象实际类型的class对象，而不是声明类型的class对象  
-　　5.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，比如:
+　　1.一个Class对象实际上表现的是一个类型，而这个类型未必一定是一种类。例如，int不是类，但int.class是一个Class对象。  
+　　2.Class类实际上是一个泛型类。  `Class c = T.class`实际上是`Class<T> c = T.class`。`Class c = x.getClass()`实际上是`Class<? extends T> c = x.getClass()`(T的x的声明类型，x.getClass()获得的是x的实际类型的Class对象)。但有时候我们不能提前确定class对象的类型,如`Class c = Class.forName("T")`实际上是`Class<?> c = Class.forName("T")`。 
+　　3.虚拟机为每个类型管理一个Class对象，可以用 == 运算符实现两个类对象比较的操作，这可以用来判断两个对象属不属于同一个类。   
+　　4.getClass()方法返回的是对象实际类型的class对象，而不是声明类型的class对象。  
+　　5.newInstance()方法可以返回一个Class对象对应类的新实例(返回值类型是Object)，**前提要有无参的构造方法，newInstance()方法是通过调用无参构造方法来创建对象的**。比如:
 
 ```java
 String s = "java.util.Random";
 Object m = Class.forName(s).newInstance();
 ```
 
-　　**如果希望给构造器提供参数，就不能使用这种写法，而必须使用Constructor类中的newInstance方法。**  
+　　**如果希望给构造器提供参数，就不能使用这种写法，而必须使用Constructor类中的newInstance方法。**   
+  
+**类的静态加载和动态加载**  
+**静态加载：**在编译时就需要加载所有可能用到的类，比如new关键字就是静态加载类。  
+**动态加载：**在运行时加载类。     
+静态加载类的缺点是：比如用new创建了多个类的对象，其中某一个类不存在，则整个程序无法通过编译。而如果动态加载类，只要不使用不存在的类，其他类还可以正常使用。 
+
+比如  
+```java
+class Office{
+	public static void main(String[] args){
+    	//静态加载类
+    	if("Word".equals(args[0])){
+        	Word w = new Word();
+            w.start();
+         }
+         if("Excel".equals(args[0]){
+         	Excel e = new Excel();
+            e.start();
+         }
+ }
+```
+上面的程序通过new关键字创建对象，是静态加载类，所以如果Word类和Excel类中缺少一个，另一个类即使存在也无法通过编译。  
+
+如果通过反射动态加载类可以解决这个问题，如下：  
+```java
+class OfficeBetter{
+	public static void main(String[] args){
+    	try{
+        	//动态加载类,在运行时刻加载
+        	Class c = Class.forName(args[0]);
+            /*通过类类型,创建该类的对象,此时需要强制转换为Excel和Word的公有类型，
+            所以可以定义OfficeAble接口，让Excel和Word实现这个接口*/
+            OfficeAble oa = (OfficeAble)c.newInstance();
+            oa.start();
+            }
+            catch(Exception e){
+            e.printStackTrace();
+            }
+ }
+```
+由于是动态加载类，新增其他实现OfficeAble接口的类不必重新编译OfficeBetter类。
 
 ### 4.在运行时分析类的能力  
 　　下面简要介绍一下反射机制最重要的内容 —— 检查类的结构。  
@@ -161,7 +201,7 @@ java.lang.reflect.Modifier
 * Class< ? > getSupperClass() 
 * Class< ? >[] getInterfaces()
 
-**提示：**getFields、getMethods和getConstructors方法将分别返回类提供的public域、方法和构造器数组，其中包括超类的公有成员;而getDeclaredFields、getDeclaredMethods和getDeclaredConstructors方法将分别返回类中声明的全部域、方法和构造器，其中包括私有、受保护和默认成员，但不包括超类的成员。getSupperClass()返回class对象对应类的超类的class对象，没有显式继承的类的超类是Object。getInterfaces返回class对象对应类的所有接口的class对象
+**提示：**getFields、getMethods和getConstructors方法将分别返回类提供的public域、方法和构造器数组，其中包括超类的公有成员;而getDeclaredFields、getDeclaredMethods和getDeclaredConstructors方法将分别返回类中声明的全部域、方法和构造器，不论访问权限，但不包括超类的成员。getSupperClass()返回class对象对应类的超类的class对象，没有显式继承的类的超类是Object。getInterfaces返回class对象对应类的所有接口的class对象
 
 **其中java.lang.reflect包中的三个类Field、Constructor和Method分别用于描述类的域、构造器、方法。  
 这三个类的常用API如下：**  
@@ -387,7 +427,7 @@ public static Object[] badCopyOf(Object[] a,int newLength){
 ### 7.调用任意方法  
 　　通过反射还可以调用任意方法，这是通过Method类的invoke方法实现的，方法签名是:`Object invoke(Object obj,Object... args)`,Object obj表示调用方法的对象，Object...args表示方法的参数列表。  
 如果方法是静态方法，将第一个参数设置为null;如果方法是非静态无参方法，第二个参数列表可以忽略。  
-　　例如：`String n = (String)m1.invoke(harry);`(m1表示Employee类的getName方法)。如果返回值是基本类型，invoke方法会返回其包装器类型,可以利用自动开箱将其还原为基本数据类型。例如:`double s = (Double)m2.invoke(harry);`(m2表示Employee类的getSalary方法)
+　　例如：`String n = (String)m1.invoke(harry);`(m1表示Employee类的getName方法)。如果方法m1的返回值是void，则invoke方法返回null，否则返回具体类型。如果返回值是基本类型，invoke方法会返回其包装器类型,可以利用自动开箱将其还原为基本数据类型。例如:`double s = (Double)m2.invoke(harry);`(m2表示Employee类的getSalary方法)
 getMethods方法和getDeclaredMethods会返回一个Method对象列表，如果要得到特定的Method对象，可以调用Class类的getMethod方法，其签名是Method getMethod(String Methodname,Class...parameterTypes)。  
 例如：  
 ```java
@@ -438,7 +478,29 @@ Method square =         			MethodTableTest.class.getMethod("square",double.class
  2.通过反射调用方法比直接调用方法要明显慢一些
 
 **特别重申：**建议Java开发者不要使用Method对象的回调功能，使用接口进行回调会使代码的执行速度更快，更易于维护。    
+### 8.通过反射了解泛型本质  
+来看下面一段代码：  
+```java
+ArrayList list = new ArrayList();
+ArrayList<String> list1 = new ArrayList<String>();
+Class c1 = list.getClass();
+Class c2 = list1.getClass();
+System.out.println(c1 == c2); //true
+/*反射的操作都是编译之后的操作，编译之后会发生类型擦除，即ArrayList<String>被擦除为ArrayList，所以c1 == c2结果为true*/
+```
+Java中集合的泛型，是防止错误输入的，只在编译阶段有效，编译之后就会发生类型擦除，所以绕过编译泛型就无效了
   
+验证：我们可以通过方法的反射来操作，绕过编译  
+```java
+	try {
+	Method m = c2.getMethod("add", Object.class);
+	m.invoke(list1, 20);//绕过编译操作就绕过了泛型
+	System.out.println(list1.size());
+	System.out.println(list1);
+	} catch (Exception e) {
+		  e.printStackTrace();
+    }
+```
  推荐博客：  
 * [Java核心技术点之反射](http://www.cnblogs.com/absfree/p/5277665.html)  
 * [深入理解Java反射](http://www.cnblogs.com/luoxn28/p/5686794.html)
