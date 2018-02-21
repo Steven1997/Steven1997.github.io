@@ -150,6 +150,85 @@ public class DeleteFileDemo {
     }
 }
 ```
+### RandomAccessFile  
+RandomAccessFile不同于File，它提供了对文件内容的访问，可以**读写文件且支持随机访问文件的任意位置**。  
+RandomAccessFile读写用到文件指针，它的初始位置为0,可以用getFilePointer()方法获取文件指针的位置。下面是RandomAccessFile常用的方法。  
+
+![fail](Java学习总结之Java-IO系统/RandomAccessFile.png)   
+public int read(int x) throws IOException 方法只读取一个字节，也就是x的低八位。  
+```java
+
+import java.io.File ;
+import java.io.RandomAccessFile ;
+public class RandomAccessFileDemo01{
+	// 所有的异常直接抛出，程序中不再进行处理
+	public static void main(String args[]) throws Exception{
+		File f = new File("d:" + File.separator + "test.txt") ;	// 指定要操作的文件
+		RandomAccessFile rdf = null ;		// 声明RandomAccessFile类的对象
+		rdf = new RandomAccessFile(f,"rw") ;// 读写模式，如果文件不存在，会自动创建
+		String name = null ;
+		int age = 0 ;
+		name = "zhangsan" ;			// 字符串长度为8
+		age = 30 ;					// 数字的长度为4
+		rdf.writeBytes(name) ;		// 将姓名写入文件之中
+		rdf.writeInt(age) ;			// 将年龄写入文件之中
+		name = "lisi    " ;			// 字符串长度为8
+		age = 31 ;					// 数字的长度为4
+		rdf.writeBytes(name) ;		// 将姓名写入文件之中
+		rdf.writeInt(age) ;			// 将年龄写入文件之中
+		name = "wangwu  " ;			// 字符串长度为8
+		age = 32 ;					// 数字的长度为4
+		rdf.writeBytes(name) ;		// 将姓名写入文件之中
+		rdf.writeInt(age) ;			// 将年龄写入文件之中
+		rdf.close() ;				// 关闭
+	}
+};
+```
+
+写完之后，开始读取数据。写的时候可以将一个字符串写入，读的时候需要一个个的以字节的形式读取出来。  
+
+```java
+
+import java.io.File ;
+import java.io.RandomAccessFile ;
+public class RandomAccessFileDemo02{
+	// 所有的异常直接抛出，程序中不再进行处理
+	public static void main(String args[]) throws Exception{
+		File f = new File("d:" + File.separator + "test.txt") ;	// 指定要操作的文件
+		RandomAccessFile rdf = null ;		// 声明RandomAccessFile类的对象
+		rdf = new RandomAccessFile(f,"r") ;// 以只读的方式打开文件
+		String name = null ;
+		int age = 0 ;
+		byte b[] = new byte[8] ;	// 开辟byte数组
+		// 读取第二个人的信息，意味着要空出第一个人的信息
+		rdf.skipBytes(12) ;		// 跳过第一个人的信息
+		for(int i=0;i<b.length;i++){
+			b[i] = rdf.readByte() ;	// 读取一个字节
+		}
+		name = new String(b) ;	// 将读取出来的byte数组变为字符串
+		age = rdf.readInt() ;	// 读取数字
+		System.out.println("第二个人的信息 --> 姓名：" + name + "；年龄：" + age) ;
+		// 读取第一个人的信息
+		rdf.seek(0) ;	// 指针回到文件的开头
+		for(int i=0;i<b.length;i++){
+			b[i] = rdf.readByte() ;	// 读取一个字节
+		}
+		name = new String(b) ;	// 将读取出来的byte数组变为字符串
+		age = rdf.readInt() ;	// 读取数字
+		System.out.println("第一个人的信息 --> 姓名：" + name + "；年龄：" + age) ;
+		rdf.skipBytes(12) ;	// 跳过第二个人的信息
+		for(int i=0;i<b.length;i++){
+			b[i] = rdf.readByte() ;	// 读取一个字节
+		}
+		name = new String(b) ;	// 将读取出来的byte数组变为字符串
+		age = rdf.readInt() ;	// 读取数字
+		System.out.println("第三个人的信息 --> 姓名：" + name + "；年龄：" + age) ;
+		rdf.close() ;				// 关闭
+	}
+};
+```
+结果如下：  
+![fail](Java学习总结之Java-IO系统/result.png) 
 ### 流  
 在Java程序中所有的数据都是以**流**的方式进行**传输或保存**的，程序需要数据的时候要使用**输入流**读取数据，而当程序需要将一些数据保存起来的时候，就要使用**输出流**完成。程序中的输入输出都是以流的形式保存的，流中保存的实际上全都是**字节文件**。流涉及的领域很广：标准输入输出，文件的操作，网络上的数据流，字符串流，对象流，zip文件流等等。 
 ![fail](Java学习总结之Java-IO系统/Stream.png)
@@ -258,6 +337,8 @@ public class IOPractice {
 按照流是否**直接**与特定的地方(如磁盘、内存、设备等)相连，分为节点流和处理流两类。  
 节点流：程序用于直接操作目标设备所对应的类叫节点流。(低级流)  
 处理流：程序通过一个间接流类去调用节点流类，以达到更加灵活方便地读写各种类型的数据，这个间接流类就是处理流。处理流可以看成是对已存在的流进行连接和封装的流。(高级流)  
+
+**注意：在使用到处理流对流进行连接和封装时，读写完毕要关闭所有出现的流，包括节点流和处理流。**  
 ##### (1) 节点流  
 ![fail](Java学习总结之Java-IO系统/节点流.png)  
 * File 文件流。对文件进行读、写操作：FileReader、FileWriter、FileInputStream、FileOutputStream。  
@@ -445,15 +526,33 @@ InputStream in = new FileInputStream(f);
 public static void main(String[] args) throws IOException{
 	InputStream f  = new FileInputStream
 	("/home/xiejunyu/桌面/test.txt");
-	int c;
+	int c = 0;
 	while((c =  f.read()) != -1) 
     //这里也可以先用available方法得到可读的字节数
 	System.out.println((char)c);
 }
 ```
 当我们需要创建一个byte[]来保存读取的字节时，如果数组太小，无法完整读入数据，如果太大又会造成内存浪费。**可以使用File类的length方法得到文件的数据字节数，从而有效确定byte数组的大小。**
+```java
+public static void main(String[] args) {
+		// 创建一个FileInputStream对象
+		try {
+			FileInputStream fis = new FileInputStream("/home/xiejunyu/桌面/test.txt");
+			byte[] b=new byte[100];
+			fis.read(b,0,5); 
+            /*把字节从文件读入b数组，从b数组的0位置开始存放，
+            读取5个字节*/
+			System.out.println(new String(b));
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+```
 
-**注意:** 每调用一次read方法,当前读取在文件中的位置就会向后移动一个字节，已经到文件末尾会返回-1，可以通过read方法返回-1判断是否读到文件末尾，也可以使用available方法返回下一次可以不受阻塞读取的字节数来读取。**FileInputStream不支持mark和reset方法进行重复读取。BufferedInputStream支持此操作。**  
+**注意:** 每调用一次read方法,当前读取在文件中的位置就会向后移动一个字节或者移动byte[]的长度(read的两个重载方法)，已经到文件末尾会返回-1，可以通过read方法返回-1判断是否读到文件末尾，也可以使用available方法返回下一次可以不受阻塞读取的字节数来读取。**FileInputStream不支持mark和reset方法进行重复读取。BufferedInputStream支持此操作。**  
   
 **FileOutputStream**  
 该类用来创建一个文件并向文件中写数据。  
@@ -561,6 +660,35 @@ public class fileStreamTest2{
 ```
 以上例子证明：在对多国语言的支持上，字符流表现更优，此时应使用字符流而不是字节流。  
 
+还可以用InputStream和OutputStream配合进行文件的复制，即读取原件数据，写入副本文件。  
+复制有两种实现方式：  
+实现一：将源文件中的内容全部读取进来，之后一次性的写入到目标文件  
+实现二：边读边写  
+
+在实际开发中建议使用边读边写的方式，代码如下：
+```java
+public static void main(String[] args) {
+		// 文件拷贝
+		try {
+			FileInputStream fis=new FileInputStream("happy.gif");
+			FileOutputStream fos=new FileOutputStream("happycopy.gif");
+			int n=0;
+			byte[] b=new byte[1024];
+			while((n=fis.read(b))!=-1){ 
+            /*循环读取，每次1024个字节，最后一次可能不满1024。
+            后面的字节覆盖前面的字节，不必担心数组溢出。*/
+				fos.write(b,0,n); //n是实际读取到的字节数，如果写fos.write(b)，会造成最后一次数组未满的情况也写1024个字节，从而造成副本比原件略大
+			}
+			fis.close();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+```
 
 ### 字符流(Writer、Reader)  
 Java提供了两个操作字符的字符流基类，分别是Writer和Reader。先来了解两个用于读写文件的字符流FileReader(字符输入流)和FileWriter(字符输出流)：  
@@ -715,6 +843,8 @@ public class OutputStreamWriterDemo01{
 但OutputStreamWriter和InputStreamReader都是字符流，也就是说，OutputStreamWriter以字符输出流形式操作了字节的输出流，但实际上还是以字节的形式输出。而InputStreamReader，虽然以字符输入流的形式操作，但实际上还是使用的字节流输入，也就是说，传输或者是从文件中读取数据的时候，文件中真正保存的数据永远是字节。
 ![fail](Java学习总结之Java-IO系统/change.png)  
 
+输入流和输出流要指定相同的字符集才能避免乱码！
+
 **FileWriter和FileReader的说明**  
 从JDK文档中可以知道FileOutputStream是OutputStream的直接子类，FileInputStream也是InputStream的直接子类，但是在字符流文件的两个操作类却有一些特殊，FileWriter并不直接是Writer的子类，而是转换流OutputStreamWriter的子类，而FileReader也不直接是Reader的子类，而是转换流InputStreamReader的子类，那么从这两个类的继承关系就可以清楚的发现，不管是是使用字节流还是字符流实际上最终都是以字节形式操作输出流的。
 
@@ -772,8 +902,7 @@ BufferedOutputStream用于包装其他较为缓慢的OutputStream
 （1）缓冲输入流BufferedInputSTream除了支持read和skip方法意外，还支持其父类的mark和reset方法;   
 （2）BufferedReader提供了一种新的ReadLine方法用于读取一行字符串（以\r或\n分隔）;   
 （3）BufferedWriter提供了一种新的newLine方法用于写入一个行分隔符;   
-（4）对于输出的缓冲流，BufferedWriter和BufferedOutputStream，写出的数据会先在内存中缓存， 
-使用flush方法将会使内存的数据立刻写出,注意BufferedReader和BufferedInputStream没有flush方法，因为flush只用于输出到文件时。  
+（4）**对于输出的缓冲流，BufferedWriter和BufferedOutputStream，写出的数据会先在缓冲区(由缓冲流提供的一个字节数组，是不可见的)中缓存，直到缓冲区满了会自动写数据到输出流，如果缓冲区未满，可以使用flush方法将会使缓冲区的数据强制写出。关闭输出流也会造成缓冲区中残留的数据被写出。注意BufferedReader和BufferedInputStream没有flush方法，因为flush只用于输出到文件时。**  
 
 ### 打印流(PrintStream、PrintWriter)  
 在整个IO包中，打印流是**输出信息最方便**的类，主要包含字节打印流(PrintStream)和字符打印流(PrintWriter)。打印流提供了非常方便的打印功能，可以打印任何的数据类型，例如：小数、整数、字符串等等。  
@@ -902,22 +1031,22 @@ public void write(String s,int off,int len)
 **提示：**由于BufferedWriter没有PrintWriter使用灵活，所以在实际的操作中，我们往往会使用**PrinterWriter/BufferedReader**这种组合。  
 
 ### 内存操作流
-之前的程序中，输出输入都是在内存和文件之间进行的，当然，输入输出也可以不访问文件，只在内存中进行。  
+之前的程序中，输出输入都是在内存和文件之间进行的，当然，输入输出也可以不访问文件，只在内存中进行。也就是把数据的输入源和输出目的地从文件改成了byte数组、char数组或字符串。  
 #### 字节数组流(ByteArrayInputStream、ByteArrayOutputStream)
 ByteArrayInputStream的主要功能是完成将byte数组的内容写入到内存之中，而ByteArrayOutputStream的主要功能是将内存中的数据输出到byte数组。  
 ![fail](Java学习总结之Java-IO系统/test.png)  
 
 **ByteArrayInputStream**  
-字节数组输入流从内存中的一个字节数组缓冲区读取字节到内存。创建字节数组输入流对象有以下几种方式。  
+字节数组输入流从内存中的一个字节数组读取字节到内存，这个字节数组就是数据的输入源。创建字节数组输入流对象有以下几种方式。  
 接收字节数组作为参数创建：  
 ```java
 ByteArrayInputStream bArray = 
-new ByteArrayInputStream(byte [] a);
+new ByteArrayInputStream(byte [] b);
 ```
 另一种创建方式是接收一个字节数组，和两个整型变量 off、len，off表示第一个读取的字节，len表示读取字节的长度,**即将字节数组中从off开始的len个字节读入该输入流**。
 ```java
 ByteArrayInputStream bArray = new
-ByteArrayInputStream(byte []a,int off,int len)
+ByteArrayInputStream(byte []b,int off,int len)
 ```
 成功创建字节数组输入流对象后，可以参见以下列表中的方法，对流进行读操作或其他操作。  
 ![fail](Java学习总结之Java-IO系统/ByteArrayInputStream.png "ByteArrayInputStream")  
@@ -936,31 +1065,30 @@ OutputStream bOut = new ByteArrayOutputStream(int n)
 ![fail](Java学习总结之Java-IO系统/ByteArrayOutputStream.png "ByteArrayOutputStream")   
 下面的例子演示了ByteArrayInputStream 和 ByteArrayOutputStream的使用：  
 ```java
-import java.io.*;
-public class ByteStreamTest {
-   public static void main(String args[])throws IOException {
-      ByteArrayOutputStream bOutput = new ByteArrayOutputStream(12);
-      while( bOutput.size()!= 10 ) {
-         // 获取用户输入
-         bOutput.write(System.in.read()); 
-      }
-      byte b[] = bOutput.toByteArray();
-      System.out.println("Print the content");
-      for(int x= 0 ; x < b.length; x++) {
-         // 打印字符
-         System.out.print((char)b[x]  + "   "); 
-      }
-      System.out.println("   ");
-      int c;
-      ByteArrayInputStream bInput = new ByteArrayInputStream(b);
-      System.out.println("Converting characters to Upper case " );
-      for(int y = 0 ; y < 1; y++ ) {
-         while(( c= bInput.read())!= -1) {
-            System.out.println(Character.toUpperCase((char)c));
-         }
-         bInput.reset(); 
-      }
-   }
+
+import java.io.* ;
+public class ByteArrayDemo01{
+	public static void main(String args[]){
+		String str = "HELLOWORLD" ;		// 定义一个字符串，全部由大写字母组成
+		ByteArrayInputStream bis = null ;	// 内存输入流
+		ByteArrayOutputStream bos = null ;	// 内存输出流
+		bis = new ByteArrayInputStream(str.getBytes()) ;	// 向内存中输入内容
+		bos = new ByteArrayOutputStream() ;	// 准备从内存ByteArrayInputStream中读取内容
+		int temp = 0 ;
+		while((temp=bis.read())!=-1){
+			char c = (char) temp ;	// 读取的数字变为字符
+			bos.write(Character.toLowerCase(c)) ;	// 将字符变为小写
+		}
+		// 所有的数据就全部都在ByteArrayOutputStream中
+		String newStr = bos.toString() ;	// 取出内容
+		try{
+			bis.close() ;
+			bos.close() ;
+		}catch(IOException e){
+			e.printStackTrace() ;
+		}
+		System.out.println(newStr) ;
+	}
 }
 ```
 
@@ -1011,6 +1139,30 @@ CharArrayReader、CharArrayWriter和ByteArrayInputStream、ByteArrayOutputStream
 * void writeTo(Writer out)  
   将buf中现有的字节写入到另一个输出字符流out中
 
+例子：  
+```java
+ public static void main(String[] args) throws IOException {
+        String str = "Hello world!";
+
+        // 构建字符输入流
+        CharArrayReader reader = new CharArrayReader(str.toCharArray());
+
+        // 从字符输入流读取字符
+        char[] chars = new char[1024];
+        int len = reader.read(chars);
+        System.out.println(new String(chars, 0, len));
+    }
+    	//构建字符输出流
+    CharArrayWriter writer = new CharArrayWriter(1024 * 1024);
+
+        // 将字符串写入到CharArrayWriter
+        String msg = "hello world！！！22121";
+        writer.write(msg.toCharArray());
+
+        System.out.println(writer.toString());
+
+        writer.close();
+```
 #### 字符串流(StringReader、StringWriter)  
 字符串流和字符数据流基本一样，只是把char[]数组换成了String，在此不赘述。  
 
@@ -1103,11 +1255,201 @@ public class Test{
    }
 }
 ```
+### 对象流(ObjectInputStream、ObjectOutputStream)  
+#### 对象序列化  
+对象序列化，就是把一个对象变为二进制的数据流的一种方法，通过对象序列化可以方便的实现对象的传输或存储。  
+![fail](Java学习总结之Java-IO系统/对象序列化.png "对象序列化")    
+
+![fail](Java学习总结之Java-IO系统/对象序列化步骤.png "对象序列化")   
+**注意：**Serializable接口和Cloneable接口一样是一个标记接口，即没有任何方法的接口。但只有一个类实现了Serializable接口，它才能被序列化为二进制流进行传输。  
+
+定义一个可被序列化的类：  
+```java
+
+import java.io.Serializable ;
+public class Person implements Serializable{
+	private String name ;	 
+	private int age ;		
+	public Person(String name,int age){	
+		this.name = name ;
+		this.age = age ;
+	}
+	public String toString(){
+		return "姓名：" + this.name + "；年龄：" + this.age ;
+	}
+};
+```
+以后此类的对象就可以被序列化了。变为二进制byte流。  
+![fail](Java学习总结之Java-IO系统/序列化和反序列化.png "序列化和反序列化")   
+
+#### serialVersionUID
+在对象进行序列化或反序列化操作的时候，要考虑JDK版本的问题，如果序列化的JDK版本和反序列化的JDK版本不统一则就有可能造成异常。所以在序列化操作中引入了一个serialVersionUID的常量，可以通过此常量来验证版本的一致性，在进行反序列化时，JVM会把传来的字节流中的serialVersionUID与本地相应实体（类）的serialVersionUID进行比较，如果相同就认为是一致的，可以进行反序列化，否则就会出现版本不一致的异常。
+
+在上述的Person类中添加`private static final long serialVersionUID = 1L; `即可
+#### 对象的序列化和反序列化  
+要想完成对象的输入或输出，还必须依靠对象输出流（ObjectOutputStream）和对象输入流（ObjectInputStream）,
+**使用对象输出流输出序列化对象的过程，即把Java对象转换为字节序列的过程**，也称为**序列化**，而**使用对象输入流读入的过程，即把字节序列恢复为Java对象的过程**，也称为**反序列化**。  
+
+#### ObjectOutputStream(序列化)  
+常用构造方法：  
+public ObjectOutputStream(OutputStream out)  //接收一个字节输出流对象  
+
+常用方法：  
+public final void writeObject(Object obj) //把一个对象写入输出流 
+
+例子：  
+```java
+public class SerDemo01{  
+    public static void main(String args[]) throws Exception {  
+        File f = new File("D:" + File.separator + "test.txt") ; // 定义保存路径  
+        ObjectOutputStream oos = null ; // 声明对象输出流  
+        OutputStream out = new FileOutputStream(f) ;    // 文件输出流  
+        oos = new ObjectOutputStream(out) ;  
+        oos.writeObject(new Person("张三",30)) ;  // 保存对象  
+        oos.close() ;   // 关闭  
+    }  
+};  
+
+```
+
+对象序列化的真正内容：由于堆中只保存对象的非静态属性，方法和静态属性保存在静态区。所以序列化的实际是对象的非静态属性。  
+
+#### ObjectInputStream(反序列化)  
+常用构造方法：  
+public ObjectInputStream(InputStream in)  //接收一个字节输入流对象  
+常用方法：  
+public final Object readObject()  //把输入流读出对象
+
+例子：  
+```java
+public class SerDemo01{
+	public static void main(String args[]) throws Exception {
+		File f = new File("D:" + File.separator + "test.txt") ;	
+		ObjectInputStream ois = null ;
+		InputStream in = new FileOutputStream(f);
+		ois = new ObjectInStream(in) ;
+		Person person = (Person)ois.readObject();
+		oos.close() ;	
+	}
+};
+```
 ### 压缩流  
 在日常的使用中经常会使用到像WinRAR或WinZIP这样的压缩文件，通过这些软件可以把一个很大的文件进行压缩以方便传输。
 在JAVA中 为了减少传输时的数据量也提供了专门的压缩流，可以将文件或文件夹压缩成ZIP、JAR、GZIP等文件的格式。  
 具体见大牛博客：  
-http://blog.csdn.net/u013087513/article/details/52151227
+http://blog.csdn.net/u013087513/article/details/52151227  
+### 管道流(PipedOutputStream、PipedInputStream)  
+管道流的作用是可以进行两个线程间的通讯，分为管道输出流(PipedOutputStream)、管道输入流(PipedInputStream)如果要想进行管道输出，则必须把输出流连在输入流之上，在PipedOutputStream中有一个方法用于连接管道：  
+**public void connect(PipedInputStream snk) throws IOException**  
+
+![fail](Java学习总结之Java-IO系统/管道流.png)  
+
+例子如下：  
+```java
+
+import java.io.* ;
+class Send implements Runnable{			// 线程类
+	private PipedOutputStream pos = null ;	// 管道输出流
+	public Send(){
+		this.pos = new PipedOutputStream() ;	// 实例化输出流
+	}
+	public void run(){
+		String str = "Hello World!!!" ;	// 要输出的内容
+		try{
+			this.pos.write(str.getBytes()) ;
+		}catch(IOException e){
+			e.printStackTrace() ;
+		}
+		try{
+			this.pos.close() ;
+		}catch(IOException e){
+			e.printStackTrace() ;
+		}
+	}
+	public PipedOutputStream getPos(){	// 得到此线程的管道输出流
+		return this.pos ;	
+	}
+}
+
+
+class Receive implements Runnable{
+	private PipedInputStream pis = null ;	// 管道输入流
+	public Receive(){
+		this.pis = new PipedInputStream() ;	// 实例化输入流
+	}
+	public void run(){
+		byte b[] = new byte[1024] ;	// 接收内容
+		int len = 0 ;
+		try{
+			len = this.pis.read(b) ;	// 读取内容
+		}catch(IOException e){
+			e.printStackTrace() ;
+		}
+		try{
+			this.pis.close() ;	// 关闭
+		}catch(IOException e){
+			e.printStackTrace() ;
+		}
+		System.out.println("接收的内容为：" + new String(b,0,len)) ;
+	}
+	public PipedInputStream getPis(){
+		return this.pis ;
+	}
+}
+
+
+public class PipedDemo{
+	public static void main(String args[]){
+		Send s = new Send() ;
+		Receive r = new Receive() ;
+		try{
+			s.getPos().connect(r.getPis()) ;	// 连接管道
+		}catch(IOException e){
+			e.printStackTrace() ;
+		}
+		new Thread(s).start() ;	// 启动线程
+		new Thread(r).start() ;	// 启动线程
+	}
+}
+```
+
+### 回退流(PushbackInputStream和PushbackReader)  
+在Java IO中所有的数据都是采用顺序的读取方式，即对于一个输入流来讲都是采用从头到尾的顺序读取的，如果在输入流中某个不需要的内容被读取进来，则只能通过程序将这些不需要的内容处理掉，为了解决这样的处理问题，在Java中提供了一种回退输入流(PushbackInputStream、PushbackReader),可以把读取进来的某些数据重新回退到输入流的缓冲区之中。
+
+![fail](Java学习总结之Java-IO系统/回退流.png "回退流的工作原理")  
+
+回退流分为字节回退流和字符回退流，我们以字节回退流PushbackInputStream为例。  
+
+![fail](Java学习总结之Java-IO系统/PushbackInputStream.png)   
+
+对于回退操作来说，提供了三个unread()的操作方法，这三个操作方法与InputStream类中的read()方法是一一对应的。
+   
+ 例子如下，内存中使用ByteArrayInputStream，把内容设置到内存之中：  
+ ```java
+ 
+import java.io.ByteArrayInputStream ;
+import java.io.PushbackInputStream ;
+public class PushInputStreamDemo{
+	public static void main(String args[]) throws Exception {	// 所有异常抛出
+		String str = "www.baidu.com" ;		// 定义字符串
+		PushbackInputStream push = null ;		// 定义回退流对象
+		ByteArrayInputStream bai = null ;		// 定义内存输入流
+		bai = new ByteArrayInputStream(str.getBytes()) ;	// 实例化内存输入流
+		push = new PushbackInputStream(bai) ;	// 从内存中读取数据
+		System.out.print("读取之后的数据为：") ;
+		int temp = 0 ; 
+		while((temp=push.read())!=-1){	// 读取内容
+			if(temp=='.'){	// 判断是否读取到了“.”
+				push.unread(temp) ;	// 放回到缓冲区之中
+				temp = push.read() ;	// 再读一遍
+				System.out.print("（退回"+(char)temp+"）") ;
+			}else{
+				System.out.print((char)temp) ;	// 输出内容
+			}
+		}
+	}
+};
+ ```
 ### 选择合适的IO流  
 1.首先，明确IO流中有两个主要的体系，即  InputStream、OutputStream和Reader、Writer。其次，明确数据的来源和数据将要到达的目的地。  
 
