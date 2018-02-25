@@ -739,15 +739,1033 @@ public class Laptop {
 ### 11.外观模式
 ### 12.享元模式
 ### 13.代理模式  
+在代理模式（Proxy Pattern）中，代理对象为其他对象提供代理以控制对被代理对象的访问。代理对象起到中介作用，可去掉功能服务或增加额外的服务，这种类型的设计模式属于结构型模式。
 
+在代理模式中，我们创建具有现有对象的对象，以便向外界提供功能接口。
+
+#### 介绍
+**意图：**为其他对象提供一种代理以控制对这个对象的访问。
+
+**主要解决：**在直接访问对象时带来的问题，比如说：要访问的对象在远程的机器上。在面向对象系统中，有些对象由于某些原因（比如对象创建开销很大，或者某些操作需要安全控制，或者需要进程外的访问），直接访问会给使用者或者系统结构带来很多麻烦，我们可以在访问此对象时加上一个对此对象的访问层。
+
+**何时使用：**想在访问一个类时做一些控制。
+
+**如何解决：**增加中间层。
+
+**关键代码：**实现与被代理类**组合**。
+
+**应用实例：** 1、Windows 里面的快捷方式。 2、猪八戒去找高翠兰结果是孙悟空变的，可以这样理解：把高翠兰的外貌抽象出来，高翠兰本人和孙悟空都实现了这个接口，猪八戒访问高翠兰的时候看不出来这个是孙悟空，所以说孙悟空是高翠兰代理类。 3、买火车票不一定在火车站买，也可以去代售点。 4、一张支票或银行存单是账户中资金的代理。支票在市场交易中用来代替现金，并提供对签发人账号上资金的控制。 5、spring aop。
+
+**优点：** 1、职责清晰。 2、高扩展性。 3、智能化。
+
+**缺点：** 1、由于在客户端和真实主题之间增加了代理对象，因此有些类型的代理模式可能会造成请求的处理速度变慢。 2、实现代理模式需要额外的工作，有些代理模式的实现非常复杂。
+
+**使用场景：**按职责来划分，通常有以下使用场景：  
+1、远程代理。为不同地理的对象提供局域网代表对象。比如通过远程代理监控分店的库存和销售情况。   
+2、虚拟代理。根据需要将资源消耗很大的对象进行延迟，真正需要的时候进行创建。   
+3、Copy-on-Write 代理。  
+4、保护（Protect or Access）代理。即控制对一个对象的访问权限。比如论坛游客和用户的权限。  
+5、Cache代理。   
+6、防火墙（Firewall）代理。  
+7、同步化（Synchronization）代理。   
+8、智能引用（Smart Reference）代理。提供对目标对象额外的服务。
+
+**注意事项： **[菜鸟版JAVA设计模式—适配器模式，装饰模式，代理模式异同](http://blog.csdn.net/lulei9876/article/details/39994825)
+
+
+#### 实现  
+我们来看这样一个例子，一辆车有行驶的功能，现在通过代理模式新增记录行驶时间的功能。
+#### 代理模式分类    
+#### 静态代理    
+代理和被代理对象在代理之前是确定的。它们都实现相同的接口或者继承相同的抽象类。  
+
+![fail](Java学习总结之设计模式/静态代理.png)    
+**1) 通过继承的方式实现静态代理**  
+
+**步骤 1**  
+定义Moveable接口  
+
+Moveable.java  
+```java
+package com.imooc.proxy;
+
+public interface Moveable {
+	void move();
+}
+```
+
+**步骤 2**  
+定义Car类实现Moveable接口  
+
+Car.java  
+```java
+package com.imooc.proxy;
+
+import java.util.Random;
+
+public class Car implements Moveable {
+
+	@Override
+	public void move() {
+		//实现开车
+		try {
+			Thread.sleep(new Random().nextInt(1000));
+			System.out.println("汽车行驶中....");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+```
+
+**步骤 3**  
+定义代理类Car2类继承被代理类Car，并增加记录时间功能  
+
+```java
+package com.imooc.proxy;
+
+public class Car2 extends Car {
+
+	@Override
+	public void move() {
+		long starttime = System.currentTimeMillis();
+		System.out.println("汽车开始行驶....");
+		super.move();
+		long endtime = System.currentTimeMillis();
+		System.out.println("汽车结束行驶....  汽车行驶时间：" 
+				+ (endtime - starttime) + "毫秒！");
+	}
+
+	
+}
+```
+
+**步骤 4**  
+定义测试类  
+```java
+package com.imooc.proxy;
+
+public class Client {
+
+	/**
+	 * 测试类
+	 */
+	public static void main(String[] args) {
+		Moveable m = new Car2();
+		m.move();
+	}
+
+}
+```
+**2) 通过聚合的方式实现静态代理**  
+
+**步骤 1**  
+定义Moveable接口  
+
+Moveable.java  
+```java
+package com.imooc.proxy;
+
+public interface Moveable {
+	void move();
+}
+```
+
+**步骤 2**  
+定义Car类实现Moveable接口  
+
+Car.java  
+```java
+package com.imooc.proxy;
+
+import java.util.Random;
+
+public class Car implements Moveable {
+
+	@Override
+	public void move() {
+		//实现开车
+		try {
+			Thread.sleep(new Random().nextInt(1000));
+			System.out.println("汽车行驶中....");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+```
+
+**步骤 3**  
+定义代理类Car3类实现Moveable接口并聚合被代理类Car，增加记录时间功能  
+
+```java
+package com.imooc.proxy;
+
+public class Car3 implements Moveable {
+	private Car car;
+    
+	public Car3(Car car) {
+		this.car = car;
+	}
+	@Override
+	public void move() {
+		long starttime = System.currentTimeMillis();
+		System.out.println("汽车开始行驶....");
+		car.move();
+		long endtime = System.currentTimeMillis();
+		System.out.println("汽车结束行驶....  汽车行驶时间：" 
+				+ (endtime - starttime) + "毫秒！");
+	}
+
+}
+```
+
+**步骤 4**  
+定义测试类  
+```java
+package com.imooc.proxy;
+
+public class Client {
+
+	/**
+	 * 测试类
+	 */
+	public static void main(String[] args) {
+		Car car = new Car();
+		Moveable m = new Car3(car);
+		m.move();
+	}
+
+}
+```
+
+比较两种实现静态代理的方式，会发现随着功能的扩展，使用继承的方式的代理类数量会膨胀，难以维护，而使用聚合的方式更加灵活。所以，**聚合比继承更适合代理模式**。   
+
+#### 动态代理  
+在上面的例子中我们会发现一个问题，如果想要对自行车、火车等进行记录时间的代理，还需要创建自行车代理类、火车代理类等，如果有很多类需要代理，会造成代理类膨胀。  
+而动态代理能**动态产生**代理，实现对**不同类**,不同**方法**的代理。  
+
+**1) 通过JDK实现动态代理**  
+![fail](Java学习总结之设计模式/动态代理.png)    
+
+![fail](Java学习总结之设计模式/动态代理类1.png)  
+
+![fail](Java学习总结之设计模式/动态代理类2.png)    
+
+我们用动态代理来实现上面的例子  
+
+**步骤 1**  
+定义Moveable接口  
+
+Moveable.java  
+```java
+package com.imooc.proxy;
+
+public interface Moveable {
+	void move();
+}
+```
+
+**步骤 2**  
+定义Car类实现Moveable接口  
+
+Car.java  
+```java
+package com.imooc.proxy;
+
+import java.util.Random;
+
+public class Car implements Moveable {
+
+	@Override
+	public void move() {
+		//实现开车
+		try {
+			Thread.sleep(new Random().nextInt(1000));
+			System.out.println("汽车行驶中....");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+```
+
+**步骤 3**  
+定义代理类TimeHandler实现InvocationHandler接口，聚合被代理类对象target  
+
+```java
+package com.imooc.jdkproxy;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class TimeHandler implements InvocationHandler {
+
+	public TimeHandler(Object target) {
+		super();
+		this.target = target;
+	}
+
+	private Object target; //target对象是聚合在代理类里的被代理对象
+	
+	/*
+	 * 参数：
+	 * proxy  被代理对象
+	 * method  被代理对象的方法
+	 * args 方法的参数
+	 * 
+	 * 返回值：
+	 * Object  方法的返回值
+	 * */
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args)
+			throws Throwable {
+		long starttime = System.currentTimeMillis();
+		System.out.println("汽车开始行驶....");
+		method.invoke(target); //被代理的target对象调用method方法，在反射中写为method.invoke(target)
+		long endtime = System.currentTimeMillis();
+		System.out.println("汽车结束行驶....  汽车行驶时间：" 
+				+ (endtime - starttime) + "毫秒！");
+		return null;
+	}
+
+}
+```
+
+**步骤 4**  
+定义测试类 
+
+```java
+package com.imooc.jdkproxy;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
+import com.imooc.proxy.Car;
+import com.imooc.proxy.Moveable;
+
+public class Test {
+
+	/**
+	 * JDK动态代理测试类
+	 */
+	public static void main(String[] args) {
+		Car car = new Car();
+		InvocationHandler h = new TimeHandler(car);
+		Class<?> cls = car.getClass();
+		/**
+		 * loader  被代理类(Car)的类加载器
+		 * interfaces  被代理类(Car)实现的接口
+		 * 通过获取Car的类对象获取loader和interfaces
+		 * h InvocationHandler
+		 */
+		Moveable m = (Moveable)Proxy.newProxyInstance(cls.getClassLoader(),cls.getInterfaces(), h);
+		m.move();
+	}
+
+}
+```
+![fail](Java学习总结之设计模式/DP.png)    
+![fail](Java学习总结之设计模式/step.png)    
+
+**2) 使用cglib实现动态代理**  
+
+![fail](Java学习总结之设计模式/区别.png)  
+使用cglib动态代理要引入cglib jar包
 ### 行为型模式  
-### 14.责任链模式
+### 14.责任链模式  
+顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。
+在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。
+
+#### 介绍  
+**意图：**避免请求发送者与接收者耦合在一起，让多个对象都有可能接收请求，将这些对象连接成一条链，并且沿着这条链传递请求，直到有对象处理它为止。
+
+**主要解决：**职责链上的处理者负责处理请求，客户只需要将请求发送到职责链上即可，无须关心请求的处理细节和请求的传递，所以职责链将请求的发送者和请求的处理者解耦了。
+
+**何时使用：**在处理消息的时候以过滤很多道。
+
+**如何解决：**拦截的类都实现统一接口。
+
+**关键代码：**Handler里面聚合它自己，在 HandlerRequest 里判断是否合适，如果没达到条件则向下传递，向谁传递之前 set 进去。
+
+**应用实例：** 1、红楼梦中的"击鼓传花"。 2、JS 中的事件冒泡。 3、JAVA WEB 中 Apache Tomcat 对 Encoding 的处理，Struts2 的拦截器，jsp servlet 的 Filter。 4.JAVA 的异常链机制
+
+**优点：** 1、降低耦合度。它将请求的发送者和接收者解耦。 2、简化了对象。使得对象不需要知道链的结构。 3、增强给对象指派职责的灵活性。通过改变链内的成员或者调动它们的次序，允许动态地新增或者删除责任。 4、增加新的请求处理类很方便。
+
+**缺点：** 1、不能保证请求一定被接收。 2、系统性能将受到一定影响，而且在进行代码调试时不太方便，可能会造成循环调用。 3、可能不容易观察运行时的特征，有碍于除错。
+
+**使用场景：** 1、有多个对象可以处理同一个请求，具体哪个对象处理该请求由运行时刻自动确定。 2、在不明确指定接收者的情况下，向多个对象中的一个提交一个请求。 3、可动态指定一组对象处理请求。
+
+**注意事项：**在 JAVA WEB 中遇到很多应用。  
+
+![fail](Java学习总结之设计模式/责任链模式.png)
+### 实现  
+我们以销售楼盘为例，客户是Customer类，发送一个折扣请求给责任链。责任链由楼盘各级人员组成，都继承自PriceHandler抽象类，自底向上为Sales(销售)、Lead(销售小组长)、Manager(销售经理)、Director(销售总监)、VicePresident(销售副总裁)、CEO(首席执行官)。沿着责任链，能批准折扣的力度依次上升。  
+  
+**步骤 1** 创建PriceHandler抽象类  
+PriceHandler.java  
+```java
+package com.imooc.pattern.cor.handler;
+
+/*
+ * 价格处理人，负责处理客户折扣申请
+ */
+public abstract class PriceHandler {
+	
+	/*
+	 * 直接后继，用于传递请求
+	 */
+	protected PriceHandler successor;
+
+	public void setSuccessor(PriceHandler successor) {
+		this.successor = successor;
+	}
+	
+	/*
+	 * 处理折扣申请
+	 */
+	public abstract  void processDiscount(float discount);
+
+}
+```
+
+**步骤 2** 创建PriceHandler的具体类  
+Sales.java  
+```java
+package com.imooc.pattern.cor.handler;
+
+/*
+ * 销售， 可以批准5%以内的折扣
+ */
+public class Sales extends PriceHandler {
+
+	@Override
+	public void processDiscount(float discount) {
+		if(discount <= 0.05){
+			System.out.format("%s批准了折扣：%.2f%n", this.getClass().getName(), discount);
+		}else{
+			successor.processDiscount(discount);
+		}
+
+	}
+
+}
+```
+
+Lead.java  
+```java
+package com.imooc.pattern.cor.handler;
+
+/*
+ * 销售小组长， 可以批准15%以内的折扣
+ */
+public class Lead extends PriceHandler {
+
+	@Override
+	public void processDiscount(float discount) {
+		if(discount<=0.15){
+			System.out.format("%s批准了折扣:%.2f%n",this.getClass().getName(),discount);
+		}else{
+			successor.processDiscount(discount);
+		}
+
+	}
+
+}
+```
+
+Manager.java  
+```java
+package com.imooc.pattern.cor.handler;
+
+/*
+ * 销售经理， 可以批准30%以内的折扣
+ */
+public class Manager extends PriceHandler {
+
+	@Override
+	public void processDiscount(float discount) {
+		if(discount<=0.3){
+			System.out.format("%s批准了折扣:%.2f%n",this.getClass().getName(),discount);
+		}else{
+			successor.processDiscount(discount);
+		}
+
+	}
+
+}
+```
+
+Director.java  
+```java
+package com.imooc.pattern.cor.handler;
+
+/*
+ * 销售总监， 可以批准40%以内的折扣
+ */
+public class Director extends PriceHandler {
+
+	@Override
+	public void processDiscount(float discount) {
+		if(discount<=0.4){
+			System.out.format("%s批准了折扣:%.2f%n",this.getClass().getName(),discount);
+		}else{
+			successor.processDiscount(discount);
+		}
+
+	}
+
+}
+```
+
+VicePresident.java  
+```java
+package com.imooc.pattern.cor.handler;
+
+
+/*
+ * 销售副总裁， 可以批准50%以内的折扣
+ */
+public class VicePresident extends PriceHandler {
+
+	@Override
+	public void processDiscount(float discount) {
+		if(discount<=0.5){
+			System.out.format("%s批准了折扣:%.2f%n",this.getClass().getName(),discount);
+		}else{
+			successor.processDiscount(discount);
+		}
+
+	}
+
+}
+```
+
+CEO.java
+```java
+package com.imooc.pattern.cor.handler;
+
+/*
+ * CEO， 可以批准55%以内的折扣
+ * 折扣超出55%， 就拒绝申请
+ */
+public class CEO extends PriceHandler {
+
+	@Override
+	public void processDiscount(float discount) {
+		if(discount<=0.55){
+			System.out.format("%s批准了折扣:%.2f%n",this.getClass().getName(),discount);
+		}else{
+			System.out.format("%s拒绝了折扣:%.2f%n", this.getClass().getName(),discount);
+		}
+
+	}
+
+}
+```
+
+**步骤 3** 创建PriceHandlerFactory类  
+```java
+package com.imooc.pattern.cor.handler;
+
+public class PriceHandlerFactory {
+
+	/*
+	 * 创建PriceHandler的工厂方法，类似于构建链表并返回表头
+	 */
+	public static PriceHandler createPriceHandler() {
+		
+		PriceHandler sales = new Sales();
+		PriceHandler lead = new Lead();
+		PriceHandler man = new Manager();
+		PriceHandler dir = new Director();
+		PriceHandler vp = new VicePresident();
+		PriceHandler ceo = new CEO();
+		
+		sales.setSuccessor(lead);
+		lead.setSuccessor(man);
+		man.setSuccessor(dir);
+		dir.setSuccessor(vp);
+		vp.setSuccessor(ceo);
+		
+		return sales;
+	}
+
+}
+```
+
+**步骤 4** 创建Customer类  
+```java
+package com.imooc.pattern.cor;
+
+import java.util.Random;
+import com.imooc.pattern.cor.handler.PriceHandler;
+import com.imooc.pattern.cor.handler.PriceHandlerFactory;
+
+/*
+ * 客户，请求折扣
+ */
+public class Customer {
+	
+	private PriceHandler priceHandler;
+	
+	public void setPriceHandler(PriceHandler priceHandler) {
+		this.priceHandler = priceHandler;
+	}
+
+	public void requestDiscount(float discount){
+		priceHandler.processDiscount(discount);
+	}
+	
+	
+	public static void main(String[] args){
+		Customer customer = new Customer();
+		customer.setPriceHandler(PriceHandlerFactory.createPriceHandler());
+		
+		Random rand = new Random();
+		
+		for(int i=1;i<=100;i++){
+			System.out.print(i+":");
+			customer.requestDiscount(rand.nextFloat());
+		}
+		
+		
+	}
+	
+
+}
+```
 ### 15.命令模式
 ### 16.解释器模式
 ### 17.迭代器模式
 ### 18.中介者模式
 ### 19.备忘录模式
-### 20.观察者模式
+### 20.观察者模式  
+当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象，被通知的对象会做出各自的反应。观察者模式属于行为型模式。  
+
+#### 介绍
+**意图：**定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。
+
+**主要解决：**一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。
+
+**何时使用：**一个对象（目标对象）的状态发生改变，进行广播通知，所有的依赖对象（观察者对象）都将得到通知并做出各自的反应。
+
+**如何解决：**使用面向对象技术，可以将这种依赖关系弱化。
+
+**关键代码：**在抽象类里有一个 ArrayList 存放观察者们。
+
+**应用实例：** 1、拍卖的时候，拍卖师观察最高标价，然后通知给其他竞价者竞价。 2、西游记里面悟空请求菩萨降服红孩儿，菩萨洒了一地水招来一个老乌龟，这个乌龟就是观察者，他观察菩萨洒水这个动作。
+
+**优点：** 1、观察者和被观察者是抽象耦合的，被观察者只知道观察者接口，不知道具体的观察者类，实现了被观察者类和具体观察者类的解耦。 2、建立一套触发机制，实现了动态联动。 
+3、支持广播通信。
+
+**缺点：** 1、如果一个被观察者对象有很多的直接和间接的观察者的话，将所有的观察者都通知到会花费很多时间。 2、如果在观察者和观察目标之间有循环依赖的话，观察目标会触发它们之间进行循环调用，可能导致系统崩溃。 3、观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。
+
+**使用场景：** 1、一个抽象模型有两个方面，其中一个方面的操作(观察者)依赖于另一个方面状态的变化(被观察者)。 2、如果在更改一个对象的时候，需要同时连带改变其他对象，而且不知道究竟有多少对象需要被连带改变。 3、当一个对象必须通知其他对象，而又希望这个对象和其他被通知的对象是松散耦合的。
+
+**注意事项：** 1、JAVA 中已经有了对观察者模式的支持类。 2、避免循环引用。 3、如果顺序执行，某一观察者错误会导致系统卡壳，一般采用异步方式。
+
+#### 实现
+观察者模式使用三个类 Subject、Observer 和 Client。Subject 对象带有绑定观察者到 Client 对象和从 Client 对象解绑观察者的方法。我们创建 Subject 类、Observer 抽象类和扩展了抽象类 Observer 的实体类。  
+ObserverPatternDemo，我们的演示类使用 Subject 和实体类对象来演示观察者模式。  
+
+![fail](Java学习总结之设计模式/观察者模式.jpg)  
+
+
+#### 观察者模式实现的两种方式  
+**1) 推模型**  
+目标对象主动向观察者推送目标的详细信息，推送的信息通常是目标或目标对象的全部数据。一般这种模型的实现中，会把目标对象想要推送的信息通过update方法传递给观察者。      
+**步骤 1**  
+创建 Subject 类(目标类、被观察者类)  
+Subject.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Subject {
+   private List<Observer> observers 
+      = new ArrayList<Observer>();
+   private int state;
+
+   public int getState() {
+      return state;
+   }
+
+   public void setState(int state) {
+      this.state = state;
+      notifyAllObservers(state);
+   }
+
+   public void attach(Observer observer){
+      observers.add(observer);        
+   }
+   
+   public void detach(Observer observer){
+   	  observers.remove(observer);
+   }
+   
+   public void notifyAllObservers(int state){
+      for (Observer observer : observers) {
+         observer.update(state);
+      }
+   }     
+}
+```
+**步骤 2**  
+创建 Observer 类  
+
+Observer.java
+```java
+public abstract class Observer {
+   public abstract void update(int state); //传递要推送的信息，观察者只能接收到目标推送的数据
+}
+```
+**步骤 3**    
+创建实体观察者类  
+
+BinaryObserver.java
+```java
+public class BinaryObserver extends Observer{
+   @Override
+   public void update(int state) {
+      System.out.println( "Binary String: " 
+      + Integer.toBinaryString(state)); 
+   }
+}
+```
+OctalObserver.java
+```java
+public class OctalObserver extends Observer{
+   @Override
+   public void update(int state) {
+     System.out.println( "Octal String: " 
+     + Integer.toOctalString(state)); 
+   }
+}
+```
+HexaObserver.java
+```java
+public class HexaObserver extends Observer{
+   @Override
+   public void update(int state) {
+      System.out.println( "Hex String: " 
+      + Integer.toHexString(state).toUpperCase()); 
+   }
+}
+```
+**步骤 4**  
+使用 Subject 和实体观察者对象  
+
+ObserverPatternDemo.java
+```java
+public class ObserverPatternDemo {
+   public static void main(String[] args) {
+      Subject subject = new Subject();
+      Observer o1 = new HexaObserver();
+      Observer o2 = new OctalObserver();
+      Observer o3 = new BinaryObserver();
+	  subject.attach(o1);
+      subject.attach(o2);
+      subject.attach(o3);
+      System.out.println("First state change: 15");    
+      subject.setState(15);
+      System.out.println("Second state change: 10");    
+      subject.setState(10);
+   }
+}
+```
+**步骤 5**  
+验证输出
+
+First state change: 15  
+Hex String: F  
+Octal String: 17  
+Binary String: 1111  
+Second state change: 10  
+Hex String: A  
+Octal String: 12  
+Binary String: 1010  
+
+
+**2) 拉模型**  
+目标对象在通知观察者的时候，只传递少量信息。如果观察者需要更具体的信息，由观察者主动到目标对象中获取，相当于观察者从目标对象中拉数据。一般这种模型的实现中，会把目标对象自身的引用通过update方法传递给观察者。    
+**步骤 1**  
+创建 Subject 类(目标类、被观察者类)  
+
+Subject.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Subject {
+   private List<Observer> observers 
+      = new ArrayList<Observer>();
+   private int state;
+
+   public int getState() {
+      return state;
+   }
+
+   public void setState(int state) {
+      this.state = state;
+      notifyAllObservers();
+   }
+
+   public void attach(Observer observer){
+      observers.add(observer);        
+   }
+   
+   public void detach(Observer observer){
+   	  observers.remove(observer);
+   }
+   
+   public void notifyAllObservers(){
+      for (Observer observer : observers) {
+         observer.update(this);
+      }
+   }     
+}
+```
+**步骤 2**  
+创建 Observer 类  
+
+Observer.java
+```java
+public abstract class Observer {
+	/*传递目标对象自身的引用，观察者可自己选择
+    从目标对象中拉哪些数据*/
+   public abstract void update(Subject message);
+}
+```
+**步骤 3**    
+创建实体观察者类  
+
+BinaryObserver.java
+```java
+public class BinaryObserver extends Observer{
+   @Override
+   public void update(Subject message) {
+   	  int state = message.getState(); 
+      System.out.println( "Binary String: " 
+      + Integer.toBinaryString(state)); 
+   }
+}
+```
+OctalObserver.java
+```java
+public class OctalObserver extends Observer{
+   @Override
+   public void update(Subject message) {
+     int state = message.getState(); 
+     System.out.println( "Octal String: " 
+     + Integer.toOctalString(state)); 
+   }
+}
+```
+HexaObserver.java
+```java
+public class HexaObserver extends Observer{
+   @Override
+   public void update(Subject message) {
+      int state = message.getState(); 
+      System.out.println( "Hex String: " 
+      + Integer.toHexString(state).toUpperCase()); 
+   }
+}
+```
+**步骤 4**  
+使用 Subject 和实体观察者对象  
+
+ObserverPatternDemo.java
+```java
+public class ObserverPatternDemo {
+   public static void main(String[] args) {
+      Subject subject = new Subject();
+      Observer o1 = new HexaObserver();
+      Observer o2 = new OctalObserver();
+      Observer o3 = new BinaryObserver();
+	  subject.attach(o1);
+      subject.attach(o2);
+      subject.attach(o3);
+      System.out.println("First state change: 15");    
+      subject.setState(15);
+      System.out.println("Second state change: 10");    
+      subject.setState(10);
+   }
+}
+```
+**步骤 5**  
+验证输出
+
+First state change: 15  
+Hex String: F  
+Octal String: 17  
+Binary String: 1111  
+Second state change: 10  
+Hex String: A  
+Octal String: 12  
+Binary String: 1010  
+
+**两种模型的区别：**  
+1) 推模型由目标对象决定推送的信息，观察者不能获取推送信息之外目标对象的其他信息，较为被动。拉模型虽然仍是目标对象主动推送信息，但推送的是整个目标对象的引用，观察者可以选择性接收目标对象的信息。  
+2) 推模型一般用于目标对象知道观察者需要的数据;而拉模型则用于目标对象不知道观察者需要的数据，因此把自身传递给观察者，由观察者来取值。  
+3) 推模型会使观察者对象难以复用。拉模型下，update方法的参数是目标对象本身，基本上可以适应各种情况的需要。  
+
+#### 利用Java提供的观察者实现  
+Java提供了观察者模式的实现，有关类和接口是java.util包的Observable类和Observer接口。  
+和自己实现对比：  
+1.不需要自己定义观察者和目标接口了，JDK帮忙定义了  
+2.具体的目标实现里面不需要再维护观察者的注册信息了，这个在Java中的Observable类里面已经帮忙实现好了。  
+3.触发通知的方式有一点变化，要先调用setChanged方法,这个是Java为了帮助实现更精确的触发控制而实现的功能。   
+4.具体观察者的实现里面，update方法其实能同时支持推模型和拉模型，这个是Java在定义的时候，就已经考虑进去的了。
+
+实现方法：  
+1、让具体Subject实现类继承Observable目标父类，Observable意为可被观察的，所以让具体目标类继承它。  
+2、让具体观察者实现类实现Observer接口，Observer意为观察者，所以让具体观察者实现类实现它。  
+
+**步骤 1**  
+创建具体目标对象实现类继承Observable类  
+Subject.java  
+```java
+import java.util.Observable;
+
+public class Subject extends Observable {
+	private int state;
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+		//通知观察者之前必须调用setChanged()
+		this.setChanged();
+		
+		/*通知所有观察者，既传递目标对象引用给观察者，
+		 * 也传递参数给观察者update的第二个参数*/
+		this.notifyObservers(Integer.valueOf(state));
+		
+		/* 重载方法的无参方法notifyObservers()
+		 * 通知所有观察者，但只是传递目标对象引用给观察者，
+		 * 观察者update的第二个参数为null
+		 * */
+	}
+}
+
+```
+
+**步骤 2**  
+创建观察者的具体实现类实现Observer接口
+BinaryObserver.java
+```java
+import java.util.Observable;
+import java.util.Observer;
+
+public class BinaryObserver implements Observer {
+	/**
+	 * Observable o是目标对象传递的引用，用于拉模型
+	 * Object arg是目标对象主动推送的信息，用于推模型
+	 * 如果目标对象使用带参的notifyObservers方法，
+	 * 则即可推也可拉;如果使用无参的notifyObservers方法，
+	 * 则只能拉
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		//1.推的方式
+		System.out.println( "推模型：Binary String: " 
+	    + Integer.toBinaryString(((Integer)arg).intValue())); 
+		//2.拉的方式  
+		System.out.println( "拉模型：Binary String: " 
+	    + Integer.toBinaryString(((Subject)o).getState())); 
+
+	}
+
+}
+
+```
+HexaObserver.java
+```java
+import java.util.Observable;
+import java.util.Observer;
+
+public class HexaObserver implements Observer {
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println( "推模型：Hex String: " 
+	    + Integer.toHexString(((Integer)arg).intValue()).toUpperCase()); 
+		System.out.println( "拉模型：Hex String: " 
+	    + Integer.toHexString(((Subject)o).getState()).toUpperCase()); 
+	}
+
+}
+
+```
+OctalObserver.java
+```java
+import java.util.Observable;
+import java.util.Observer;
+
+public class OctalObserver implements Observer {
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println( "推模型：Octal String: " 
+			    + Integer.toOctalString(((Integer)arg).intValue())); 
+				System.out.println( "拉模型：Octal String: " 
+			    + Integer.toOctalString(((Subject)o).getState())); 
+	}
+
+}
+
+```
+
+**步骤 3**  
+创建测试类  
+ObserverPatternDemo.java
+```java
+import java.util.Observer;
+
+public class ObserverPatternDemo {
+   public static void main(String[] args) {
+      Subject subject = new Subject();
+      Observer o1 = new HexaObserver();
+      Observer o2 = new BinaryObserver();
+      Observer o3 = new OctalObserver();
+	  subject.addObserver(o1); //注册观察者
+	  subject.addObserver(o2);
+	  subject.addObserver(o3);
+      System.out.println("First state change: 15");    
+      subject.setState(15);
+      System.out.println("Second state change: 10");    
+      subject.setState(10);
+   }
+}
+```
+**步骤 4**  
+验证输出  
+First state change: 15  
+推模型：Octal String: 17  
+拉模型：Octal String: 17  
+推模型：Binary String: 1111  
+拉模型：Binary String: 1111  
+推模型：Hex String: F  
+拉模型：Hex String: F  
+Second state change: 10  
+推模型：Octal String: 12  
+拉模型：Octal String: 12  
+推模型：Binary String: 1010  
+拉模型：Binary String: 1010  
+推模型：Hex String: A  
+拉模型：Hex String: A
+
+#### 区别对待观察者模式  
+之前的观察者模式是目标对象无条件通知所有观察者对象，然而有时需要在特定条件下对特定的观察者进行通知。这是就需要观察者模式的变形 —— **区别对待观察者模式**。  
+具体实现只要修改Subject类的notifyAllObservers方法,对Observer的身份做特定判断，然后有条件的推送信息即可。  
+
 ### 21.状态模式
 ### 22.空对象模式
 ### 23.策略模式  
