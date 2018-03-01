@@ -947,7 +947,9 @@ public class Client {
 在上面的例子中我们会发现一个问题，如果想要对自行车、火车等进行记录时间的代理，还需要创建自行车代理类、火车代理类等，如果有很多类需要代理，会造成代理类膨胀。  
 而动态代理能**动态产生**代理，实现对**不同类**,不同**方法**的代理。  
 
-**1) 通过JDK实现动态代理**  
+**1) 通过JDK实现动态代理**    
+JDK提供了动态代理的API。代理对象不需要实现目标接口，但目标对象必须实现目标接口。代理对象的生成,是利用JDK的API,动态的在内存中构建代理对象(需要我们指定创建代理对象/目标对象实现的接口的类型)，JDK动态代理也叫做接口代理。  
+
 ![fail](Java学习总结之设计模式/动态代理.png)    
 
 ![fail](Java学习总结之设计模式/动态代理类1.png)  
@@ -1009,11 +1011,11 @@ public class TimeHandler implements InvocationHandler {
 		this.target = target;
 	}
 
-	private Object target; //target对象是聚合在代理类里的被代理对象
+	private Object target; //target对象是聚合在代理类里的目标对象(被代理对象)
 	
 	/*
 	 * 参数：
-	 * proxy  被代理对象
+	 * proxy  代理对象
 	 * method  被代理对象的方法
 	 * args 方法的参数
 	 * 
@@ -1025,13 +1027,26 @@ public class TimeHandler implements InvocationHandler {
 			throws Throwable {
 		long starttime = System.currentTimeMillis();
 		System.out.println("汽车开始行驶....");
-		method.invoke(target); //被代理的target对象调用method方法，在反射中写为method.invoke(target)
+		method.invoke(target); //被代理的target对象调用method方法，args为null可以不写
 		long endtime = System.currentTimeMillis();
 		System.out.println("汽车结束行驶....  汽车行驶时间：" 
 				+ (endtime - starttime) + "毫秒！");
 		return null;
 	}
-
+    
+    //获取代理对象
+	public Object getProxy() {
+    	/** static Object newProxyInstance(ClassLoader loader,Class[] interfaces,InvocationHandler)
+		 * loader  被代理类(Car)的类加载器
+		 * interfaces  被代理类(Car)实现的接口
+		 * 通过获取Car的类对象获取loader和interfaces
+		 * h 实现了InvocationHandler接口的代理类对象
+		 */
+        return Proxy.newProxyInstance(
+        target.getClass().getClassLoader(),   
+        target.getClass().getInterfaces(), this);  
+    }  
+}  
 }
 ```
 
@@ -1053,28 +1068,174 @@ public class Test {
 	 * JDK动态代理测试类
 	 */
 	public static void main(String[] args) {
+    	// 实例化目标对象
 		Car car = new Car();
+        // 实例化InvocationHandler
 		InvocationHandler h = new TimeHandler(car);
-		Class<?> cls = car.getClass();
-		/**
-		 * loader  被代理类(Car)的类加载器
-		 * interfaces  被代理类(Car)实现的接口
-		 * 通过获取Car的类对象获取loader和interfaces
-		 * h InvocationHandler
-		 */
-		Moveable m = (Moveable)Proxy.newProxyInstance(cls.getClassLoader(),cls.getInterfaces(), h);
+        // 获取代理对象
+		Moveable m = (Moveable)h.getProxy();
+        // 调用代理方法
 		m.move();
 	}
 
 }
 ```
+
+上面步骤 3可以直接定义一个动态代理工厂类ProxyFactory，把InvocationHandler作为ProxyFactory的匿名内部类。即：  
+
+ProxyFactory.java
+```java
+package com.imooc.jdkproxy;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class TimeHandler implements InvocationHandler {
+
+	public TimeHandler(Object target) {
+		super();
+		this.target = target;
+	}
+
+	private Object target; 
+	
+
+    
+    //获取代理对象
+	public Object getProxyInstance() {
+    	return Proxy.newProxyInstance(
+        target.getClass().getClassLoader(),
+        target.getClass().getInterfaces(),
+        new InvocationHandler(){
+        	@Override
+        public Object invoke(Object proxy, Method method, Object[]
+        args) throws Throwable {
+        	long starttime = System.currentTimeMillis();
+		System.out.println("汽车开始行驶....");
+		method.invoke(target); //被代理的target对象调用method方法，args为null可以不写
+		long endtime = System.currentTimeMillis();
+		System.out.println("汽车结束行驶....  汽车行驶时间：" 
+				+ (endtime - starttime) + "毫秒！");
+		return null; //方法无返回值,返回null
+        }
+        });
+    }  
+}
+```
 ![fail](Java学习总结之设计模式/DP.png)    
 ![fail](Java学习总结之设计模式/step.png)    
+拓展：  
+* [Java的三种代理模式](http://www.cnblogs.com/cenyu/p/6289209.html)
+* [InvocationHandler中invoke方法中的第一个参数proxy的用途](http://blog.csdn.net/bu2_int/article/details/60150319) 
+* [java中Proxy(代理与动态代理)](http://blog.csdn.net/pangqiandou/article/details/52964066)  
+* [java静态代理和动态代理](http://layznet.iteye.com/blog/1182924)    
+* [深入理解Java反射](http://www.cnblogs.com/luoxn28/p/5686794.html)
+
+**JDK动态代理的简易实现**  
+实现功能：通过Proxy的newProxyInstance返回代理对象  
+
+（1）声明一段源码（动态产生代理）  
+（2）编译源码（JDK Compiler API），产生新的类（代理类） 
+（3）将这个类load到内存当中，产生一个新的对象（代理对象）
+（4）return代理对象   
+具体见慕课视频：[模拟JDK动态代理实现思路分析](https://www.imooc.com/video/4903)
+**总结：**代理对象不需要实现接口,但是目标对象一定要实现接口,否则不能用JDK动态代理  
 
 **2) 使用cglib实现动态代理**  
+上面的静态代理和动态代理模式都是要求目标对象是实现一个接口的目标对象，但是有时候目标对象只是一个单独的对象，并没有实现任何的接口，这个时候就可以使用以目标对象子类的方式类实现代理，这种方法就叫做Cglib代理。  
+
+Cglib代理，也叫作子类代理，它是在内存中构建一个子类对象从而实现对目标对象功能的扩展。  
+
+JDK的动态代理有一个限制,就是使用动态代理的对象必须实现一个或多个接口,如果想代理没有实现接口的类,就可以使用Cglib实现。  
+
+Cglib是一个强大的高性能的代码生成包,它可以在运行期扩展Java类与实现Java接口。它广泛的被许多AOP框架使用,例如Spring AOP和synaop,为他们提供方法的interception(拦截)。
+
+Cglib子类代理实现方法:  
+1.需要引入cglib的jar文件,但是Spring的核心包中已经包括了Cglib功能,所以直接引入pring-core-3.2.5.jar即可。  
+2.引入功能包后,就可以在内存中动态构建子类。  
+3.代理的类不能为final,否则报错。  
+4.目标对象的方法如果为final/static,那么就不会被拦截,即不会执行目标对象额外的业务方法。  
 
 ![fail](Java学习总结之设计模式/区别.png)  
-使用cglib动态代理要引入cglib jar包
+
+Train.java
+```java
+/**
+ * 目标对象,没有实现任何接口
+ */
+public class Train {
+
+    public void move() {
+        System.out.println("火车行驶中...");
+    }
+}
+```
+ProxyFactory.java
+```java
+/**
+ * Cglib子类代理工厂，实现MethodInterceptor接口  
+ * 设置Cglib子类的父类为目标对象的类
+ * 对Train在内存中动态构建一个子类对象
+ * 重写intercept方法对目标父类的方法调用进行拦截
+ */
+public class ProxyFactory implements MethodInterceptor{
+    //维护目标对象
+    private Object target;
+
+    public ProxyFactory(Object target) {
+        this.target = target;
+    }
+
+    //给目标对象创建一个代理对象
+    public Object getProxyInstance(){
+        //1.创建加强器，用来创建动态代理类
+        Enhancer en = new Enhancer();
+        //2.为加强器指定要代理的业务类（即为下面生成的代理类指定父类）
+        en.setSuperclass(target.getClass());
+        //3.设置回调：在调用目标方法时，CgLib会回调intercept方法进行拦截，来实现你自己的代理逻辑
+        en.setCallback(this);
+        //4.创建动态代理类对象并返回  
+        return en.create();
+
+    }
+	`/**
+	 * 拦截所有目标父类方法的调用
+	 * obj  目标类的实例
+	 * method   目标方法的反射对象
+	 * args  方法的参数
+	 * proxy 代理类的实例
+	 */
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        System.out.println("日志开始...");
+		//代理类调用父类的方法
+		proxy.invokeSuper(obj, args);
+		System.out.println("日志结束...");
+		return null; //方法无返回值，返回null
+    }
+}
+```
+Client.java
+```java
+/**
+ * 测试类
+ */
+public class Client {
+
+    @Test
+    public void test(){
+        //目标对象
+        Train target = new Train();
+
+        //代理对象
+        Train proxy = 
+        (Train)new ProxyFactory(target).getProxyInstance();
+
+        //执行代理对象的方法
+        proxy.move();
+    }
+}
+```
 ### 行为型模式  
 ### 14.责任链模式  
 顾名思义，责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。

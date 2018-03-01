@@ -332,11 +332,237 @@ java.math包主要包含BigInteger类和BigDecimal类，主要应用于高精度
 ![fail](Java学习总结之核心API/general2.png)
 #### Date类  
 Date 类表示日期和时间，里面封装了操作日期和时间的方法。Date 类经常用来获取系统当前时间。  
-1、构造方法  
+**1.构造方法**  
 ![fail](Java学习总结之核心API/Date构造方法.png)  
-2、常用方法  
+**2.常用方法**  
 ![fail](Java学习总结之核心API/Date方法1.png)  
-![fail](Java学习总结之核心API/Date方法2.png)
+![fail](Java学习总结之核心API/Date方法2.png)  
+##### 1.获取当前日期时间
+Java中获取当前日期和时间很简单，使用 Date 对象的 toString() 方法来打印当前日期和时间，如下所示：
+```java
+import java.util.Date;
+  
+public class DateDemo {
+   public static void main(String args[]) {
+       // 初始化 Date 对象
+       Date date = new Date();
+        
+       // 使用 toString() 函数显示日期时间
+       System.out.println(date.toString());
+   }
+}
+```
+
+##### 2.日期比较
+Java使用以下三种方法来比较两个日期：
+* 使用 getTime() 方法获取两个日期（自1970年1月1日经历的毫秒数值），然后比较这两个值。  
+* 使用方法 before()，after() 和 equals()。
+* 使用 compareTo() 方法，它是由 Comparable 接口定义的，Date 类实现了这个接口。
+
+##### 3.使用 SimpleDateFormat 格式化日期  
+SimpleDateFormat 是一个以语言环境敏感的方式来格式化和分析日期的类。SimpleDateFormat 允许你选择任何用户自定义日期时间格式来运行。例如：  
+```java
+import java.util.*;
+import java.text.*;
+ 
+public class DateDemo {
+   public static void main(String args[]) {
+ 
+      Date dNow = new Date( );
+      SimpleDateFormat ft = 
+      new SimpleDateFormat ("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+      /*这一行代码确立了转换的格式，其中 yyyy 是完整的公元年，
+      MM 是月份，dd 是日期，HH:mm:ss 是时、分、秒。*/
+ 
+      System.out.println("Current Date: " + ft.format(dNow));
+   }
+}
+```
+注意:有的格式大写，有的格式小写，例如 MM 是月份，mm 是分；HH 是 24 小时制，而 hh 是 12 小时制。  
+运行结果如下:  
+Current Date: Wed 2016.11.09 at 08:23:19 AM UTC  
+
+**日期和时间的格式化编码**  
+时间模式字符串用来指定时间格式。在此模式中，所有的 ASCII 字母被保留为模式字母，定义如下：  
+![fail](Java学习总结之核心API/SimpleDateFormat1.png)  
+![fail](Java学习总结之核心API/SimpleDateFormat2.png)    
+
+##### 4.使用printf格式化日期  
+见博文 [Java学习总结之Java基本程序设计结构](http://habitdiary.cn/2017/10/10/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8BJava%E5%9F%BA%E6%9C%AC%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BB%93%E6%9E%84/) 的printf部分   
+
+##### 5.解析字符串为时间  
+SimpleDateFormat 类有一些附加的方法，特别是parse()，它试图按照给定的SimpleDateFormat 对象的格式化存储来解析字符串。例如：  
+```java
+import java.util.*;
+import java.text.*;
+  
+public class DateDemo {
+ 
+   public static void main(String args[]) {
+      SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd"); 
+ 
+      String input = args.length == 0 ? "1818-11-11" : args[0]; 
+ 
+      System.out.print(input + " Parses as "); 
+ 
+      Date t; 
+ 
+      try { 
+          t = ft.parse(input); 
+          System.out.println(t); 
+      } catch (ParseException e) { 
+          System.out.println("Unparseable using " + ft); 
+      }
+   }
+}
+```
+以上实例编译运行结果如下:  
+java DateDemo  
+1818-11-11 Parses as Wed Nov 11 00:00:00 GMT 1818    
+java DateDemo 2007-12-01  
+2007-12-01 Parses as Sat Dec 01 00:00:00 GMT 2007
+
+##### 6.Calendar类  
+我们现在已经能够格式化并创建一个日期对象了，但是我们如何才能**设置和获取日期数据的特定部分**呢，比如说小时，日，或者分钟? 我们又如何在日期的这些部分加上或者减去值呢?   
+答案是使用 Calendar 类。  
+Calendar类的功能要比Date类强大很多，而且在实现方式上也比Date类要复杂一些。  
+Calendar类是一个**抽象类**，在实际使用时实现特定的子类的对象，创建对象的过程对程序员来说是透明的，只需要使用getInstance方法创建即可。    
+**1) 构造方法**  
+**创建一个代表系统当前日期的Calendar对象**
+```java
+Calendar c = Calendar.getInstance();/*默认是当前日期,
+返回一个默认用当前的语言环境和时区初始化的
+GregorianCalendar对象*/  
+```
+**创建一个指定日期的Calendar对象**
+使用Calendar类代表特定的时间，需要首先创建一个Calendar的对象，然后再设定该对象中的年月日参数来完成。
+```java
+//创建一个代表2009年6月12日的Calendar对象
+Calendar c1 = Calendar.getInstance();
+c1.set(2009, 6 - 1, 12);
+```
+
+**Calendar类对象字段类型**  
+Calendar类中用以下这些常量表示不同的意义，jdk内的很多类其实都是采用的这种思想  
+![fail](Java学习总结之核心API/Calendar类常量.png)    
+
+**Calendar类对象信息的设置**  
+**Set设置**  
+如：
+```java
+Calendar c1 = Calendar.getInstance();
+```
+调用：
+```java
+public final void set(int year,int month,int date)
+c1.set(2009, 6 - 1, 12);
+/*把Calendar对象c1的年月日分别设这为：2009、6、12,
+注意月份是从0开始的！*/
+```
+利用字段类型设置  
+如果只设定某个字段，例如日期的值，则可以使用如下set方法：
+```java
+public void set(int field,int value)
+```
+把 c1对象代表的日期设置为10号，其它所有的数值会被重新计算
+```java
+c1.set(Calendar.DATE,10);  
+```
+把c1对象代表的年份设置为2008年，其他的所有数值会被重新计算
+```java
+c1.set(Calendar.YEAR,2008);
+```
+其他字段属性set的意义以此类推
+
+**Add设置**  
+```java
+Calendar c1 = Calendar.getInstance();
+```
+把c1对象的日期加上10，也就是c1也就表示为10天后的日期，其它所有的数值会被重新计算
+```java
+c1.add(Calendar.DATE, 10);
+```
+把c1对象的日期减去10，也就是c1也就表示为10天前的日期，其它所有的数值会被重新计算
+```java
+c1.add(Calendar.DATE, -10);
+```
+其他字段属性的add的意义以此类推  
+
+**Calendar类对象信息的获得**  
+```java
+Calendar c1 = Calendar.getInstance();
+// 获得年份
+int year = c1.get(Calendar.YEAR);
+// 获得月份
+int month = c1.get(Calendar.MONTH) + 1;
+// 获得日期
+int date = c1.get(Calendar.DATE);
+// 获得小时
+int hour = c1.get(Calendar.HOUR_OF_DAY);
+// 获得分钟
+int minute = c1.get(Calendar.MINUTE);
+// 获得秒
+int second = c1.get(Calendar.SECOND);
+/* 获得星期几（注意（这个与Date类是不同的）：
+1代表星期日、2代表星期1、3代表星期二，以此类推）*/
+int day = c1.get(Calendar.DAY_OF_WEEK);
+```
+
+##### 7.GregorianCalendar类  
+Calendar类实现了公历日历，GregorianCalendar是Calendar类的一个**具体实现**。  
+Calendar 的getInstance（）方法返回一个默认用当前的语言环境和时区初始化的GregorianCalendar对象。GregorianCalendar定义了两个字段：AD和BC。这是代表公历定义的两个时代。  
+
+下面列出GregorianCalendar对象的几个构造方法：  
+![fail](Java学习总结之核心API/GregorianCalendar构造方法.png)  
+
+这里是 GregorianCalendar 类提供的一些有用的方法列表：
+![fail](Java学习总结之核心API/GregorianCalendar方法1.png)    
+![fail](Java学习总结之核心API/GregorianCalendar方法2.png)  
+![fail](Java学习总结之核心API/GregorianCalendar方法3.png)  
+
+**实例**  
+```java
+import java.util.*;
+  
+public class GregorianCalendarDemo {
+ 
+   public static void main(String args[]) {
+      String months[] = {
+      "Jan", "Feb", "Mar", "Apr",
+      "May", "Jun", "Jul", "Aug",
+      "Sep", "Oct", "Nov", "Dec"};
+      
+      int year;
+      // 初始化 Gregorian 日历
+      // 使用当前时间和日期
+      // 默认为本地时间和时区
+      GregorianCalendar gcalendar = new GregorianCalendar();
+      // 显示当前时间和日期的信息
+      System.out.print("Date: ");
+      System.out.print(months[gcalendar.get(Calendar.MONTH)]);
+      System.out.print(" " + gcalendar.get(Calendar.DATE) + " ");
+      System.out.println(year = gcalendar.get(Calendar.YEAR));
+      System.out.print("Time: ");
+      System.out.print(gcalendar.get(Calendar.HOUR) + ":");
+      System.out.print(gcalendar.get(Calendar.MINUTE) + ":");
+      System.out.println(gcalendar.get(Calendar.SECOND));
+      
+      // 测试当前年份是否为闰年
+      if(gcalendar.isLeapYear(year)) {
+         System.out.println("当前年份是闰年");
+      }
+      else {
+         System.out.println("当前年份不是闰年");
+      }
+   }
+}
+
+```
+运行结果如下：    
+Date: Apr 22 2009  
+Time: 11:25:27  
+当前年份不是闰年
+
 #### Random类  
 Java 实用工具类库中的类 java.util.Random 提供了产生各种类型随机数的方法。它可以产生 int、long、float、double 以及 Gaussian 等类型的随机数。这也是它与 java.lang.Math 中的方法 Random() 最大的不同之处，后者只产生 double 型的随机数。  
 1、构造方法  

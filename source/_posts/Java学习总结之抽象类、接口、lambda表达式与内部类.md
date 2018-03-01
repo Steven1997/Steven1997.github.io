@@ -157,7 +157,7 @@ public int compareTo(Student stu){
         }    
     }
 ```
-**自定义排序总结：**无论是重写compare方法还是compareTo方法，对大于、小于、等于三种情况都要有返回值，否则无法通过编译。在compareTo方法中，规定this.xxx > o.xxx 返回 1,this.xxx == o.xxx 返回0,this.xxx < o.xxx 返回-1是升序排列，反之就是降序排列。在compare方法中,规定o1.xxx > o2.xxx返回1,o1.xxx == o2.xxx返回0,o1.xxx < o2.xxx返回 -1是升序排列，反之就是降序排列。  
+**自定义排序总结：**无论是重写compare方法还是compareTo方法，对大于、小于、等于三种情况都要有返回值，否则无法通过编译。在compareTo方法中，规定 this.xxx > o.xxx 返回 1,this.xxx == o.xxx 返回0,this.xxx < o.xxx 返回-1是升序排列，反之就是降序排列。在compare方法中,规定o1.xxx > o2.xxx返回1,o1.xxx == o2.xxx返回0,o1.xxx < o2.xxx返回 -1是升序排列，反之就是降序排列。  
 技巧：如果要比较的属性也实现了Comparable接口，就可以调用它的compareTo方法。如果要降序排列，就交换compareTo的参数顺序即可。如果要比较的类是基本数据类型，可以返回差值，如果差值不是int类型，就转换为int类型。
  ### Cloneable接口  
  首先，我们考虑为一个包含对象引用的变量建立副本会发生什么，例如：  
@@ -233,7 +233,8 @@ public Employee clone()
 6.抽象类和子类的关系应该是强的“是一种”关系(strong is-a relationship),而接口和子类的关系是弱的"是一种"关系(weak is-a relationship)。接口比抽象类更灵活，因为实现接口的子类只需要具有统一的行为即可，不需要都属于同一个类型的类。
 
  ### 接口与回调  
- 回调是一种常见的程序设计模式。在这种模式中，可以指出某个特定事件发生时应该采取的动作。例如，可以指出在按下按钮或选择某个菜单项时应该采取什么行动。
+ 回调是一种常见的程序设计模式。回调是一种双向调用模式，也就是说，被调用方在接口被调用时也会调用对方的接口。  
+ 见博客：[Java回调机制(CallBack)详解](https://www.cnblogs.com/heshuchao/p/5376298.html)
  ### 内部类  
  内部类，或者称为嵌套类，是一个定义在另一个类范围中的类。一个内部类可以如常规类一样使用。通常，在一个类只被它的外部类所使用的时候，才将它定义为内部类，内部类机制主要用于设计具有互相协作关系的类集合。比如：  
  
@@ -686,10 +687,6 @@ public class LambdaHandlerDemo extends Application {
 
 }
  ```
- ### 代理  
- 见大牛博客  
- * [Java的三种代理模式](http://www.cnblogs.com/cenyu/p/6289209.html)  
- * [java中Proxy(代理与动态代理)](http://blog.csdn.net/pangqiandou/article/details/52964066)  
- * [java静态代理和动态代理](http://layznet.iteye.com/blog/1182924)  
- * [深入理解Java反射](http://www.cnblogs.com/luoxn28/p/5686794.html)
+
+
 
