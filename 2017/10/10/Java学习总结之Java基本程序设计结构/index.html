@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/格式说明符语法.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/Arrays类常用API1.png">
 <meta property="og:image" content="http://habitdiary.cn/2017/10/10/Java学习总结之Java基本程序设计结构/Arrays类常用API2.png">
-<meta property="og:updated_time" content="2018-02-01T14:42:39.413Z">
+<meta property="og:updated_time" content="2018-03-01T12:28:26.651Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习总结之Java基本程序设计结构">
 <meta name="twitter:description" content="数据类型Java是一种强类型语言，即意味着必须为每一个变量声明一种类型。在Java中一共有8种基本数据类型，其中有4种整型、2种浮点类型、1种用于表示Unicode编码的字符单元的字符类型char和一种用于表示真值的boolean类型。   1) 整型整型用于表示没有小数部分的值，它允许是负数，Java提供了4种整型： 在通常情况下,int类型最常用。如果要表示星球上居住的人数，就需要使用long">
@@ -504,9 +504,9 @@
 <p>打印<br>3,333.33  </p>
 <p>下表列出了用于printf的所有标志<br><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/用于printf的标志.png" alt="fail" title="用于printf的标志">  </p>
 <p>可以使用静态的 String.format 方法创建一个格式化的字符串，而不打印输出：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String message = String.format(<span class="string">"Hello, %s. Next year, you'll be %d"</span>, name , age);</div></pre></td></tr></table></figure></p>
-<p>基于完整性的考虑， 下面简略地介绍 printf方法中日期与时间的格式化选项(已经过时)。在新代码中， 应当使用 java.time 包的方法。 不过你可能会在遗留代码中看到 Date 类和相关的格式化选项。格式包括两个字母， 以 t 开始， 以下表中的任意字母结束。<br>例如<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.out.printf(<span class="string">"%tc"</span>, <span class="keyword">new</span> Date());</div></pre></td></tr></table></figure></p>
-<p>这条语句将用下面的格式打印当前的日期和时间：<br>Mon Feb 09 18:05:19 PST 2015<br><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/日期和时间的转换符1.png" alt="fail"><br><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/日期和时间的转换符2.png" alt="fail" title="日期和时间的转换符">  </p>
-<p>从上表可以看到，某些格式只给出了指定日期的部分信息。例如，只有日期或月份。如果需要多次对日期操作才能实现对每一部分进行格式化的目的就太笨拙了。为此，可以采用一个格式化的字符串指出要被格式化的<strong>参数索引</strong>。索引必须紧跟在%后面， 并以<code>$</code>终止。 例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.out.printf(<span class="string">"%1$s %2$tB %2$te,%2$tY"</span>,<span class="string">"Due date:"</span>,<span class="keyword">new</span> Date());</div></pre></td></tr></table></figure></p>
+<p>基于完整性的考虑， 下面简略地介绍 printf方法中日期与时间的格式化选项(已经过时)。在新代码中， 应当使用 java.time 包的方法。 不过你可能会在遗留代码中看到 Date 类和相关的格式化选项。格式包括两个字母， 以 t 开始， 以下表中的任意字母结束：<br><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/日期和时间的转换符1.png" alt="fail"><br><img src="/2017/10/10/Java学习总结之Java基本程序设计结构/日期和时间的转换符2.png" alt="fail" title="日期和时间的转换符"><br>例如<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.out.printf(<span class="string">"%tc"</span>, <span class="keyword">new</span> Date());</div></pre></td></tr></table></figure></p>
+<p>这条语句将用下面的格式打印当前的日期和时间：<br>Mon Feb 09 18:05:19 PST 2015  </p>
+<p>从上表可以看到，某些格式只给出了指定日期的部分信息。例如，只有日期或月份。如果需要多次对日期操作才能实现对每一部分进行格式化的目的就太笨拙了。为此，可以采用一个格式化的字符串指出要被格式化的<strong>参数索引</strong>，表示该处格式化的是待格式化参数列表的第几个参数。索引必须紧跟在%后面， 并以<code>$</code>终止。 例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.out.printf(<span class="string">"%1$s %2$tB %2$te,%2$tY"</span>,<span class="string">"Due date:"</span>,<span class="keyword">new</span> Date());</div></pre></td></tr></table></figure></p>
 <p>打印<br>Due date: February 9, 2015</p>
 <p>还可以选择使用 &lt; 标志。它指示前面格式说明中的参数将被再次使用。也就是说，下列语句将产生与前面语句同样的输出结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.out .printf(<span class="string">"%s %tB %&lt;te, %&lt;tY"</span>, <span class="string">"Due date:"</span>, <span class="keyword">new</span> Date());</div></pre></td></tr></table></figure></p>
 <p><strong>注意：</strong>参数索引值从1开始，而不是从0开始，%1<code>$</code>…对第一个参数格式化。这就避免了与0标志混淆。  </p>
