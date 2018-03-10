@@ -293,7 +293,7 @@ StringBuilder类和StirngBuffer类的区别
 详见[Java学习总结之反射](http://habitdiary.cn/2017/10/14/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E5%8F%8D%E5%B0%84/)  
 
 #### Object类  
-掌握Object类的九个方法：equals()，hashCode(),getClass(),toString(),clone(),sleep(),wait()(三个重载方法)  
+掌握Object类的九个方法：equals(),hashCode(),getClass(),toString(),clone(),finalize(),notify(),notifyAll(),wait()(三个重载方法)  
 详见 [Java学习总结之继承和多态](http://habitdiary.cn/2017/10/12/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E7%BB%A7%E6%89%BF%E5%92%8C%E5%A4%9A%E6%80%81/)  和 [Java学习总结之并发](http://habitdiary.cn/2018/02/01/Java%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93%E4%B9%8B%E5%B9%B6%E5%8F%91/#more)
 
 #### System类   
