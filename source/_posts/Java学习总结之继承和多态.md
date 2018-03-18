@@ -48,7 +48,7 @@ class Employee extends Person{
     	System.out.println("(1) Performs Person's tasks");
      }
  }
-```  
+```
 打印结果为:  
 (1) Performs Person's tasks  
 (2) Invoke Employee's overloaded constructor  

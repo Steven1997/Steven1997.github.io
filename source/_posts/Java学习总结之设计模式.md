@@ -130,7 +130,8 @@ ShapeFactory.java
 ```java
 public class ShapeFactory {
     
-   //使用 getShape 方法获取形状类型的对象
+   /*使用 getShape 方法获取形状类型的对象，
+   在实际操作中建议把CIRCLE等定义为常量*/
    public Shape getShape(String shapeType){
       if(shapeType == null){
          return null;
@@ -386,6 +387,7 @@ public class AbstractFactoryPatternDemo{
 -----------------新年系列的男孩子--------------------  
 -----------------新年系列的女孩子--------------------  
 
+**注意：**抽象工厂也可以运用反射，只不过反射的不再是产品类，而是不同的具体工厂类。
 ![fail](Java学习总结之设计模式/对比.png)
 ### 3、单例模式  
 单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于**创建型模式**，它提供了一种创建对象的最佳方式。  
