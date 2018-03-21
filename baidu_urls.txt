@@ -1,3 +1,6 @@
+http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之虚拟机锁优化策略/
+http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之虚拟机类加载机制/
+http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/
 http://habitdiary.cn/2018/03/20/深入理解Java虚拟机之垃圾收集器与内存分配策略/
 http://habitdiary.cn/2018/03/17/深入理解Java虚拟机之Java内存区域与内存溢出异常/
 http://habitdiary.cn/2018/02/01/Java学习总结之并发/
