@@ -83,15 +83,29 @@
 
 
 
+<meta name="description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。平台无关性是指任何操作系统都能运行Java代码，而">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解Java虚拟机之类文件结构">
 <meta property="og:url" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/index.html">
 <meta property="og:site_name" content="XJY&#39;s Blog">
+<meta property="og:description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。平台无关性是指任何操作系统都能运行Java代码，而">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T12:36:30.385Z">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/语言无关性.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/常量类型.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/常量项结构总表1.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/常量项结构总表2.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/访问标志.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/字段表结构.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/字段访问标志.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/描述符标识字符.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/方法表结构.png">
+<meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/方法访问标志.png">
+<meta property="og:updated_time" content="2018-03-22T16:03:21.068Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Java虚拟机之类文件结构">
+<meta name="twitter:description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。平台无关性是指任何操作系统都能运行Java代码，而">
+<meta name="twitter:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/语言无关性.png">
 
 
 
@@ -365,7 +379,34 @@
       
 
       
-        
+        <h3 id="什么是JVM的“无关性”？"><a href="#什么是JVM的“无关性”？" class="headerlink" title="什么是JVM的“无关性”？"></a>什么是JVM的“无关性”？</h3><p>Java具有<strong>平台无关性</strong>，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。<br>而JVM不仅具有平台无关性，还具有<strong>语言无关性</strong>。平台无关性是指任何操作系统都能运行Java代码，而语言无关性是指Java虚拟机能运行除Java以外的代码！<br>实现语言无关性的基础仍然是虚拟机和字节码存储格式。Java虚拟机不和包括Java在内的任何语言绑定，它只与“Class文件”这种特定的二进制文件格式所关联，Class文件中包含了Java虚拟机指令集和符号表以及若干其他辅助信息。基于安全方面的考虑，Java虚拟机规范要求在Class文件中使用许多强制性的语法和结构化约束，但任一门功能性语言都可以表示为一个能被Java虚拟机所接受的有效的Class文件。作为一个通用的、机器无关的执行平台，任何其他语言的实现者都可以将Java虚拟机作为语言的产品交付媒介。<br><strong>简而言之，JVM只认识class文件，它并不管何种语言生成了class文件，只要class文件符合JVM的规范就能运行。</strong>因此目前已经有Clojure、Groovy、JRuby、Jython、Scala等语言能够在JVM上运行。它们有各自的语法规则，不过它们的编译器都能将各自的源码编译成符合JVM规范的class文件，从而能够借助JVM运行它们。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/语言无关性.png" alt="fail">  </p>
+<h3 id="纵观Class文件结构"><a href="#纵观Class文件结构" class="headerlink" title="纵观Class文件结构"></a>纵观Class文件结构</h3><p>class文件是二进制文件，它的内容具有严格的规范，文件中没有任何空格，全是连续的0和1。class文件中的所有内容被分为两种类型：<strong>无符号数</strong>和<strong>表</strong>。<br><strong>无符号数：</strong>它表示class文件中的值，<strong>这些值没有任何类型，但有不同的长度</strong>。根据这些值长度的不同分为：u1、u2、u4、u8，分别代表1字节的无符号数、2字节的无符号数、4字节的无符号数、8字节的无符号数。无符号数可以用来描述数字、索引引用、数量值或者按照UTF-8编码构成字符串值。<br><strong>表：</strong>表是由<strong>多个无符号数或者其他表</strong>作为数据项构成的<strong>复合数据类型</strong>，所有表都习惯性地以<code>_info</code>结尾。表用于描述有层次关系的复合结构的数据，整个Class文件本质上就是一张表。</p>
+<h3 id="class文件的组织结构"><a href="#class文件的组织结构" class="headerlink" title="class文件的组织结构"></a>class文件的组织结构</h3><p>1、魔数<br>2、本文件的版本信息<br>3、常量池<br>4、访问标志<br>5、类索引<br>6、父类索引<br>7、接口索引集合<br>8、字段表集合<br>9、方法表集合  </p>
+<h4 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h4><p>每个Class文件的头4个字节称为魔数(Magic Number),它的唯一作用是<strong>确定这个文件是否为一个能被虚拟机接受的Class文件</strong>。<br>魔数的作用就相当于文件扩展名，使用魔数而不是扩展名来进行识别主要是基于安全方面的考虑，因为文件扩展名可以随意地改动，不安全，因此在class文件中标示文件类型比较合适。<br>class文件的魔数是16进制的 0xCAFEBABE (咖啡宝贝)，非常具有浪漫主义色彩。  </p>
+<h4 id="版本信息"><a href="#版本信息" class="headerlink" title="版本信息"></a>版本信息</h4><p>紧接着魔数的4个字节是版本号。它表示该class中使用的是哪个版本的JDK。<br>在高版本的JVM上能够运行低版本的class文件，但在低版本的JVM上无法运行高版本的class文件，即使该class文件中没有用到任何高版本JDK的特性也无法运行！  </p>
+<h4 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h4><h5 id="什么是常量池？"><a href="#什么是常量池？" class="headerlink" title="什么是常量池？"></a>什么是常量池？</h5><p>紧接着版本号之后的就是常量池。常量池中存放两种类型的常量。<br><strong>字面量：</strong>字面量比较接近于Java语言层面的常量概念，如文本字符串、声明为final的常量值等。<br><strong>符号引用：</strong>符号引用是我们定义的各种名字，包括了下面三类常量：<br>1、类和接口的全限定名(Fully Qualified Name)<br>2、字段的名称和描述符(Descriptor)<br>3、方法的名称和描述符</p>
+<h5 id="常量池的特点"><a href="#常量池的特点" class="headerlink" title="常量池的特点"></a>常量池的特点</h5><ul>
+<li><strong>常量池长度不固定：</strong>常量池的大小是不固定的，因此常量池开头放置一个u2类型的无符号数，用来存储当前常量池的容量。JVM根据这个值就知道常量池的头尾。注：这个值是从1开始的，若为5表示池中有4个常量。  </li>
+<li><strong>常量池中的常量用表来表示：</strong>常量池开头有个常量池容量计数器，接下来就全是一个个常量了，<strong>只不过常量都是由一张张二维表构成，除了记录常量的值以外，还记录当前常量的相关信息</strong>。  </li>
+<li><strong>常量池是class文件的资源仓库</strong>  </li>
+<li><strong>常量池是与该class中其它部分关联最多的部分</strong>  </li>
+<li><strong>常量池是class文件中空间占用最大的部分之一</strong>  </li>
+</ul>
+<h5 id="常量池中常量的类型"><a href="#常量池中常量的类型" class="headerlink" title="常量池中常量的类型"></a>常量池中常量的类型</h5><p>常量池中的常量大体上分为：<strong>字面量</strong> 和 <strong>符号引用</strong>。在此基础上，根据常量的数据类型不同，又可以被细分为14种常量类型。这14种常量类型都有各自的二维表示结构。每种常量类型的头1个字节都是tag，用于表示当前常量属于14种类型中的哪一个。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/常量类型.png" alt="fail" title="常量类型"><br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/常量项结构总表1.png" alt="fail"><br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/常量项结构总表2.png" alt="fail" title="常量项结构总表"> </p>
+<h4 id="访问标志"><a href="#访问标志" class="headerlink" title="访问标志"></a>访问标志</h4><p>在常量池之后是2字节的访问标志。访问标志是用来表示这个class文件是类还是接口、是否被public修饰、是否被abstract修饰、是否被final修饰等。由于这些标志都由是/否表示，因此可以用0/1表示。访问标志为2字节，可以表示16位标志，但JVM目前只定义了8种，未定义的直接写0。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/访问标志.png" alt="fail" title="访问标志">   </p>
+<h4 id="类索引、父类索引、接口索引集合"><a href="#类索引、父类索引、接口索引集合" class="headerlink" title="类索引、父类索引、接口索引集合"></a>类索引、父类索引、接口索引集合</h4><p>类索引、父类索引、接口索引集合是用来表示当前class文件所表示类的名字、父类名字、接口的名字。它们按照顺序依次排列，类索引和父类索引各自使用一个u2类型的无符号常量，这个常量指向CONSTANT_Class_info类型的常量，该常量的bytes字段记录了本类、父类的全限定名。由于一个类的接口可能有好多个，因此需要用一个集合来表示接口索引，它在类索引和父类索引之后。这个集合开头入口的第一项是一个u2类型的数据，即接口计数器(interfaces_count)，表示索引表的容量。如果该类没有实现任何接口，则该计数器值为0,后面接口的索引表不再占用任何字节。否则，接下来就是接口的名字索引。  </p>
+<h4 id="字段表的集合"><a href="#字段表的集合" class="headerlink" title="字段表的集合"></a>字段表的集合</h4><h5 id="什么是字段表集合？"><a href="#什么是字段表集合？" class="headerlink" title="什么是字段表集合？"></a>什么是字段表集合？</h5><p>字段表(field_info)用于描述接口或者类中声明的变量。字段(field)包括类级变量以及实例级变量，但不包括在方法内部声明的局部变量。我们可以想一想在Java中描述一个字段可以包含什么信息？可以包括的信息有：字段的作用域(public、private、protected修饰符)、是实例变量还是类变量(static修饰符)、可变性(final)、并发可见性(volatile修饰符，是否强制从主内存读写)、可否被序列化(transient修饰符)、字段数据类型(基本类型、对象、数组)、字段名称。上述这些信息中,各个修饰符都是布尔值,要么有某个修饰符，要么没有，很适合使用标志位来表示。而字段叫什么名字、字段被定义为什么数据类<br>型，这些都是无法固定的，只能引用常量池中的常量来描述。 </p>
+<h5 id="字段表结构的定义"><a href="#字段表结构的定义" class="headerlink" title="字段表结构的定义"></a>字段表结构的定义</h5><p><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/字段表结构.png" alt="fail" title="字段表结构">    </p>
+<ul>
+<li>access_flags：字段的访问标志。在Java中，每个成员变量都有一系列的修饰符，和上述class文件的访问标志的作用一样，只不过成员变量的访问标志与类的访问标志稍有区别。  </li>
+<li>name_index：本字段名字的索引。指向一个CONSTANT_Class_info类型的常量，这里面存储了本字段的名字等信息。  </li>
+<li>descriptor_index：描述符。用于描述本字段在Java中的数据类型等信息（下面详细介绍）。  </li>
+<li>attributes_count：属性表集合的长度。  </li>
+<li>attributes：属性表集合。到descriptor_index为止是字段表的固定信息，光有上述信息可能无法完整地描述一个字段，因此用属性表集合来存放额外的信息，比如一个字段的值（下面会详细介绍）。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/字段访问标志.png" alt="fail" title="字段访问标志"><br>很明显,在实际情况中,ACC_PUBLIC、ACC_PRIVATE、ACC_PROTECTED三个标志最多只能选择其一，ACC_FINAL、ACC_VOLATILE不能同时选择。接口之中的字段必须有ACC_PUBLIC、ACC_STATIC、ACC_FINAL标志，这些都是由Java本身的语言规则所决定的。<h5 id="什么是描述符？"><a href="#什么是描述符？" class="headerlink" title="什么是描述符？"></a>什么是描述符？</h5>成员变量（包括静态成员变量和实例变量）和 方法都有各自的描述符。 对于字段而言，描述符用于描述字段的数据类型； 对于方法而言，描述符用于描述字段的数据类型、参数列表、返回值。<br>在描述符中，基本数据类型用大写字母表示，对象类型用“L对象类型的全限定名”表示。<br>对于数组类型，每一维度将使用一个前置的“[”字符来描述，如一个定义为“java.lang.String[][]”类型的二维数组，将被记录为:“[[Ljava/lang/String”，一个整型数组“int[]”将被记录为“[I”。<br>用描述符来描述方法时，按照先参数列表，后返回值的顺序描述，参数列表按照参数的严格顺序放在一组小括号“()”之内。如方法void inc()的描述符为“()V”，方法java.lang.String toString()的描述符为“()Ljava/lang/String”，方法int<br>indexOf(char[]source，int sourceOffset，int sourceCount，char[]target，int targetOffset，int targetCount，int fromIndex)的描述符为“([CII[CIII)I”。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/描述符标识字符.png" alt="fail" title="描述符标识字符">    <h5 id="字段表集合的注意点"><a href="#字段表集合的注意点" class="headerlink" title="字段表集合的注意点"></a>字段表集合的注意点</h5>1、一个class文件的字段表集合中不能出现从父类/接口继承而来字段<br>2、一个class文件的字段表集合中可能会出现没有人为定义的字段。如编译器会自动地在内部类的class文件的字段表集合中添加外部类对象的成员变量，供内部类访问外部类。<br>3、Java中只要两个字段名字相同就无法通过编译。但在JVM规范中，允许两个字段的名字相同但描述符不同的情况，并且认为它们是两个不同的字段。</li>
+</ul>
+<h4 id="方法表集合"><a href="#方法表集合" class="headerlink" title="方法表集合"></a>方法表集合</h4><h5 id="什么是方法表集合？"><a href="#什么是方法表集合？" class="headerlink" title="什么是方法表集合？"></a>什么是方法表集合？</h5><p>Class文件存储格式中对方法的描述与对字段的描述几乎采用了完全一致的方式，方法表的结构如同字段表一样，依次包括了访问标志(access_flags)、名称索引(name_index)、描述符索引(descriptor_index)、属性表集合(attributes)等。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/方法表结构.png" alt="fail" title="方法表结构"><br>因为volatile关键字和transient关键字不能修饰方法，所以方法表的访问标志中没有了ACC_VOLATILE标志和ACC_TRANSIENT标志。与之相对的，synchronized、native、strictfp和abstract关键字可以修饰方法，所以方法表的访问标志中增加了ACC_SYNCHRONIZED、ACC_NATIVE、ACC_STRICTFP和ACC_ABSTRACT标志。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/方法访问标志.png" alt="fail" title="方法访问标志">      </p>
+<h5 id="方法表集合的注意点"><a href="#方法表集合的注意点" class="headerlink" title="方法表集合的注意点"></a>方法表集合的注意点</h5><p>1、如果本class没有重写父类的方法，那么本class文件的方法表集合中是不会出现父类/父接口的方法表<br>2、本class的方法表集合可能出现没有人为定义的方法 编译器在编译时会在class文件的方法表集合中加入类构造器<code>&lt;Clinit&gt;</code>和实例构造器<code>&lt;init&gt;</code>。<br>3、重载一个方法需要有相同的简单名称和不同的特征签名。JVM的特征签名和Java的特征签名有所不同：<br>Java特征签名：方法参数在常量池中的字段符号引用的集合<br>JVM特征签名：方法参数 + 返回值。 </p>
+
       
     </div>
     
@@ -495,8 +536,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -592,6 +642,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是JVM的“无关性”？"><span class="nav-number">1.</span> <span class="nav-text">什么是JVM的“无关性”？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#纵观Class文件结构"><span class="nav-number">2.</span> <span class="nav-text">纵观Class文件结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#class文件的组织结构"><span class="nav-number">3.</span> <span class="nav-text">class文件的组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#魔数"><span class="nav-number">3.1.</span> <span class="nav-text">魔数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#版本信息"><span class="nav-number">3.2.</span> <span class="nav-text">版本信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常量池"><span class="nav-number">3.3.</span> <span class="nav-text">常量池</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是常量池？"><span class="nav-number">3.3.1.</span> <span class="nav-text">什么是常量池？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常量池的特点"><span class="nav-number">3.3.2.</span> <span class="nav-text">常量池的特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常量池中常量的类型"><span class="nav-number">3.3.3.</span> <span class="nav-text">常量池中常量的类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问标志"><span class="nav-number">3.4.</span> <span class="nav-text">访问标志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类索引、父类索引、接口索引集合"><span class="nav-number">3.5.</span> <span class="nav-text">类索引、父类索引、接口索引集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字段表的集合"><span class="nav-number">3.6.</span> <span class="nav-text">字段表的集合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是字段表集合？"><span class="nav-number">3.6.1.</span> <span class="nav-text">什么是字段表集合？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字段表结构的定义"><span class="nav-number">3.6.2.</span> <span class="nav-text">字段表结构的定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是描述符？"><span class="nav-number">3.6.3.</span> <span class="nav-text">什么是描述符？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字段表集合的注意点"><span class="nav-number">3.6.4.</span> <span class="nav-text">字段表集合的注意点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法表集合"><span class="nav-number">3.7.</span> <span class="nav-text">方法表集合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是方法表集合？"><span class="nav-number">3.7.1.</span> <span class="nav-text">什么是方法表集合？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法表集合的注意点"><span class="nav-number">3.7.2.</span> <span class="nav-text">方法表集合的注意点</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
