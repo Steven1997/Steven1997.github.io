@@ -83,13 +83,13 @@
 
 
 
-<meta name="description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。平台无关性是指任何操作系统都能运行Java代码，而">
+<meta name="description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行字节码(Byte Code)。程序编译结果从二进制本地机器码(Native Code)转变为与操作系统和机器指令集无关的、平台中立的字节码(Byte Code)。因此Java能实现“">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解Java虚拟机之类文件结构">
 <meta property="og:url" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/index.html">
 <meta property="og:site_name" content="XJY&#39;s Blog">
-<meta property="og:description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。平台无关性是指任何操作系统都能运行Java代码，而">
+<meta property="og:description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行字节码(Byte Code)。程序编译结果从二进制本地机器码(Native Code)转变为与操作系统和机器指令集无关的、平台中立的字节码(Byte Code)。因此Java能实现“">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/语言无关性.png">
 <meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/常量类型.png">
@@ -101,10 +101,10 @@
 <meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/描述符标识字符.png">
 <meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/方法表结构.png">
 <meta property="og:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/方法访问标志.png">
-<meta property="og:updated_time" content="2018-03-22T16:03:21.068Z">
+<meta property="og:updated_time" content="2018-03-23T02:18:59.868Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Java虚拟机之类文件结构">
-<meta name="twitter:description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。而JVM不仅具有平台无关性，还具有语言无关性。平台无关性是指任何操作系统都能运行Java代码，而">
+<meta name="twitter:description" content="什么是JVM的“无关性”？Java具有平台无关性，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行字节码(Byte Code)。程序编译结果从二进制本地机器码(Native Code)转变为与操作系统和机器指令集无关的、平台中立的字节码(Byte Code)。因此Java能实现“">
 <meta name="twitter:image" content="http://habitdiary.cn/2018/03/21/深入理解Java虚拟机之类文件结构/语言无关性.png">
 
 
@@ -379,7 +379,7 @@
       
 
       
-        <h3 id="什么是JVM的“无关性”？"><a href="#什么是JVM的“无关性”？" class="headerlink" title="什么是JVM的“无关性”？"></a>什么是JVM的“无关性”？</h3><p>Java具有<strong>平台无关性</strong>，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行同一种平台无关的字节码(ByteCode)，因此Java能实现“一次编写，处处运行”。<br>而JVM不仅具有平台无关性，还具有<strong>语言无关性</strong>。平台无关性是指任何操作系统都能运行Java代码，而语言无关性是指Java虚拟机能运行除Java以外的代码！<br>实现语言无关性的基础仍然是虚拟机和字节码存储格式。Java虚拟机不和包括Java在内的任何语言绑定，它只与“Class文件”这种特定的二进制文件格式所关联，Class文件中包含了Java虚拟机指令集和符号表以及若干其他辅助信息。基于安全方面的考虑，Java虚拟机规范要求在Class文件中使用许多强制性的语法和结构化约束，但任一门功能性语言都可以表示为一个能被Java虚拟机所接受的有效的Class文件。作为一个通用的、机器无关的执行平台，任何其他语言的实现者都可以将Java虚拟机作为语言的产品交付媒介。<br><strong>简而言之，JVM只认识class文件，它并不管何种语言生成了class文件，只要class文件符合JVM的规范就能运行。</strong>因此目前已经有Clojure、Groovy、JRuby、Jython、Scala等语言能够在JVM上运行。它们有各自的语法规则，不过它们的编译器都能将各自的源码编译成符合JVM规范的class文件，从而能够借助JVM运行它们。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/语言无关性.png" alt="fail">  </p>
+        <h3 id="什么是JVM的“无关性”？"><a href="#什么是JVM的“无关性”？" class="headerlink" title="什么是JVM的“无关性”？"></a>什么是JVM的“无关性”？</h3><p>Java具有<strong>平台无关性</strong>，也就是任何操作系统都能运行Java代码。之所以能实现这一点，是因为Java运行在Java虚拟机之上，不同的操作系统都拥有各自的Java虚拟机，这些虚拟机都可以载入和执行字节码(Byte Code)。<strong>程序编译结果从二进制本地机器码(Native Code)转变为与操作系统和机器指令集无关的、平台中立的字节码(Byte Code)。</strong>因此Java能实现“一次编写，处处运行”。<br>而JVM不仅具有平台无关性，还具有<strong>语言无关性</strong>。平台无关性是指任何操作系统都能运行Java代码，而语言无关性是指Java虚拟机能运行除Java以外的代码！<br>实现语言无关性的基础仍然是虚拟机和字节码存储格式。Java虚拟机不和包括Java在内的任何语言绑定，它只与“Class文件”这种特定的二进制文件格式所关联，Class文件中包含了Java虚拟机指令集和符号表以及若干其他辅助信息。基于安全方面的考虑，Java虚拟机规范要求在Class文件中使用许多强制性的语法和结构化约束，但任一门功能性语言都可以表示为一个能被Java虚拟机所接受的有效的Class文件。作为一个通用的、机器无关的执行平台，任何其他语言的实现者都可以将Java虚拟机作为语言的产品交付媒介。<br><strong>简而言之，JVM只认识class文件，它并不管何种语言生成了class文件，只要class文件符合JVM的规范就能运行。</strong>因此目前已经有Clojure、Groovy、JRuby、Jython、Scala等语言能够在JVM上运行。它们有各自的语法规则，不过它们的编译器都能将各自的源码编译成符合JVM规范的class文件，从而能够借助JVM运行它们。<br><img src="/2018/03/21/深入理解Java虚拟机之类文件结构/语言无关性.png" alt="fail">  </p>
 <h3 id="纵观Class文件结构"><a href="#纵观Class文件结构" class="headerlink" title="纵观Class文件结构"></a>纵观Class文件结构</h3><p>class文件是二进制文件，它的内容具有严格的规范，文件中没有任何空格，全是连续的0和1。class文件中的所有内容被分为两种类型：<strong>无符号数</strong>和<strong>表</strong>。<br><strong>无符号数：</strong>它表示class文件中的值，<strong>这些值没有任何类型，但有不同的长度</strong>。根据这些值长度的不同分为：u1、u2、u4、u8，分别代表1字节的无符号数、2字节的无符号数、4字节的无符号数、8字节的无符号数。无符号数可以用来描述数字、索引引用、数量值或者按照UTF-8编码构成字符串值。<br><strong>表：</strong>表是由<strong>多个无符号数或者其他表</strong>作为数据项构成的<strong>复合数据类型</strong>，所有表都习惯性地以<code>_info</code>结尾。表用于描述有层次关系的复合结构的数据，整个Class文件本质上就是一张表。</p>
 <h3 id="class文件的组织结构"><a href="#class文件的组织结构" class="headerlink" title="class文件的组织结构"></a>class文件的组织结构</h3><p>1、魔数<br>2、本文件的版本信息<br>3、常量池<br>4、访问标志<br>5、类索引<br>6、父类索引<br>7、接口索引集合<br>8、字段表集合<br>9、方法表集合  </p>
 <h4 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h4><p>每个Class文件的头4个字节称为魔数(Magic Number),它的唯一作用是<strong>确定这个文件是否为一个能被虚拟机接受的Class文件</strong>。<br>魔数的作用就相当于文件扩展名，使用魔数而不是扩展名来进行识别主要是基于安全方面的考虑，因为文件扩展名可以随意地改动，不安全，因此在class文件中标示文件类型比较合适。<br>class文件的魔数是16进制的 0xCAFEBABE (咖啡宝贝)，非常具有浪漫主义色彩。  </p>
@@ -664,7 +664,7 @@ var jiathis_config={
 
     </div>
   <div id="music163player">
-  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=5237120&auto=0&height=66"></iframe>
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="http://music.163.com/#/outchain/2/191528/"></iframe>
 </div> 
  </aside>
 
